@@ -1,0 +1,47 @@
+
+<html>
+<body>
+<table id="tableID" border="1" style="cursor: pointer;">
+    <tr>
+        <td>Text</td>
+        <td>MoreText</td>
+        <td>Lorem</td>
+        <td>Ipsum</td>
+    </tr>
+    <tr>
+        <td>Text</td>
+        <td>MoreText</td>
+        <td>Lorem</td>
+        <td>Ipsum</td>
+    </tr>
+    <tr>
+        <td>Text</td>
+        <td>MoreText</td>
+        <td>Lorem</td>
+        <td>Ipsum</td>
+    </tr>
+    <tr>
+        <td>Text</td>
+        <td>MoreText</td>
+        <td>Lorem</td>
+        <td>Ipsum</td>
+    </tr>
+</table>
+<script>
+    alert("Ha ha");
+    var table = document.getElementById("tableID");
+    if (table != null) {
+        for (var i = 0; i < table.rows.length; i++) {
+            for (var j = 0; j < table.rows[i].cells.length; j++)
+                table.rows[i].cells[j].onclick = function () {
+                    tableText(this);
+                };
+        }
+    }
+
+    function tableText(tableCell) {
+        alert("Ha");
+    }
+</script>
+</body>
+</html>

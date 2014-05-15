@@ -1,0 +1,84 @@
+@-ms-viewport{
+    width: extend-to-zoom;
+    zoom: 1.0;
+}
+body {
+    font-family: 'Lato', sans-serif;
+    font-size: 0.8em;
+    padding: 20px;
+}
+h1 {
+    margin: 0 0 20px 0;
+    text-align: center;
+}
+table
+{
+    border-collapse:collapse;
+    width:50%;
+    margin: 20px auto;
+}
+table, th, td
+{
+    border: 1px solid black;
+}
+th, td
+{
+    padding: 4px;
+}
+th span
+{
+    padding: 6px;
+    color: #6e6f6f;
+}
+
+#content
+{
+    float: inherit;
+    margin: 5px;
+}
+#lightbox
+{
+    visibility:hidden;
+    position:absolute;
+    background:lightsteelblue;
+    border:2px solid #3c3c3c;
+    z-index:100;
+    width: 200px;
+    height:100px;
+    padding:20px;
+}
+.dimmer
+{
+    background: #000;
+    position: absolute;
+    opacity: .5;
+    top: 0;
+    z-index:99;
+}
+
+.black_overlay{
+    display: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: black;
+    z-index:1001;
+    /*-moz-opacity: 0.8;*/
+    /*opacity:.75;*/
+    /*filter: alpha(opacity=75);*/
+    background-color: rgba(0,0,0,0.75);
+}
+.white_content {
+    position: absolute;
+    top: 10%;
+    left: 25%;
+    width: 600px;
+    height: 75%;
+    padding: 16px;
+    border: 4px solid #000;
+    background-color: white;
+    z-index:1002;
+    overflow: auto;
+}

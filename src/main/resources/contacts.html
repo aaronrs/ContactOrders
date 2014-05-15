@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Contacts</title>
+    <link rel="stylesheet" type="text/css" href="normalize.css">
+    <link rel="stylesheet" type="text/css" href="theme.css">
+</head>
+<body>
+<h1>Contacts</h1>
+<table id="mytable">
+    <thead>
+    <tr>
+        <th><span onclick="javascript:sortTable(0, 1);">&#x25BC;</span>Name<span onclick="javascript:sortTable(0, -1);">&#x25B2;</span></th>
+        <th><span onclick="javascript:sortTable(1, 1);">&#x25BC;</span>Address<span onclick="javascript:sortTable(1, -1);">&#x25B2;</span></th>
+        <th><span onclick="javascript:sortTable(2, 1);">&#x25BC;</span>Town<span onclick="javascript:sortTable(2, -1);">&#x25B2;</span></th>
+        <th><span onclick="javascript:sortTable(3, 1);">&#x25BC;</span>County<span onclick="javascript:sortTable(3, -1);">&#x25B2;</span></th>
+        <th><span onclick="javascript:sortTable(4, 1);">&#x25BC;</span>Postcode<span onclick="javascript:sortTable(4, -1);">&#x25B2;</span></th>
+        <th><span onclick="javascript:sortTable(5, 1);">&#x25BC;</span>Tel<span onclick="javascript:sortTable(5, -1);">&#x25B2;</span></th>
+    </tr>
+    </thead>
+    <tbody>
+    </tbody>
+</table>
+<p>
+    <input type="button"value="Reload" onclick="buildTable();"/>
+    <a href="#" id="newContact">Click me</a>
+</p>
+
+<div id="lightbox">New Contact</div>
+
+<p>This is the main content. To display a lightbox click <a href="#" onclick="javascript:displayLightbox1()">here</a></p>
+<div id="fade" class="black_overlay">
+    <div id="light" class="white_content">This is the lightbox content. <a href="#" onclick="javascript:displayLightbox2()">Close</a></div>
+</div>
+<script>
+
+    document.getElementById("mytable").onclick = function(e) {
+        console.log(e.target.parentNode.getAttribute("data-index"));
+    };
+
+    function buildTable() {
+//        var xmlHttp = new XMLHttpRequest();
+//        xmlHttp.open("GET", "http://localhost:8787/contacts", false);
+//        xmlHttp.send();
+//        var data = JSON.parse(xmlHttp.responseText);
+        var json = "[{\"id\":0,\"name\":{\"first\":\"A\",\"last\":\"A\"},\"address\":{\"number\":5,\"houseName\":\"C\",\"address1\":\"E\",\"town\":\"F\",\"county\":\"G\",\"postcode\":\"HH1 1II\",\"telephone\":\"011111119\"},\"orders\":[{\"year\":2014,\"month\":5,\"day\":1,\"name\":\"O1\"}]}," +
+                "{\"id\":1,\"name\":{\"first\":\"B\",\"last\":\"B\"},\"address\":{\"number\":4,\"houseName\":\"B\",\"address1\":\"A\",\"town\":\"B\",\"county\":\"B\",\"postcode\":\"BB1 1BB\",\"telephone\":\"011111117\"},\"orders\":[{\"year\":2014,\"month\":5,\"day\":1,\"name\":\"O1\"}]}," +
+                "{\"id\":2,\"name\":{\"first\":\"C\",\"last\":\"C\"},\"address\":{\"number\":3,\"houseName\":\"A\",\"address1\":\"C\",\"town\":\"C\",\"county\":\"C\",\"postcode\":\"CC1 1CC\",\"telephone\":\"011111115\"},\"orders\":[{\"year\":2014,\"month\":5,\"day\":1,\"name\":\"O1\"}]}," +
+                "{\"id\":11,\"name\":{\"first\":\"C\",\"last\":\"L\"},\"address\":{\"number\":16,\"houseName\":\"C\",\"address1\":\"D\",\"town\":\"D\",\"county\":\"D\",\"postcode\":\"DD3 3DD\",\"telephone\":\"033333333\"},\"orders\":[{\"year\":2014,\"month\":5,\"day\":1,\"name\":\"O3\"}]}," +
+                "{\"id\":12,\"name\":{\"first\":\"Firstname\",\"last\":\"Surname\"},\"address\":{\"number\":99,\"houseName\":\"Housename\",\"address1\":\"AddressLine1\",\"town\":\"Town\",\"county\":\"County\",\"postcode\":\"POST CODE\",\"telephone\":\"01111111111\"},\"orders\":[{\"year\":2014,\"month\":5,\"day\":1,\"name\":\"Order Name\"}]}]";
+        var data = JSON.parse(json);
+
+        var fragment = document.createDocumentFragment(), tr, td;
+
+        for (var index in data) {
+            tr = document.createElement('tr');
+            tr.setAttribute("data-index", index);
+            var contact = data[index];
+            var name = contact.name;
+            buildRow(tr, name.first + " " + name.last);
+            var address = contact.address;
+            buildRow(tr, address.number + " " + address.address1);
+            buildRow(tr, address.town);
+            buildRow(tr, address.county);
+            buildRow(tr, address.postcode);
+            buildRow(tr, address.telephone);
+            fragment.appendChild(tr);
+        }
+        var body = document.getElementsByTagName('tbody')[0];
+        var range = new Range();
+        range.selectNodeContents(body);
+        range.deleteContents();
+        body.appendChild(fragment.cloneNode(true));
+    }
+
+    function buildRow(tr, value) {
+        td = document.createElement('td');
+        td.appendChild(document.createTextNode(value));
+        tr.appendChild(td);
+    }
+    //buildTable();
+
+    function rowClick(i) {
+        return function() {alert(i)};
+    }
+
+    function addRowClick() {
+        var table = document.getElementById("mytable"), i=0, j=0, rowCount=table.rows.length;
+        if (table) {
+            for (; i < rowCount; i++) {
+                for (; j < table.rows[i].cells.length; j++) {
+                    table.rows[i].onclick = rowClick(i);
+                }
+            }
+        }
+
+    }
+    function tableText(tableCell) {
+        alert(tableCell.innerHTML);
+    }
+
+    // lightbox 1
+
+    function displayLightbox1() {
+        document.getElementById('fade').style.display='block';
+    }
+    function displayLightbox2() {
+        document.getElementById('fade').style.display='none';
+    }
+
+    // lightbox 2
+
+    var newContact = document.getElementById("newContact");
+
+    newContact.onclick = function(){
+
+        var lightbox = document.getElementById("lightbox");
+        var dimmer = document.createElement("div");
+
+        dimmer.style.width =  window.innerWidth + 'px';
+        dimmer.style.height = window.innerHeight + 'px';
+        dimmer.className = 'dimmer';
+
+        dimmer.onclick = function(){
+            document.body.removeChild(this);
+            lightbox.style.visibility = 'hidden';
+            buildTable();
+        }
+
+        document.body.appendChild(dimmer);
+
+        lightbox.style.visibility = 'visible';
+        lightbox.style.top = window.innerHeight/2 - 50 + 'px';
+        lightbox.style.left = window.innerWidth/2 - 100 + 'px';
+        return false;
+    }
+
+    function sortTable(column, direction){
+        var tbl = document.getElementById("mytable").tBodies[0];
+        var store = [];
+        for(var i=0, len=tbl.rows.length; i<len; i++){
+            var row = tbl.rows[i];
+            var sortVal = row.cells[column].textContent || row.cells[column].innerText;
+            store.push([sortVal, row]);
+        }
+
+        store.sort(function(x,y){
+            return direction * x[0].localeCompare(y[0]);
+        });
+        for(var i=0, len=store.length; i<len; i++){
+            tbl.appendChild(store[i][1]);
+        }
+        store = null;
+    }
+
+    buildTable();
+</script>
+</body>
+</html>
