@@ -1,5 +1,5 @@
 function buildTable(name, values, titles) {
-    var header = document.getElementsByTagName('thead')[0];
+    var header = document.getElementById(name).tHead;
     createHeader(header, titles);
     var bodyFragment = document.createDocumentFragment(), tr;
 
@@ -11,7 +11,7 @@ function buildTable(name, values, titles) {
         }
         bodyFragment.appendChild(tr);
     }
-    var body = document.getElementsByTagName('tbody')[0];
+    var body = document.getElementById(name).tBodies[0];
     var range = new Range();
     range.selectNodeContents(body);
     range.deleteContents();
@@ -64,15 +64,6 @@ function buildRow(tr, value) {
     tr.appendChild(td);
 }
 
-function buildAddRow(row) {
-    row.setAttribute("data-index", '-1');
-    var td = document.createElement('td');
-    td.colSpan = 3;
-    td.appendChild(document.createTextNode("-> Add Contact"));
-    row.appendChild(td);
-    return row;
-}
-
 function sortContactTable(val, direction) {
     contacts.sort(function (x, y) {
         return direction * x[val].localeCompare(y[val]);
@@ -81,31 +72,33 @@ function sortContactTable(val, direction) {
 }
 
 function tableSelect() {
-    document.getElementById("mytable").onclick = function (e) {
+    document.getElementById("contactsTable").onclick = function (e) {
 
         var target = e.target;
         if (target.nodeName == "SPAN") {
             sortContactTable(target.getAttribute('sortName'), target.getAttribute('direction'))
-        } else {
-            document.getElementById('contact_form').style.display = 'block';
-            document.getElementById('order_form').style.display = 'none';
-            document.getElementById('showContactBtn').disabled = true;
-            var index = target.parentNode.getAttribute("data-index");
-            if (index >= 0) {
-                contactTable(contacts[index]);
-                document.getElementById('updateButton').disabled = false;
-                document.getElementById('deleteButton').disabled = false;
-                document.getElementById('saveButton').disabled = true;
-                document.getElementById('showOrdersBtn').disabled = false;
-            } else {
-                clearContactTable();
-                document.getElementById('updateButton').disabled = true;
-                document.getElementById('deleteButton').disabled = true;
-                document.getElementById('saveButton').disabled = false;
-                document.getElementById('showOrdersBtn').disabled = true;
-            }
-            displayLightbox();
+            return;
         }
+
+        document.getElementById('contact_form').style.display = 'block';
+        document.getElementById('order_form').style.display = 'none';
+        document.getElementById('showContactBtn').disabled = true;
+        var index = target.parentNode.getAttribute("data-index");
+        if (index >= 0) {
+            contactTable(contacts[index]);
+            document.getElementById('updateButton').disabled = false;
+            document.getElementById('deleteButton').disabled = false;
+            document.getElementById('saveButton').disabled = true;
+            document.getElementById('showOrdersBtn').disabled = false;
+        } else {
+            clearContactTable();
+            document.getElementById('updateButton').disabled = true;
+            document.getElementById('deleteButton').disabled = true;
+            document.getElementById('saveButton').disabled = false;
+            document.getElementById('showOrdersBtn').disabled = true;
+        }
+        buildOrderTable();
+        displayLightbox();
     };
 }
 
@@ -121,7 +114,6 @@ function closeLightbox() {
 }
 
 function showOrderForm() {
-    buildOrderTable();
     tabDisplay('order_form', 'contact_form', 'showOrdersBtn', 'showContactBtn');
 }
 

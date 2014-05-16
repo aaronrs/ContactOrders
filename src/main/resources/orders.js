@@ -1,5 +1,19 @@
-
 function buildOrderTable() {
+    var data = requestOrders(document.getElementById("contactId").value);
+
+    var values = [];
+    for (var index in data) {
+        var order = data[index];
+        values[index] = [order.reference, order.category, order.name, order.day + "/" + order.month + "/" + order.year];
+    }
+
+    var titles = [['Reference', false],['Category', false],['Name', false],['Date', true]];
+
+    buildTable('ordersTable', values, titles);
+}
+
+
+function buildOrderTablxxe() {
     var data = requestOrders(document.getElementById("contactId").value);
 
     var fragment = document.createDocumentFragment(), tr;

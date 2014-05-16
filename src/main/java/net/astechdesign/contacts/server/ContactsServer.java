@@ -2,9 +2,7 @@ package net.astechdesign.contacts.server;
 
 import net.astechdesign.contacts.repo.ContactsRepo;
 import net.astechdesign.contacts.repo.DBBuilder;
-import net.astechdesign.contacts.repo.Database;
 import net.astechdesign.contacts.repo.TestContactsRepo;
-import net.astechdesign.contacts.resources.Contacts;
 import org.glassfish.jersey.server.ResourceConfig;
 import org.glassfish.jersey.simple.SimpleContainerFactory;
 import org.hsqldb.jdbc.JDBCDataSource;
@@ -14,8 +12,6 @@ import javax.ws.rs.core.UriBuilder;
 import java.io.Closeable;
 import java.io.IOException;
 import java.net.URI;
-import java.util.HashSet;
-import java.util.Set;
 
 public class ContactsServer {
 
