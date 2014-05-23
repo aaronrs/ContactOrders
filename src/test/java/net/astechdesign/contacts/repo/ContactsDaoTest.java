@@ -21,8 +21,6 @@ public class ContactsDaoTest {
     @Test
     public void get_shouldReturnAContact_givenAnId() throws Exception {
         when(dataSource.getConnection()).thenReturn(null);
-
-        contactsDao.get(0);
-
+        contactsDao.getContact(0);
     }
 }

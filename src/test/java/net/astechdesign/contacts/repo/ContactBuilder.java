@@ -29,7 +29,7 @@ public class ContactBuilder {
     public Contact build() {
         Name name = new Name(first, last);
         Address address = new Address(number, house, addressLine1, town, county, postcode, telephone);
-        Order order = new Order(1, orderDate.getYear(), orderDate.getMonthOfYear(), orderDate.getDayOfMonth(), "ref", "cat", orderName, orderDescription);
+        Order order = new Order(0, orderDate.getYear(), orderDate.getMonthOfYear(), orderDate.getDayOfMonth(), 1, 1, orderName, orderDescription, "cat");
         List<Order> orders = Lists.newArrayList(order);
         Contact contact = new Contact(0, name, address);
 

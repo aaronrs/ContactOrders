@@ -1,44 +1,32 @@
+function buildProductDropdown() {
+    var data = requestProducts();
+
+    var dropdown = document.getElementById("productOptions");
+    for (var index in data) {
+
+        var opt = document.createElement('option');
+        var product = data[index];
+
+        opt.value = product.id;
+        opt.innerHTML = product.name;
+        dropdown.appendChild(opt);
+//
+//        dropdown.innerHTML = "<option value='" + product.id + ">" + product.name + "</option>";
+    }
+}
+
 function buildOrderTable() {
     var data = requestOrders(document.getElementById("contactId").value);
 
     var values = [];
     for (var index in data) {
         var order = data[index];
-        values[index] = [order.reference, order.category, order.name, order.day + "/" + order.month + "/" + order.year];
+        values[index] = [order.name, order.description, order.category, order.day + "/" + order.month + "/" + order.year, order.amount];
     }
 
-    var titles = [['Reference', false],['Category', false],['Name', false],['Date', true]];
+    var titles = [['Name', false],['Description', false],['Category', false],['Date', true],['Amount', false]];
 
     buildTable('ordersTable', values, titles);
-}
-
-
-function buildOrderTablxxe() {
-    var data = requestOrders(document.getElementById("contactId").value);
-
-    var fragment = document.createDocumentFragment(), tr;
-
-    var values = [];
-    for (var index in data) {
-        var order = data[index];
-        values[index] = [order.reference, order.category, order.name, order.day + "/" + order.month + "/" + order.year];
-    }
-
-    for (var index in data) {
-        tr = document.createElement('tr');
-        tr.setAttribute("data-index", index);
-        var order = data[index];
-        buildRow(tr, order.reference);
-        buildRow(tr, order.category);
-        buildRow(tr, order.name);
-        buildRow(tr, order.day + "/" + order.month + "/" + order.year);
-        fragment.appendChild(tr);
-    }
-    var body = document.getElementsByTagName('tbody')[0];
-    var range = new Range();
-    range.selectNodeContents(body);
-    range.deleteContents();
-    body.appendChild(fragment.cloneNode(true));
 }
 
 function sortOrderTable(val1, val2, direction){
@@ -91,9 +79,21 @@ function requestOrders(id) {
     var jsonList = JSON.parse(xmlHttp.responseText);
     var orderList = [];
     for (var i in jsonList) {
-        orderList[i] = newOrder(jsonList[i]);
+        orderList[i] = newObject(jsonList[i]);
     }
     return orderList;
+}
+
+function requestProducts() {
+    var xmlHttp = new XMLHttpRequest();
+    xmlHttp.open("GET", "http://localhost:8787/contacts/products", false);
+    xmlHttp.send();
+    var jsonList = JSON.parse(xmlHttp.responseText);
+    var productList = [];
+    for (var i in jsonList) {
+        productList[i] = newObject(jsonList[i]);
+    }
+    return productList;
 }
 
 function save(data) {
@@ -103,7 +103,7 @@ function save(data) {
     xmlHttp.send(data);
 }
 
-function newOrder(obj) {
+function newObject(obj) {
     return Object.create(obj);
 }
 

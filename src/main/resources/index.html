@@ -2,10 +2,6 @@
 <html>
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link href='http://fonts.googleapis.com/css?family=Lato:400,400italic' rel='stylesheet' type='text/css'>
-    <link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.4.2/base-min.css">
-    <link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.4.2/forms-min.css">
-    <link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.4.2/tables-min.css">
     <link rel="stylesheet" type="text/css" href="theme.css">
     <link rel="stylesheet" type="text/css" href="skin.css">
     <script src="orders.js"></script>
@@ -13,14 +9,16 @@
     <script src="base.js"></script>
 </head>
 <body>
+<div>
 <h1>Contacts</h1>
+<button id="addContactBtn" type="button" class="pure-button" onclick="javascript:addContact();">Add</button>
 <table id="contactsTable" class="pure-table pure-table-bordered">
     <thead>
     </thead>
     <tbody>
     </tbody>
 </table>
-
+</div>
 <div id="fade" class="black_overlay">
     <div id="light" class="white_content">
         <button id="showContactBtn" type="button" class="pure-button" onclick="javascript:showContactForm();">Contact</button>
@@ -81,19 +79,22 @@
         </div>
         <div id="order_form">
             <form class="pure-form pure-form-aligned">
-            <input type="hidden" id="orderId" value="-1"/>
-            <fieldset>
-                <legend>Orders</legend>
-                <table id="ordersTable" class="pure-table pure-table-bordered" style="width: 80%;">
-                    <thead>
-                    </thead>
-                    <tbody>
-                    </tbody>
-                </table>
+                <input type="hidden" id="orderId" value="-1"/>
                 <div class="pure-control-group">
-                    <button id="addOrder" type="button" class="pure-button pure-button-primary" onclick="javascript:addOrder();">Add Order</button>
+                    <label for="productOptions">New Order:</label>
+                    <select id="productOptions">
+                    </select>
+                    <button id="addOrder" type="button" class="pure-button pure-button-primary" onclick="javascript:addOrder();">Add</button>
                 </div>
-            </fieldset>
+                <fieldset>
+                    <legend>Orders</legend>
+                    <table id="ordersTable" class="pure-table pure-table-bordered" style="width: 80%;">
+                        <thead>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                </fieldset>
             </form>
         </div>
         <button id="cancelButton" type="button" class="pure-button pure-button-primary" onclick="javascript:closeLightbox();">Cancel</button>

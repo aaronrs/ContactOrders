@@ -10,15 +10,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ContactRowProcessor extends BasicRowProcessor {
-    @Override
-    public <T> List<T> toBeanList(ResultSet rs, Class<T> type) throws SQLException {
-        List<Contact> contactList = new ArrayList<>();
-        while (rs.next()) {
-            contactList.add(toBean(rs, Contact.class));
-        }
-        return (List<T>)contactList;
-    }
+public class ContactRowProcessor extends DaoRowProcessor {
 
     @Override
     public <T> T toBean(ResultSet rs, Class<T> type) throws SQLException {

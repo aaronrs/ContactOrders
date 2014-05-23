@@ -78,28 +78,31 @@ function tableSelect() {
         if (target.nodeName == "SPAN") {
             sortContactTable(target.getAttribute('sortName'), target.getAttribute('direction'))
             return;
-        }
-
-        document.getElementById('contact_form').style.display = 'block';
-        document.getElementById('order_form').style.display = 'none';
-        document.getElementById('showContactBtn').disabled = true;
-        var index = target.parentNode.getAttribute("data-index");
-        if (index >= 0) {
-            contactTable(contacts[index]);
-            document.getElementById('updateButton').disabled = false;
-            document.getElementById('deleteButton').disabled = false;
-            document.getElementById('saveButton').disabled = true;
-            document.getElementById('showOrdersBtn').disabled = false;
         } else {
-            clearContactTable();
-            document.getElementById('updateButton').disabled = true;
-            document.getElementById('deleteButton').disabled = true;
-            document.getElementById('saveButton').disabled = false;
-            document.getElementById('showOrdersBtn').disabled = true;
+            displayContact(target.parentNode.getAttribute("data-index"));
         }
-        buildOrderTable();
-        displayLightbox();
-    };
+    }
+}
+
+function displayContact(index) {
+    document.getElementById('contact_form').style.display = 'block';
+    document.getElementById('order_form').style.display = 'none';
+    document.getElementById('showContactBtn').disabled = true;
+    if (index >= 0) {
+        contactTable(contacts[index]);
+        document.getElementById('updateButton').disabled = false;
+        document.getElementById('deleteButton').disabled = false;
+        document.getElementById('saveButton').disabled = true;
+        document.getElementById('showOrdersBtn').disabled = false;
+    } else {
+        clearContactTable();
+        document.getElementById('updateButton').disabled = true;
+        document.getElementById('deleteButton').disabled = true;
+        document.getElementById('saveButton').disabled = false;
+        document.getElementById('showOrdersBtn').disabled = true;
+    }
+    buildOrderTable();
+    displayLightbox();
 }
 
 // lightbox 1
@@ -114,6 +117,7 @@ function closeLightbox() {
 }
 
 function showOrderForm() {
+    buildProductDropdown();
     tabDisplay('order_form', 'contact_form', 'showOrdersBtn', 'showContactBtn');
 }
 

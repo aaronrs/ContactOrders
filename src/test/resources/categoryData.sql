@@ -1,0 +1,14 @@
+insert into categories (id, category) values(0,'Gluten free');
+insert into categories (id, category) values(1,'Best Sellers');
+insert into categories (id, category) values(2,'Poultry Specialities');
+insert into categories (id, category) values(3,'Fish Specialities');
+insert into categories (id, category) values(4,'Meat Specialities');
+insert into categories (id, category) values(5,'Meat & Poultry');
+insert into categories (id, category) values(6,'Fish');
+insert into categories (id, category) values(7,'Shellfish');
+insert into categories (id, category) values(8,'Desserts');
+insert into categories (id, category) values(9,'Childrens');
+insert into categories (id, category) values(10,'Vegetarian');
+insert into categories (id, category) values(11,'Buffet & Starters');
+insert into categories (id, category) values(12,'Hors D''oeuvres');
+insert into categories (id, category) values(13,'Desserts');

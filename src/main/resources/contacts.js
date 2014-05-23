@@ -150,6 +150,10 @@ function saveContact(data) {
     xmlHttp.send(data);
 }
 
+function addContact() {
+    displayContact(-1);
+}
+
 function newContact(obj) {
     var contact = Object.create(obj);
     contact.fullName = function () {

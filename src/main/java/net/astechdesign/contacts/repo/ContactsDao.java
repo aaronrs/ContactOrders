@@ -1,73 +1,81 @@
 package net.astechdesign.contacts.repo;
 
+import net.astechdesign.contacts.model.Address;
 import net.astechdesign.contacts.model.Contact;
-import net.astechdesign.contacts.model.Order;
-import org.apache.commons.dbutils.QueryRunner;
-import org.apache.commons.dbutils.ResultSetHandler;
-import org.apache.commons.dbutils.handlers.BeanHandler;
-import org.apache.commons.dbutils.handlers.BeanListHandler;
+import net.astechdesign.contacts.model.Name;
 import org.apache.commons.lang.StringUtils;
 
 import javax.sql.DataSource;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
-public class ContactsDao {
+public class ContactsDao extends Dao<Contact> {
     public static final String[] CONTACT_COLUMNS = {"first","last","number","houseName","address1","town","county","postcode","telephone"};
     public static final String CONTACT_VALUES = "VALUES(?,?,?,?,?,?,?,?,?)";
-    private final DataSource dataSource;
 
     public ContactsDao(DataSource dataSource) {
-        this.dataSource = dataSource;
+        super(dataSource);
     }
 
-    public List<Contact> get() throws SQLException {
-        QueryRunner queryRunner = new QueryRunner(dataSource);
-        ResultSetHandler<List<Contact>> contactsHandler = new BeanListHandler<>(Contact.class, new ContactRowProcessor());
-        return queryRunner.query("SELECT * FROM contacts", contactsHandler);
+    public List<Contact> getContacts() throws SQLException {
+        String sql = "SELECT * FROM contacts";
+        return listQuery(sql, Contact.class);
     }
 
-    public Contact get(int id) throws SQLException {
-        QueryRunner queryRunner = new QueryRunner(dataSource);
-        ResultSetHandler<Contact> contactHandler = new BeanHandler<>(Contact.class, new ContactRowProcessor());
-        return queryRunner.query("SELECT * FROM contacts WHERE id=?", contactHandler, id);
+    public Contact getContact(int id) throws SQLException {
+        String sql = "SELECT * FROM contacts WHERE id=?";
+        return query(sql, Contact.class, id);
+    }
+
+    public void update(Contact contact) throws SQLException {
+        String sql = "UPDATE contacts set " +
+                StringUtils.join(CONTACT_COLUMNS, "=?,") +
+                "=? WHERE id=?";
+        Object[] values = {contact.name.first,
+                contact.name.last,
+                contact.address.number,
+                contact.address.houseName,
+                contact.address.address1,
+                contact.address.town,
+                contact.address.county,
+                contact.address.postcode,
+                contact.address.telephone,
+                contact.id
+        };
+        update(sql, values);
     }
 
     public void save(Contact contact) throws SQLException {
-        QueryRunner queryRunner = new QueryRunner(dataSource);
-        if (contact.id == -1) {
-            String sql = "INSERT INTO contacts (" +
-                    StringUtils.join(CONTACT_COLUMNS,",") + ") " +
-                    CONTACT_VALUES;
-            queryRunner.update(sql,
-                    contact.name.first,
-                    contact.name.last,
-                    contact.address.number,
-                    contact.address.houseName,
-                    contact.address.address1,
-                    contact.address.town,
-                    contact.address.county,
-                    contact.address.postcode,
-                    contact.address.telephone);
-        } else {
-            String sql = "UPDATE contacts set " +
-                    StringUtils.join(CONTACT_COLUMNS, "=?,") +
-                    "=? WHERE id=?";
-            queryRunner.update(sql,
-                    contact.name.first,
-                    contact.name.last,
-                    contact.address.number,
-                    contact.address.houseName,
-                    contact.address.address1,
-                    contact.address.town,
-                    contact.address.county,
-                    contact.address.postcode,
-                    contact.address.telephone,
-                    contact.id);
-        }
-
+        String sql = "INSERT INTO contacts (" +
+                StringUtils.join(CONTACT_COLUMNS,",") + ") " +
+                CONTACT_VALUES;
+        Object[] values = {contact.name.first,
+                contact.name.last,
+                contact.address.number,
+                contact.address.houseName,
+                contact.address.address1,
+                contact.address.town,
+                contact.address.county,
+                contact.address.postcode,
+                contact.address.telephone
+        };
+        update(sql, values);
     }
 
-    public void save(Order order) throws SQLException {
+
+    @Override
+    public <T> T toBean(ResultSet rs, Class<T> type) throws SQLException {
+        Name name = new Name(rs.getString("first"), rs.getString("last"));
+        Address address = new Address(
+                rs.getInt("number"),
+                rs.getString("houseName"),
+                rs.getString("address1"),
+                rs.getString("town"),
+                rs.getString("county"),
+                rs.getString("postcode"),
+                rs.getString("telephone")
+        );
+        return (T)new Contact(rs.getInt("id"), name, address);
     }
 }

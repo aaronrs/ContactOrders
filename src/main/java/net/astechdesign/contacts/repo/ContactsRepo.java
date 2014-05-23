@@ -1,25 +1,24 @@
 package net.astechdesign.contacts.repo;
 
-import com.google.common.collect.Sets;
 import net.astechdesign.contacts.model.Contact;
 import net.astechdesign.contacts.model.Order;
+import net.astechdesign.contacts.model.Product;
 
 import javax.sql.DataSource;
 import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.*;
+import java.util.List;
 
 public class ContactsRepo {
 
     private static ContactsRepo instance;
     private final DataSource dataSource;
 
-    public static List<Contact> get() throws SQLException {
-        return instance.getContacts();
+    public static List<Contact> getContacts() throws SQLException {
+        return instance.contacts();
     }
 
-    public static Contact get(int id) throws SQLException {
-        return instance.getContact(id);
+    public static Contact getContact(int id) throws SQLException {
+        return instance.contact(id);
     }
 
     public static void save(Contact contact) throws SQLException {
@@ -30,8 +29,20 @@ public class ContactsRepo {
         instance.saveOrder(id, order);
     }
 
+    public static void save(Product product) throws SQLException {
+        instance.saveProduct(product);
+    }
+
     public static List<Order> orders(int id) throws SQLException {
         return instance.getOrders(id);
+    }
+
+    public static List<Product> products() throws SQLException {
+        return instance.getProducts();
+    }
+
+    public static List<Category> categories() throws SQLException {
+        return instance.getCategories();
     }
 
     public ContactsRepo(DataSource dataSource) {
@@ -43,19 +54,31 @@ public class ContactsRepo {
         new ContactsDao(dataSource).save(contact);
     }
 
-    private Contact getContact(int id) throws SQLException {
-        return new ContactsDao(dataSource).get(id);
+    private Contact contact(int id) throws SQLException {
+        return new ContactsDao(dataSource).getContact(id);
     }
 
-    private List<Contact> getContacts() throws SQLException {
-        return new ContactsDao(dataSource).get();
+    private List<Contact> contacts() throws SQLException {
+        return new ContactsDao(dataSource).getContacts();
     }
 
     private List<Order> getOrders(int contactId) throws SQLException {
         return new OrdersDao(dataSource).get(contactId);
     }
 
+    private List<Product> getProducts() throws SQLException {
+        return new ProductsDao(dataSource).get();
+    }
+
+    private List<Category> getCategories() throws SQLException {
+        return new CategoriesDao(dataSource).get();
+    }
+
     private void saveOrder(int id, Order order) throws SQLException {
-        new ContactsDao(dataSource).save(order);
+        new OrdersDao(dataSource).save(1, order);
+    }
+
+    private void saveProduct(Product product) throws SQLException {
+        new ProductsDao(dataSource).save(product);
     }
 }
