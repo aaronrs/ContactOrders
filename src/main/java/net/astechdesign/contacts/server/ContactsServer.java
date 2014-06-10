@@ -3,6 +3,7 @@ package net.astechdesign.contacts.server;
 import net.astechdesign.contacts.repo.ContactsRepo;
 import net.astechdesign.contacts.repo.DBBuilder;
 import net.astechdesign.contacts.repo.TestContactsRepo;
+import net.astechdesign.contacts.resources.ServerInfo;
 import org.glassfish.jersey.server.ResourceConfig;
 import org.glassfish.jersey.simple.SimpleContainerFactory;
 import org.hsqldb.jdbc.JDBCDataSource;
@@ -21,12 +22,14 @@ public class ContactsServer {
         ResourceConfig config = new ResourceConfig();
         config.packages("net.astechdesign.contacts.resources");
         Closeable server = SimpleContainerFactory.create(baseUri, config);
-        try {
-            System.out.println("Press enter to stop server.");
-            System.in.read();
-        } finally {
-            server.close();
+        while (ServerInfo.SERVER_RUNNING) {
+            try {
+                Thread.sleep(30000);
+            } catch (InterruptedException e) {
+                server.close();
+            }
         }
+        server.close();
     }
 
     private static void initialiseApp() {

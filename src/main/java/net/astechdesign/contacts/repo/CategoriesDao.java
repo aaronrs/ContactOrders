@@ -1,5 +1,7 @@
 package net.astechdesign.contacts.repo;
 
+import org.apache.commons.lang.StringUtils;
+
 import javax.sql.DataSource;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -8,6 +10,8 @@ import java.util.List;
 import java.util.Map;
 
 public class CategoriesDao extends Dao<Category> {
+    public static final String[] CATEGORY_COLUMNS = {"category"};
+    public static final String CATEGORY_VALUES = "VALUES(?)";
 
     public CategoriesDao(DataSource dataSource) {
         super(dataSource);
@@ -19,12 +23,12 @@ public class CategoriesDao extends Dao<Category> {
     }
 
     public void save(Category category) throws SQLException {
-        Map<String, Object> dataMap = new HashMap<>();
-        dataMap.put("id", category.id);
-        dataMap.put("category", category.category);
-        save("categories", dataMap);
+        String sql = "INSERT INTO categories (" +
+                StringUtils.join(CATEGORY_COLUMNS,",") + ") " +
+                CATEGORY_VALUES;
+        Object[] values = {category.category};
+        update(sql, values);
     }
-
 
     @Override
     public <T> T toBean(ResultSet rs, Class<T> type) throws SQLException {
@@ -32,5 +36,4 @@ public class CategoriesDao extends Dao<Category> {
         String category = rs.getString("category");
         return (T)new Category(id, category);
     }
-
 }

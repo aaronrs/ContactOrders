@@ -21,17 +21,18 @@ public class TestContactsRepo {
 
     public void init() throws SQLException {
         if (initialised) return;
-        for (String row: readData("categories.csv")) {
-            createCategory(row.split(","));
+        String delim = "\\|";
+        for (String row: readData("db/data/categories.csv")) {
+            createCategory(row.split(delim));
         }
-        for (String row: readData("products.csv")) {
-            createProduct(row.split(","));
+        for (String row: readData("db/data/products.csv")) {
+            createProduct(row.split(delim));
         }
-        for (String row: readData("contacts.csv")) {
-            createContact(row.split(","));
+        for (String row: readData("db/data/contacts.csv")) {
+            createContact(row.split(delim));
         }
-        for (String row: readData("orders.csv")) {
-            createOrder(row.split(","));
+        for (String row: readData("db/data/orders.csv")) {
+            createOrder(row.split(delim));
         }
         initialised = true;
     }
@@ -57,11 +58,11 @@ public class TestContactsRepo {
 
     private void createOrder(String[] data) throws SQLException {
         Order order = new Order(Integer.parseInt(data[0]),
-                Integer.parseInt(data[1]),
+                Integer.parseInt(data[5]), Integer.parseInt(data[1]),
                 Integer.parseInt(data[2]),
                 Integer.parseInt(data[3]),
                 Integer.parseInt(data[4]),
-                Integer.parseInt(data[5]), null, null, null);
+                null, null, null);
         OrdersDao ordersDao = new OrdersDao(datasource);
         ordersDao.save(Integer.parseInt(data[0]), order);
     }

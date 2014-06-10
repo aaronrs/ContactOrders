@@ -1,22 +1,23 @@
 package net.astechdesign.contacts.repo;
 
 import net.astechdesign.contacts.model.Order;
+import org.apache.commons.lang.StringUtils;
 
 import javax.sql.DataSource;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class OrdersDao extends Dao<Order> {
+    public static final String[] ORDER_COLUMNS = {"contactId,productId,year,month,day,amount"};
+    public static final String ORDER_VALUES = "VALUES(?,?,?,?,?,?)";
 
     public OrdersDao(DataSource dataSource) {
         super(dataSource);
     }
 
     public List<Order> get(int contactId) throws SQLException {
-        String sql = "SELECT contactId,year,month,day,amount,productId,name,description,category " +
+        String sql = "SELECT contactId,productId,year,month,day,amount,name,description,category " +
                 "FROM orders INNER JOIN products ON orders.productId=products.id " +
                 "INNER JOIN categories ON products.categoryId=categories.id " +
                 "WHERE contactId=?";
@@ -24,14 +25,17 @@ public class OrdersDao extends Dao<Order> {
     }
 
     public void save(int contactId, Order order) throws SQLException {
-        Map<String, Object> dataMap = new HashMap<>();
-        dataMap.put("contactId", contactId);
-        dataMap.put("year", order.year);
-        dataMap.put("month", order.month);
-        dataMap.put("day", order.day);
-        dataMap.put("productId", order.productId);
-        dataMap.put("amount", order.amount);
-        save("orders", dataMap);
+        String sql = "INSERT INTO orders (" +
+                StringUtils.join(ORDER_COLUMNS, ",") + ") " +
+                ORDER_VALUES;
+        Object[] values = {contactId,
+                order.productId,
+                order.year,
+                order.month,
+                order.day,
+                order.amount
+        };
+        update(sql, values);
     }
 
     @Override
@@ -45,6 +49,6 @@ public class OrdersDao extends Dao<Order> {
         String name = rs.getString("name");
         String description = rs.getString("description");
         String category = rs.getString("category");
-        return (T)new Order(contactId, year, month, day, amount, productId, name, description, category);
+        return (T)new Order(contactId, productId, year, month, day, amount, name, description, category);
     }
 }

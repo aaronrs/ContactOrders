@@ -1,5 +1,6 @@
 apply plugin: "java"
 apply plugin: "idea"
+apply plugin: "application"
 
 sourceCompatibility = 1.7
 targetCompatibility = 1.7
@@ -25,5 +26,8 @@ dependencies {
     compile 'org.owasp.esapi:esapi:2.1.0'
     compile 'org.hsqldb:hsqldb:2.3.2'
 
+}
 
+jar {
+    manifest.attributes("Main-Class": "net.astechdesign.contacts.server.ContactsServer" )
 }

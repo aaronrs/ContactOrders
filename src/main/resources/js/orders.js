@@ -2,26 +2,32 @@ function buildProductDropdown() {
     var data = requestProducts();
 
     var dropdown = document.getElementById("productOptions");
+    var opt = document.createElement('option');
+    opt.value = -1;
+    opt.innerHTML = "Select Product";
+    dropdown.appendChild(opt);
     for (var index in data) {
 
-        var opt = document.createElement('option');
+        opt = document.createElement('option');
         var product = data[index];
 
         opt.value = product.id;
         opt.innerHTML = product.name;
         dropdown.appendChild(opt);
-//
-//        dropdown.innerHTML = "<option value='" + product.id + ">" + product.name + "</option>";
     }
 }
 
 function buildOrderTable() {
-    var data = requestOrders(document.getElementById("contactId").value);
+
+    var contactId = document.getElementById("contactId").value;
+    if (contactId == -1) return;
+
+    var data = requestOrders(contactId);
 
     var values = [];
     for (var index in data) {
         var order = data[index];
-        values[index] = [order.name, order.description, order.category, order.day + "/" + order.month + "/" + order.year, order.amount];
+        values[index] = [order.name, order.description.substring(0, 20) + " ...", order.category, order.day + "/" + order.month + "/" + order.year, order.amount];
     }
 
     var titles = [['Name', false],['Description', false],['Category', false],['Date', true],['Amount', false]];
@@ -38,18 +44,6 @@ function sortOrderTable(val1, val2, direction){
 
 // Order functions
 
-function saveOrder() {
-    if (validateOrder()) {
-
-        var fields = ["year","month","day","reference","category","name","description"];
-        var data = "contactId=-1";
-        for (var i in fields) {
-            data += "&" + fields[i] + "=" + document.getElementById(fields[i]).value;
-        }
-        save(data);
-    }
-}
-
 function deleteOrder() {
     var len = contacts.length;
     var selectedId = parseInt(document.getElementById("contactId").value);
@@ -61,20 +55,30 @@ function deleteOrder() {
     }
     buildTable();
 }
-
-function validateOrder() {
-    if (document.getElementById("reference").value == "") return false;
-    if (document.getElementById("category").value == "") return false;
-    if (document.getElementById("name").value == "") return false;
-    if (document.getElementById("description").value == "") return false;
-    return true;
-}
-
 // AJAX
+
+function saveOrder() {
+    var select = document.getElementById("productOptions");
+    var productId = select.options[select.selectedIndex].value;
+    if (productId == -1) return;
+    var date = document.getElementById("orderDate").valueAsDate;
+    var data = "productId=" + productId +
+        "&year=" + date.getFullYear() +
+        "&month=" + date.getMonth() +
+        "&day=" + date.getDate() +
+        "&amount=" + document.getElementById("orderAmount").value +
+        "";
+    var id = document.getElementById("contactId").value;
+    var xmlHttp = new XMLHttpRequest();
+    xmlHttp.open("POST", "../contacts/" + id + "/orders", false);
+    xmlHttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+    xmlHttp.send(data);
+    buildOrderTable();
+}
 
 function requestOrders(id) {
     var xmlHttp = new XMLHttpRequest();
-    xmlHttp.open("GET", "http://localhost:8787/contacts/" + id + "/orders", false);
+    xmlHttp.open("GET", "../contacts/" + id + "/orders", false);
     xmlHttp.send();
     var jsonList = JSON.parse(xmlHttp.responseText);
     var orderList = [];
@@ -86,7 +90,7 @@ function requestOrders(id) {
 
 function requestProducts() {
     var xmlHttp = new XMLHttpRequest();
-    xmlHttp.open("GET", "http://localhost:8787/contacts/products", false);
+    xmlHttp.open("GET", "../contacts/products", false);
     xmlHttp.send();
     var jsonList = JSON.parse(xmlHttp.responseText);
     var productList = [];
@@ -94,13 +98,6 @@ function requestProducts() {
         productList[i] = newObject(jsonList[i]);
     }
     return productList;
-}
-
-function save(data) {
-    var xmlHttp = new XMLHttpRequest();
-    xmlHttp.open("POST", "http://localhost:8787/contacts", false);
-    xmlHttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-    xmlHttp.send(data);
 }
 
 function newObject(obj) {

@@ -66,8 +66,9 @@ function findContact() {
     displayLightbox();
 }
 
-function updateContact() {
+function saveContact() {
     if (validateContact()) {
+
         var data = "contactId=" + document.getElementById("contactId").value +
             "&first=" + document.getElementById("firstname").value +
             "&last=" + document.getElementById("surname").value +
@@ -79,27 +80,7 @@ function updateContact() {
             "&postcode=" + document.getElementById("postcode").value +
             "&telephone=" + document.getElementById("telephone").value;
 
-        saveContact(data);
-        requestContacts();
-        buildContactTable();
-    }
-}
-
-function saveContact() {
-    if (validateContact()) {
-
-        var data = "contactId=-1" +
-            "&first=" + document.getElementById("firstname").value +
-            "&last=" + document.getElementById("surname").value +
-            "&number=" + document.getElementById("housenumber").value +
-            "&houseName=" + document.getElementById("houseName").value +
-            "&address1=" + document.getElementById("address").value +
-            "&town=" + document.getElementById("town").value +
-            "&county=" + document.getElementById("county").value +
-            "&postcode=" + document.getElementById("postcode").value +
-            "&telephone=" + document.getElementById("telephone").value;
-
-        saveContact(data);
+        saveContactData(data);
 
         requestContacts();
         buildContactTable();
@@ -133,7 +114,7 @@ function validateContact() {
 
 function requestContacts() {
     var xmlHttp = new XMLHttpRequest();
-    xmlHttp.open("GET", "http://localhost:8787/contacts", false);
+    xmlHttp.open("GET", "../contacts", false);
     xmlHttp.send();
     var jsonList = JSON.parse(xmlHttp.responseText);
     var contactsList = [];
@@ -143,9 +124,9 @@ function requestContacts() {
     contacts = contactsList;
 }
 
-function saveContact(data) {
+function saveContactData(data) {
     var xmlHttp = new XMLHttpRequest();
-    xmlHttp.open("POST", "http://localhost:8787/contacts", false);
+    xmlHttp.open("POST", "../contacts", false);
     xmlHttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
     xmlHttp.send(data);
 }

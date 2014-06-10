@@ -12,7 +12,7 @@ public class Order {
     public final String description;
     public final String category;
 
-    public Order(int contactId, int year, int month, int day, int amount, int productId, String name, String description, String category) {
+    public Order(int contactId, int productId, int year, int month, int day, int amount, String name, String description, String category) {
         this.contactId = contactId;
         this.year = year;
         this.month = month;

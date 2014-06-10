@@ -14,8 +14,7 @@ h1 {
 table
 {
     border-collapse:collapse;
-    width:50%;
-    margin: 20px auto;
+    width:650px;
 }
 table, th, td
 {
@@ -30,11 +29,12 @@ th span
     padding: 6px;
     color: #6e6f6f;
 }
-
 #content
 {
-    float: inherit;
-    margin: 5px;
+    /*float: inherit;*/
+    /*margin: 5px;*/
+    width:650px;
+    margin: 20px auto;
 }
 #lightbox
 {

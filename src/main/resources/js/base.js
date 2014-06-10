@@ -117,7 +117,7 @@ function closeLightbox() {
 }
 
 function showOrderForm() {
-    buildProductDropdown();
+//    buildProductDropdown();
     tabDisplay('order_form', 'contact_form', 'showOrdersBtn', 'showContactBtn');
 }
 
@@ -133,4 +133,5 @@ function init() {
     tableSelect();
     requestContacts();
     buildContactTable();
+    buildProductDropdown();
 }

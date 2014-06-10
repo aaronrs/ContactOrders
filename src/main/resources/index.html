@@ -2,22 +2,27 @@
 <html>
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" type="text/css" href="theme.css">
-    <link rel="stylesheet" type="text/css" href="skin.css">
-    <script src="orders.js"></script>
-    <script src="contacts.js"></script>
-    <script src="base.js"></script>
+    <link rel="stylesheet" type="text/css" href="css/theme.css">
+    <link rel="stylesheet" type="text/css" href="css/skin.css">
+    <script src="js/orders.js"></script>
+    <script src="js/contacts.js"></script>
+    <script src="js/base.js"></script>
 </head>
 <body>
-<div>
-<h1>Contacts</h1>
-<button id="addContactBtn" type="button" class="pure-button" onclick="javascript:addContact();">Add</button>
-<table id="contactsTable" class="pure-table pure-table-bordered">
-    <thead>
-    </thead>
-    <tbody>
-    </tbody>
-</table>
+<div id="content">
+    <h1>Contacts</h1>
+    <button id="todoListBtn" type="button" class="pure-button alignBtn" onclick="javascript:showTodo();">Todo List</button>
+    <button id="addContactBtn" type="button" class="pure-button alignBtn" onclick="javascript:addContact();">New Contact</button>
+    <div class="pure-control-group alignBtn">
+        <button type="button" class="pure-button pure-button-primary" onclick="javascript:findContact();">Find Contact</button>
+        <input type="text" id="search">
+    </div>
+    <table id="contactsTable" class="pure-table pure-table-bordered">
+        <thead>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
 </div>
 <div id="fade" class="black_overlay">
     <div id="light" class="white_content">
@@ -30,11 +35,11 @@
                 <fieldset>
                     <legend>Contact</legend>
                     <div class="pure-control-group">
-                        <label for="firstname">Your First name:</label>
+                        <label for="firstname">First name:</label>
                         <input type="text" placeholder="First name" id="firstname" name="first_name" tabindex="1"/>
                     </div>
                     <div class="pure-control-group">
-                        <label for="surname">Your Surname:</label>
+                        <label for="surname">Surname:</label>
                         <input type="text" placeholder="Surname" id="surname" name="surname" tabindex="2"/>
                     </div>
                     <div class="pure-control-group">
@@ -70,7 +75,7 @@
                         <input type="date" placeholder="Date" id="date" name="date" tabindex="10">
                     </div>
                     <div class="pure-control-group">
-                        <button id="updateButton" class="pure-button pure-button-primary" type="button" onclick="javascript:updateContact();closeLightbox();">Update Contact</button>
+                        <button id="updateButton" class="pure-button pure-button-primary" type="button" onclick="javascript:saveContact();closeLightbox();">Update Contact</button>
                         <button id="saveButton" class="pure-button pure-button-primary" type="button" onclick="javascript:saveContact();closeLightbox();">Save Contact</button>
                         <button id="deleteButton" class="pure-button pure-button-primary" type="button" onclick="javascript:deleteContact();closeLightbox();">Delete Contact</button>
                     </div>
@@ -80,11 +85,15 @@
         <div id="order_form">
             <form class="pure-form pure-form-aligned">
                 <input type="hidden" id="orderId" value="-1"/>
+
                 <div class="pure-control-group">
                     <label for="productOptions">New Order:</label>
                     <select id="productOptions">
                     </select>
-                    <button id="addOrder" type="button" class="pure-button pure-button-primary" onclick="javascript:addOrder();">Add</button>
+                    <input type="number" placeholder="Amount" id="orderAmount"/>
+                    <label for="orderDate">Date:</label>
+                    <input type="date" placeholder="Date" id="orderDate">
+                    <button id="addOrder" type="button" class="pure-button pure-button-primary" onclick="javascript:saveOrder();">Add</button>
                 </div>
                 <fieldset>
                     <legend>Orders</legend>
@@ -92,17 +101,14 @@
                         <thead>
                         </thead>
                         <tbody>
+                        <col wi/>
                         </tbody>
                     </table>
                 </fieldset>
             </form>
         </div>
-        <button id="cancelButton" type="button" class="pure-button pure-button-primary" onclick="javascript:closeLightbox();">Cancel</button>
+        <button id="cancelButton" type="button" class="pure-button pure-button-primary" onclick="javascript:closeLightbox();">Exit</button>
     </div>
-</div>
-<div class="pure-control-group">
-    <button type="button" class="pure-button pure-button-primary" onclick="javascript:findContact();">Find Contact</button>
-    <input type="text" id="search">
 </div>
 <script>
     init();
