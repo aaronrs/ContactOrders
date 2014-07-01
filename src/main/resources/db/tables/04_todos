@@ -1,0 +1,7 @@
+id:INT:SEQ
+contactId:INT
+startDate:DATE
+startTime:DATE
+endDate:TIME
+endTime:TIME
+notes:500

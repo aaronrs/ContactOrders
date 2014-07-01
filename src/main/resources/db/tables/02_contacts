@@ -1,0 +1,10 @@
+id:INT:SEQ
+first:25
+last:50
+number:INT
+houseName:20:
+address1:60
+town:30
+county:20
+postcode:10
+telephone:15
