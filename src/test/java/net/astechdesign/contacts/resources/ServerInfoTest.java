@@ -1,7 +1,11 @@
 package net.astechdesign.contacts.resources;
 
-import static org.junit.Assert.*;
+import org.junit.Test;
 
 public class ServerInfoTest {
 
+    @Test
+    public void stopServer() throws Exception {
+        new ServerInfo();
+    }
 }

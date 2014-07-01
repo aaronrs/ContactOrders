@@ -4,16 +4,49 @@ import org.apache.commons.dbutils.QueryRunner;
 import org.apache.commons.dbutils.ResultSetHandler;
 
 import javax.sql.DataSource;
-import java.sql.Connection;
+import java.io.IOException;
+import java.net.URL;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 
 public class DBBuilder {
 
     private static String[] SEQUENCE_NAMES = {"CONTACT_SEQ", "ORDER_SEQ", "CATEGORY_SEQ", "TODO_SEQ"};
 
     public static void initialiseDb(DataSource dataSource) {
+        scripted(dataSource);
+    }
+
+    public static void main(String[] args) throws IOException {
+        loader(null);
+    }
+
+    public static void loader(DataSource dataSource) throws IOException {
+        URL resource = Thread.currentThread().getContextClassLoader().getResource("db");
+        Tables tables = new Tables(resource);
+
+        for (Table table : tables.get()) {
+
+        }
+
+
+        QueryRunner queryRunner = new QueryRunner(dataSource);
+        try {
+            Boolean isInitialised = queryRunner.query("select * from dbInit", new ResultSetHandler<Boolean>() {
+                @Override
+                public Boolean handle(ResultSet rs) throws SQLException {
+                    rs.next();
+                    return rs.getBoolean(1);
+                }
+            });
+            if (isInitialised) return;
+        } catch (Exception e) {
+//            e.printStackTrace();
+        }
+
+    }
+
+    public static void scripted(DataSource dataSource) {
         QueryRunner queryRunner = new QueryRunner(dataSource);
         try {
             Boolean isInitialised = queryRunner.query("select * from dbInit", new ResultSetHandler<Boolean>() {

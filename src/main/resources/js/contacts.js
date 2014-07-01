@@ -42,10 +42,6 @@ function clearContactTable() {
     document.getElementById("telephone").value = "";
 }
 
-function showContactForm() {
-    tabDisplay('contact_form', 'order_form', 'showContactBtn', 'showOrdersBtn');
-}
-
 // Contact functions
 
 function findContact() {

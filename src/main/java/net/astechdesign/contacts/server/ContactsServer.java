@@ -1,8 +1,6 @@
 package net.astechdesign.contacts.server;
 
-import net.astechdesign.contacts.repo.ContactsRepo;
-import net.astechdesign.contacts.repo.DBBuilder;
-import net.astechdesign.contacts.repo.TestContactsRepo;
+import net.astechdesign.contacts.repo.ContactsRepo2;
 import net.astechdesign.contacts.resources.ServerInfo;
 import org.glassfish.jersey.server.ResourceConfig;
 import org.glassfish.jersey.simple.SimpleContainerFactory;

@@ -4,6 +4,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" type="text/css" href="css/theme.css">
     <link rel="stylesheet" type="text/css" href="css/skin.css">
+    <script src="js/todoList.js"></script>
     <script src="js/orders.js"></script>
     <script src="js/contacts.js"></script>
     <script src="js/base.js"></script>
@@ -11,7 +12,7 @@
 <body>
 <div id="content">
     <h1>Contacts</h1>
-    <button id="todoListBtn" type="button" class="pure-button alignBtn" onclick="javascript:showTodo();">Todo List</button>
+    <button id="todoListBtn" type="button" class="pure-button alignBtn" onclick="javascript:showTodos();">Todo List</button>
     <button id="addContactBtn" type="button" class="pure-button alignBtn" onclick="javascript:addContact();">New Contact</button>
     <div class="pure-control-group alignBtn">
         <button type="button" class="pure-button pure-button-primary" onclick="javascript:findContact();">Find Contact</button>
@@ -28,7 +29,16 @@
     <div id="light" class="white_content">
         <button id="showContactBtn" type="button" class="pure-button" onclick="javascript:showContactForm();">Contact</button>
         <button id="showOrdersBtn" type="button" class="pure-button" onclick="javascript:showOrderForm();">Orders</button>
-
+        <button id="showTodosBtn" type="button" class="pure-button" onclick="javascript:showTodoList();">To Do List</button>
+        <div id="todoList">
+            <legend>To do List</legend>
+            <table id="todosTable" class="pure-table pure-table-bordered" style="width: 80%;">
+                <thead>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </div>
         <div id="contact_form">
             <form class="pure-form pure-form-aligned">
                 <input type="hidden" id="contactId" value="-1"/>
@@ -101,7 +111,6 @@
                         <thead>
                         </thead>
                         <tbody>
-                        <col wi/>
                         </tbody>
                     </table>
                 </fieldset>

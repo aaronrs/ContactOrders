@@ -87,6 +87,7 @@ function tableSelect() {
 function displayContact(index) {
     document.getElementById('contact_form').style.display = 'block';
     document.getElementById('order_form').style.display = 'none';
+    document.getElementById('todoList').style.display = 'none';
     document.getElementById('showContactBtn').disabled = true;
     if (index >= 0) {
         contactTable(contacts[index]);
@@ -94,12 +95,14 @@ function displayContact(index) {
         document.getElementById('deleteButton').disabled = false;
         document.getElementById('saveButton').disabled = true;
         document.getElementById('showOrdersBtn').disabled = false;
+        document.getElementById('showTodosBtn').disabled = false;
     } else {
         clearContactTable();
         document.getElementById('updateButton').disabled = true;
         document.getElementById('deleteButton').disabled = true;
         document.getElementById('saveButton').disabled = false;
         document.getElementById('showOrdersBtn').disabled = true;
+        document.getElementById('showTodosBtn').disabled = true;
     }
     buildOrderTable();
     displayLightbox();
@@ -116,17 +119,27 @@ function closeLightbox() {
     document.getElementById('fade').style.display = 'none';
 }
 
-function showOrderForm() {
-//    buildProductDropdown();
-    tabDisplay('order_form', 'contact_form', 'showOrdersBtn', 'showContactBtn');
+var tabs = ['order_form', 'contact_form', 'todoList']
+var buttons = ['showOrdersBtn', 'showContactBtn', 'showTodosBtn']
+
+function showContactForm() {
+    tabDisplay('contact_form', 'showContactBtn');
 }
 
-function tabDisplay(tab1, tab2, btn1, btn2) {
-    document.getElementById(tab1).style.display = 'block';
-    document.getElementById(tab2).style.display = 'none';
-    document.getElementById(btn1).disabled = true;
-    document.getElementById(btn2).disabled = false;
+function showOrderForm() {
+    tabDisplay('order_form', 'showOrdersBtn');
+}
 
+function showTodoList() {
+    tabDisplay('todoList', 'showOrdersBtn');
+}
+
+function tabDisplay(tab1, btn1) {
+    tabs.forEach(function(val) {document.getElementById(val).style.display = 'none';})
+    buttons.forEach(function(val) {document.getElementById(val).disabled = false;})
+
+    document.getElementById(tab1).style.display = 'block';
+    document.getElementById(btn1).disabled = true;
 }
 
 function init() {
