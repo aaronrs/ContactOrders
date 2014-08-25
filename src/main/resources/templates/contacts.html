@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link rel="stylesheet" type="text/css" href="../css/theme.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/skin.css"/>
+</head>
+<body>
+    <div id="content">
+        <div th:include="frags :: header"></div>
+        <h2>Contacts</h2>
+        <table class="pure-table pure-table-bordered pure-table-striped" style="width: 750px">
+            <tr style="text-align: left">
+                <th style="width: 300px">Name</th>
+                <th style="width: 400px">Address</th>
+            </tr>
+            <tr th:each="contact : ${contacts}">
+                <td style="width: 300px" th:text="${contact.name}"></td>
+                <td style="width: 400px" th:text="${contact.address.number}"></td>
+            </tr>
+        </table>
+    </div>
+</body>
+</html>

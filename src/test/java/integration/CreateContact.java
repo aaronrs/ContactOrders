@@ -1,13 +1,12 @@
 package integration;
 
-import net.astechdesign.contacts.model.Contact;
-import net.astechdesign.contacts.model.Order;
-import net.astechdesign.contacts.model.Product;
-import net.astechdesign.contacts.repo.Category;
-import net.astechdesign.contacts.repo.ContactsRepo;
-import net.astechdesign.contacts.repo.DBBuilder;
-import net.astechdesign.contacts.repo.TestContactsRepo;
-import net.astechdesign.contacts.resources.Contacts;
+import net.astechdesign.clients.model.Contact;
+import net.astechdesign.clients.model.Order;
+import net.astechdesign.clients.model.Product;
+import net.astechdesign.clients.repo.Category;
+import net.astechdesign.clients.repo.ContactsRepo;
+import net.astechdesign.clients.repo.DBBuilder;
+import net.astechdesign.clients.resources.Contacts;
 import org.hsqldb.jdbc.JDBCDataSource;
 import org.junit.Before;
 import org.junit.Test;
