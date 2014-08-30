@@ -8,22 +8,37 @@
 </head>
 <body>
     <div id="content">
-        <div th:fragment="frags : header"></div>
+        <div th:include="fragments :: header"></div>
         <h2>New Todo</h2>
-        <table class="pure-table pure-table-bordered pure-table-striped" style="width: 750px">
-            <tr style="text-align: left">
-                <th style="width: 120px">Start</th>
-                <th style="width: 120px">End</th>
-                <th style="width: 150px">Contact</th>
-                <th style="width: 340px">Notes</th>
-            </tr>
-            <tr th:each="todo : ${todos}">
-                <td style="width: 120px" th:text="${#dates.format(todo.start,'dd MMMM yyyy')}"></td>
-                <td style="width: 120px" th:text="${#dates.format(todo.end,'dd MMMM yyyy')}"></td>
-                <td style="width: 150px" th:text="${todo.contactName}"></td>
-                <td style="width: 340px" th:text="${todo.notes}"></td>
-            </tr>
-        </table>
+        <div id="todo_form">
+            <form action="/addtot" class="pure-form pure-form-aligned" method="POST">
+                <fieldset>
+                    <legend>Todo</legend>
+                    <div class="pure-control-group">
+                        <label for="start">Start:</label>
+                        <input type="text" placeholder="Start Date" id="start" name="start" tabindex="1"/>
+                    </div>
+                    <div class="pure-control-group">
+                        <label for="end">End:</label>
+                        <input type="text" placeholder="End Date" id="end" name="end" tabindex="2"/>
+                    </div>
+                    <div class="pure-control-group">
+                        <label for="contact">Contact:</label>
+                        <select id="contact" name="contact" tabindex="3">
+                            <option th:each="contact : ${contacts}" th:value="${contact.id}"
+                                    th:text="${contact.name}">Someone</option>
+                        </select>
+                    </div>
+                    <div class="pure-control-group">
+                        <label for="notes">Notes:</label>
+                        <input type="textarea" placeholder="Notes" id="notes" name="notes" tabindex="4"/>
+                    </div>
+                    <div class="pure-control-group">
+                        <button id="saveButton" class="pure-button pure-button-primary" type="submit">Save</button>
+                    </div>
+                </fieldset>
+            </form>
+        </div>
     </div>
 </body>
 </html>

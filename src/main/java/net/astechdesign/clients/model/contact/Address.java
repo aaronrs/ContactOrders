@@ -1,4 +1,4 @@
-package net.astechdesign.clients.model;
+package net.astechdesign.clients.model.contact;
 
 public class Address {
 
@@ -8,9 +8,8 @@ public class Address {
     public final String town;
     public final String county;
     public final String postcode;
-    public final String telephone;
 
-    public Address(int number, String houseName, String address1, String town, String county, String postcode, String telephone) {
+    public Address(int number, String houseName, String address1, String town, String county, String postcode) {
 
         this.number = number;
         this.houseName = houseName;
@@ -18,7 +17,6 @@ public class Address {
         this.town = town;
         this.county = county;
         this.postcode = postcode;
-        this.telephone = telephone;
     }
 
     @Override

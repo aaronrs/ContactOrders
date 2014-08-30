@@ -1,4 +1,4 @@
-package net.astechdesign.clients.model;
+package net.astechdesign.clients.model.product;
 
 public class Product {
 

@@ -1,6 +1,6 @@
-package net.astechdesign.clients.repo;
+package net.astechdesign.clients.model.product;
 
-import net.astechdesign.clients.model.Product;
+import net.astechdesign.clients.repo.Dao;
 
 import javax.sql.DataSource;
 import java.sql.ResultSet;
@@ -9,9 +9,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class ProductsDao extends Dao<Product> {
+public class ProductDao extends Dao<Product> {
 
-    public ProductsDao(DataSource dataSource) {
+    public ProductDao(DataSource dataSource) {
         super(dataSource);
     }
 

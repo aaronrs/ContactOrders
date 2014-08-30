@@ -1,6 +1,6 @@
 package net.astechdesign.clients.server;
 
-import net.astechdesign.clients.repo.ContactsRepo;
+import net.astechdesign.clients.model.contact.ContactRepo;
 import net.astechdesign.clients.repo.DBBuilder;
 import net.astechdesign.clients.repo.TestContactsRepo;
 import net.astechdesign.clients.resources.ContactsResource;
@@ -51,9 +51,9 @@ public class ContactsServer {
     private static void initialiseApp() {
         try {
             DataSource datasource = datasource();
-            new ContactsRepo(datasource);
+            new ContactRepo(datasource);
             DBBuilder.initialiseDb(datasource);
-            new TestContactsRepo(datasource).init();
+            new TestContactsRepo().init();
         } catch (Exception e) {
             e.printStackTrace();
         }

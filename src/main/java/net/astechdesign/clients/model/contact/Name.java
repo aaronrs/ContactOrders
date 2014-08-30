@@ -1,7 +1,8 @@
-package net.astechdesign.clients.model;
+package net.astechdesign.clients.model.contact;
 
 public class Name {
 
+    public static final Name DEFAULT = new Name("", "");
     public final String first;
     public final String last;
 

@@ -1,15 +1,17 @@
-package net.astechdesign.clients.model;
+package net.astechdesign.clients.model.contact;
 
 public class Contact {
 
     public final int id;
     public final Name name;
     public final Address address;
+    public final Telephone telephone;
 
-    public Contact(int id, Name name, Address address) {
+    public Contact(int id, Name name, Address address, Telephone telephone) {
         this.id = id;
         this.name = name;
         this.address = address;
+        this.telephone = telephone;
     }
 
     @Override

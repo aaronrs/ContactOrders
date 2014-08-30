@@ -1,6 +1,9 @@
 package net.astechdesign.clients.repo;
 
-import net.astechdesign.clients.model.Todo;
+import net.astechdesign.clients.model.contact.ContactRepo;
+import net.astechdesign.clients.model.contact.Name;
+import net.astechdesign.clients.model.todo.Todo;
+import net.astechdesign.clients.model.todo.TodoRepo;
 import org.junit.Test;
 
 import javax.sql.DataSource;
@@ -10,7 +13,7 @@ import java.util.List;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
-public class ContactsRepoTest {
+public class ContactRepoTest {
 
     public static final String NOTES = "stuff";
     public static final String NOTES2 = "more stuff";
@@ -20,17 +23,17 @@ public class ContactsRepoTest {
         DataSource dataSource = TestDataSource.getDataSource();
 
         DBBuilder.initialiseDb(dataSource);
-        new TestContactsRepo(dataSource).init();
+        new TestContactsRepo().init();
 
-        new ContactsRepo(dataSource);
+        new ContactRepo(dataSource);
 
-        ContactsRepo.save(new Todo(-1, 1, "name", new Date(), new Date(), "stuff"));
-        ContactsRepo.save(new Todo(-1, 2, "name2", new Date(), new Date(), "more stuff"));
-        List<Todo> todoList = ContactsRepo.getTodoList();
+        TodoRepo.save(new Todo(-1, 1, Name.DEFAULT, new Date(), new Date(), "stuff"));
+        TodoRepo.save(new Todo(-1, 2, Name.DEFAULT, new Date(), new Date(), "more stuff"));
+        List<Todo> todoList = TodoRepo.todos();
         assertThat(todoList.size(), is(2));
         assertThat(todoList.get(0).notes, is(NOTES));
 
-        todoList = ContactsRepo.getTodoList(2);
+        todoList = TodoRepo.todos();
         assertThat(todoList.size(), is(1));
         assertThat(todoList.get(0).notes, is(NOTES2));
     }

@@ -8,32 +8,32 @@
 </head>
 <body>
     <div id="content">
-        <div th:include="frags :: header"></div>
+        <div th:include="fragments :: header"></div>
         <h1>New Contact</h1>
         <div id="contact_form">
-            <form action="/newContact" class="pure-form pure-form-aligned" method="POST">
+            <form action="/addcontact" class="pure-form pure-form-aligned" method="POST">
                 <input type="hidden" id="contactId" value="-1"/>
                 <fieldset>
                     <legend>Contact</legend>
                     <div class="pure-control-group">
                         <label for="firstname">First name:</label>
-                        <input type="text" placeholder="First name" id="firstname" name="first_name" tabindex="1"/>
+                        <input type="text" placeholder="First name" id="firstname" name="first" tabindex="1"/>
                     </div>
                     <div class="pure-control-group">
                         <label for="surname">Surname:</label>
-                        <input type="text" placeholder="Surname" id="surname" name="surname" tabindex="2"/>
+                        <input type="text" placeholder="Surname" id="surname" name="last" tabindex="2"/>
                     </div>
                     <div class="pure-control-group">
                         <label for="housenumber">House number:</label>
-                        <input type="number" placeholder="House number" id="housenumber" name="house_number" tabindex="3"/>
+                        <input type="number" placeholder="House number" id="housenumber" name="number" tabindex="3"/>
                     </div>
                     <div class="pure-control-group">
                         <label for="houseName">House name:</label>
-                        <input type="text" placeholder="House name" id="houseName" name="house_name" tabindex="4"/>
+                        <input type="text" placeholder="House name" id="houseName" name="house" tabindex="4"/>
                     </div>
                     <div class="pure-control-group">
                         <label for="address">Address:</label>
-                        <input type="text" placeholder="Address" id="address" name="address" tabindex="5"/>
+                        <input type="text" placeholder="Address" id="address" name="address1" tabindex="5"/>
                     </div>
                     <div class="pure-control-group">
                         <label for="town">Town:</label>
@@ -53,12 +53,12 @@
                     </div>
                     <div class="pure-control-group">
                         <label for="date">Date:</label>
-                        <input type="date" placeholder="Date" id="date" name="date" tabindex="10">
+                        <input type="date" placeholder="Date" id="date" name="date" tabindex="10"/>
                     </div>
                     <div class="pure-control-group">
-                        <button id="updateButton" class="pure-button pure-button-primary" type="button" onclick="javascript:saveContact();closeLightbox();">Update Contact</button>
-                        <button id="saveButton" class="pure-button pure-button-primary" type="button" onclick="javascript:saveContact();closeLightbox();">Save Contact</button>
-                        <button id="deleteButton" class="pure-button pure-button-primary" type="button" onclick="javascript:deleteContact();closeLightbox();">Delete Contact</button>
+                        <button id="updateButton" class="pure-button pure-button-primary" type="submit">Update Contact</button>
+                        <button id="saveButton" class="pure-button pure-button-primary" type="submit">Save Contact</button>
+                        <button id="deleteButton" class="pure-button pure-button-primary" type="submit">Delete Contact</button>
                     </div>
                 </fieldset>
             </form>

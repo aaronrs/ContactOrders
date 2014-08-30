@@ -1,6 +1,6 @@
-package net.astechdesign.clients.repo;
+package net.astechdesign.clients.model.order;
 
-import net.astechdesign.clients.model.Order;
+import net.astechdesign.clients.repo.Dao;
 import org.apache.commons.lang.StringUtils;
 
 import javax.sql.DataSource;

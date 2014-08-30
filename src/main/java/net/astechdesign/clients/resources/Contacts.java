@@ -2,9 +2,13 @@ package net.astechdesign.clients.resources;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import net.astechdesign.clients.model.*;
-import net.astechdesign.clients.repo.Category;
-import net.astechdesign.clients.repo.ContactsRepo;
+import net.astechdesign.clients.model.contact.*;
+import net.astechdesign.clients.model.order.Order;
+import net.astechdesign.clients.model.order.OrderRepo;
+import net.astechdesign.clients.model.product.Product;
+import net.astechdesign.clients.model.product.ProductRepo;
+import net.astechdesign.clients.model.todo.Todo;
+import net.astechdesign.clients.model.todo.TodoRepo;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
@@ -20,49 +24,42 @@ public class Contacts {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public String get() throws JsonProcessingException, SQLException {
-        return objectMapper.writeValueAsString(ContactsRepo.getContacts());
+        return objectMapper.writeValueAsString(ContactRepo.get());
     }
 
     @GET
     @Path("/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     public String getContactById(@PathParam("id") int id) throws JsonProcessingException, SQLException {
-        return objectMapper.writeValueAsString(ContactsRepo.getContact(id));
+        return objectMapper.writeValueAsString(ContactRepo.get(id));
     }
 
     @GET
     @Path("/todo")
     @Produces(MediaType.APPLICATION_JSON)
     public String getTodoList() throws JsonProcessingException, SQLException {
-        return objectMapper.writeValueAsString(ContactsRepo.getTodoList());
+        return objectMapper.writeValueAsString(TodoRepo.todos());
     }
 
     @GET
     @Path("/{id}/todo")
     @Produces(MediaType.APPLICATION_JSON)
     public String getTodoList(@PathParam("id") int contactId) throws JsonProcessingException, SQLException {
-        return objectMapper.writeValueAsString(ContactsRepo.getTodoList(contactId));
+        return objectMapper.writeValueAsString(TodoRepo.todos());
     }
 
     @GET
     @Path("/{id}/orders")
     @Produces(MediaType.APPLICATION_JSON)
     public String getOrders(@PathParam("id") int id) throws JsonProcessingException, SQLException {
-        return objectMapper.writeValueAsString(ContactsRepo.orders(id));
+        return objectMapper.writeValueAsString(OrderRepo.orders(id));
     }
 
     @GET
     @Path("/products")
     @Produces(MediaType.APPLICATION_JSON)
     public String getProducts() throws JsonProcessingException, SQLException {
-        return objectMapper.writeValueAsString(ContactsRepo.products());
-    }
-
-    @GET
-    @Path("/categories")
-    @Produces(MediaType.APPLICATION_JSON)
-    public String getCategories() throws JsonProcessingException, SQLException {
-        return objectMapper.writeValueAsString(ContactsRepo.categories());
+        return objectMapper.writeValueAsString(ProductRepo.products());
     }
 
     @POST
@@ -72,7 +69,7 @@ public class Contacts {
                          @FormParam("end") String end,
                          @FormParam("notes") String notes) throws JsonProcessingException, SQLException, ParseException {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd:HH:mm:ss");
-        ContactsRepo.save(new Todo(-1, contactId, "", sdf.parse(start), sdf.parse(end), notes));
+        TodoRepo.save(new Todo(-1, contactId, Name.DEFAULT, sdf.parse(start), sdf.parse(end), notes));
     }
 
     @POST
@@ -85,10 +82,10 @@ public class Contacts {
                      @FormParam("town") String town,
                      @FormParam("county") String county,
                      @FormParam("postcode") String postcode,
-                     @FormParam("telephone") String tel) throws JsonProcessingException, SQLException {
+                     @FormParam("telephone") Telephone tel) throws JsonProcessingException, SQLException {
         Name name = new Name(firstName, lastName);
-        Address address = new Address(houseNumber, houseName, address1, town, county, postcode, tel);
-        ContactsRepo.save(new Contact(id, name, address));
+        Address address = new Address(houseNumber, houseName, address1, town, county, postcode);
+        ContactRepo.save(new Contact(id, name, address, tel));
     }
 
     @POST
@@ -99,16 +96,11 @@ public class Contacts {
                      @FormParam("month") int month,
                      @FormParam("day") int day,
                      @FormParam("amount") int amount) throws JsonProcessingException, SQLException {
-        ContactsRepo.save(contactId, new Order(contactId, productId, year, month, day, amount, null, null, null));
-    }
-
-    public void addCategory(String categoryName) throws SQLException {
-        Category category = new Category(-1, categoryName);
-        ContactsRepo.save(category);
+        OrderRepo.save(contactId, new Order(contactId, productId, year, month, day, amount, null, null, null));
     }
 
     public void addProduct(int productId, int categoryId, String name, String description) throws SQLException {
         Product product = new Product(productId, name, description);
-        ContactsRepo.save(product);
+        ProductRepo.save(product);
     }
 }

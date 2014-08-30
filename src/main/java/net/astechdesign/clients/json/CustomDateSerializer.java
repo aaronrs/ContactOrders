@@ -1,4 +1,4 @@
-package net.astechdesign.clients;
+package net.astechdesign.clients.json;
 
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.JsonSerializer;

@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link rel="stylesheet" type="text/css" href="../css/theme.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/skin.css"/>
+</head>
+<body>
+    <div id="content">
+        <div th:include="fragments :: header"></div>
+        <h1>Contact</h1>
+        <div th:text="${contact.name}">name</div>
+        <div th:text="${contact.address}">name</div>
+        <div th:text="${contact.telephone}">name</div>
+    </div>
+</body>
+</html>

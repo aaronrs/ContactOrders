@@ -8,16 +8,18 @@
 </head>
 <body>
     <div id="content">
-        <div th:include="frags :: header"></div>
+        <div th:include="fragments :: header"></div>
         <h2>Contacts</h2>
         <table class="pure-table pure-table-bordered pure-table-striped" style="width: 750px">
             <tr style="text-align: left">
-                <th style="width: 300px">Name</th>
-                <th style="width: 400px">Address</th>
+                <th style="width: 150px">Name</th>
+                <th style="width: 350px">Address</th>
+                <th style="width: 100px">Telephone</th>
             </tr>
             <tr th:each="contact : ${contacts}">
-                <td style="width: 300px" th:text="${contact.name}"></td>
-                <td style="width: 400px" th:text="${contact.address.number}"></td>
+                <td style="width: 150px"><a th:href="@{/contact(id=${contact.id})}" th:text="${contact.name}">Marius The Fish Man!</a></td>
+                <td style="width: 350px" th:text="${contact.address}">Somewhere in the South East</td>
+                <td style="width: 100px" th:text="${contact.telephone}">01234 567890</td>
             </tr>
         </table>
     </div>

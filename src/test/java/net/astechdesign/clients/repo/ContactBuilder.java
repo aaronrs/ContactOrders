@@ -1,10 +1,11 @@
 package net.astechdesign.clients.repo;
 
 import com.google.common.collect.Lists;
-import net.astechdesign.clients.model.Address;
-import net.astechdesign.clients.model.Contact;
-import net.astechdesign.clients.model.Name;
-import net.astechdesign.clients.model.Order;
+import net.astechdesign.clients.model.contact.Address;
+import net.astechdesign.clients.model.contact.Contact;
+import net.astechdesign.clients.model.contact.Name;
+import net.astechdesign.clients.model.contact.Telephone;
+import net.astechdesign.clients.model.order.Order;
 import org.joda.time.DateTime;
 
 import java.util.List;
@@ -28,10 +29,10 @@ public class ContactBuilder {
 
     public Contact build() {
         Name name = new Name(first, last);
-        Address address = new Address(number, house, addressLine1, town, county, postcode, telephone);
+        Address address = new Address(number, house, addressLine1, town, county, postcode);
         Order order = new Order(0, 1, orderDate.getYear(), orderDate.getMonthOfYear(), orderDate.getDayOfMonth(), 1, orderName, orderDescription, "cat");
         List<Order> orders = Lists.newArrayList(order);
-        Contact contact = new Contact(0, name, address);
+        Contact contact = new Contact(0, name, address, new Telephone(telephone));
 
         return contact;
     }

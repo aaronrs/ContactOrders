@@ -1,10 +1,12 @@
 package integration;
 
-import net.astechdesign.clients.model.Contact;
-import net.astechdesign.clients.model.Order;
-import net.astechdesign.clients.model.Product;
-import net.astechdesign.clients.repo.Category;
-import net.astechdesign.clients.repo.ContactsRepo;
+import net.astechdesign.clients.model.contact.Contact;
+import net.astechdesign.clients.model.contact.Telephone;
+import net.astechdesign.clients.model.order.Order;
+import net.astechdesign.clients.model.order.OrderRepo;
+import net.astechdesign.clients.model.product.Product;
+import net.astechdesign.clients.model.contact.ContactRepo;
+import net.astechdesign.clients.model.product.ProductRepo;
 import net.astechdesign.clients.repo.DBBuilder;
 import net.astechdesign.clients.resources.Contacts;
 import org.hsqldb.jdbc.JDBCDataSource;
@@ -27,41 +29,36 @@ public class CreateContact {
         dataSource.setUrl(DB_URL);
         dataSource.setUser(USER);
         dataSource.setPassword(PASSWORD);
-        new ContactsRepo(dataSource);
+        new ContactRepo(dataSource);
         DBBuilder.initialiseDb(dataSource);
     }
 
     @Test
     public void createContact() throws Exception {
         Contacts contacts = new Contacts();
-        contacts.save(-1, "first", "last", 99, "name", "address1", "town", "county", "postcode", "tel");
-        Contact contact = ContactsRepo.getContact(0);
+        contacts.save(-1, "first", "last", 99, "name", "address1", "town", "county", "postcode", new Telephone("telephone"));
+        Contact contact = ContactRepo.get(0);
         assertThat(contact.id, is(0));
         assertThat(contact.name.first, is("first"));
         assertThat(contact.name.last, is("last"));
-        assertThat(contact.address.telephone, is("tel"));
+        assertThat(contact.telephone.number, is("tel"));
     }
 
     @Test
     public void createContent() throws Exception {
         Contacts contacts = new Contacts();
 
-        contacts.save(-1, "first", "last", 99, "name", "address1", "town", "county", "postcode", "tel");
-        Contact contact = ContactsRepo.getContact(0);
+        contacts.save(-1, "first", "last", 99, "name", "address1", "town", "county", "postcode", new Telephone("telephone"));
+        Contact contact = ContactRepo.get(0);
 
-        contacts.addCategory("cat");
-        Category category = ContactsRepo.categories().get(0);
-
-        contacts.addProduct(1234, category.id, "prod", "description");
-        Product product = ContactsRepo.products().get(0);
+        contacts.addProduct(1234, -1, "prod", "description");
+        Product product = ProductRepo.products().get(0);
 
         contacts.saveOrder(contact.id, product.id, 2014, 2, 3, 5);
-        Order order = ContactsRepo.orders(contact.id).get(0);
+        Order order = OrderRepo.orders(contact.id).get(0);
 
         assertThat(contact.id, is(0));
         assertThat(contact.name.first, is("first"));
-        assertThat(category.id, is(0));
-        assertThat(category.category, is("cat"));
         assertThat(product.id, is(1234));
         assertThat(product.name, is("prod"));
         assertThat(order.productId, is(product.id));

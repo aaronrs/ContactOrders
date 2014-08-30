@@ -1,6 +1,7 @@
 package net.astechdesign.clients.resources;
 
-import net.astechdesign.clients.repo.ContactsRepo;
+import net.astechdesign.clients.model.contact.ContactRepo;
+import net.astechdesign.clients.model.contact.Telephone;
 import net.astechdesign.clients.repo.TestContactsRepo;
 import org.junit.Before;
 import org.junit.Test;
@@ -25,13 +26,13 @@ public class ContactsTest {
             "\"name\":{\"first\":\"F\",\"last\":\"L\"}," +
             "\"address\":{\"number\":1,\"houseName\":\"H\",\"address1\":\"A\",\"town\":\"T\",\"county\":\"C\",\"postcode\":\"AA1 1AA\",\"telephone\":\"123\"}}";
 
-    @Mock private ContactsRepo repo;
+    @Mock private ContactRepo repo;
 
     private final Contacts contacts = new Contacts();
 
     @Before
     public void setUp() throws Exception {
-        new TestContactsRepo(null).init();
+        new TestContactsRepo().init();
     }
 
     @Test
@@ -46,7 +47,7 @@ public class ContactsTest {
 
     @Test
     public void save_shouldSaveContact_givenContactDetails() throws Exception {
-        contacts.save(-1, "F", "L", 1, "H", "A", "T", "C", "AA1 1AA", "123");
+        contacts.save(-1, "F", "L", 1, "H", "A", "T", "C", "AA1 1AA", new Telephone("123"));
         assertThat(contacts.getContactById(1), is(contact2Json));
     }
 }
