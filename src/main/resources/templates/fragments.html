@@ -8,23 +8,18 @@
     <link rel="stylesheet" type="text/css" href="../css/theme.css"/>
     <link rel="stylesheet" type="text/css" href="../css/skin.css"/>
 </head>
-    <body>
-        <div th:fragment="header">
-            <h1>Marius' Business</h1>
-            <div style="width: 250px; padding: 5px" class="pure-control-group">
-                <a style="width: 80px;" href="todos" class="pure-button pure-button-primary">Todo List</a>
-                <a style="width: 80px;" href="addtodo" class="pure-button pure-button-primary">New Todo</a>
-            </div>
-            <div style="width: 250px; padding: 5px" class="pure-control-group">
-                <a style="width: 80px;" href="contacts" class="pure-button pure-button-primary">Contacts</a>
-                <a style="width: 80px;" href="addcontact" class="pure-button pure-button-primary">New Contact</a>
-            </div>
-            <form action="/searchcontact" method="post">
-                <div style="width: 550px; padding: 5px" class="pure-control-group alignBtn">
-                    <button style="width: 118px;" type="submit" class="pure-button">Find Contact</button>
-                    <input type="text" name="name"/>
-                </div>
-            </form>
+<body>
+<div id="content">
+    <div th:fragment="header">
+        <h1>Marius' Business</h1>
+
+        <div style="width: 450px; padding: 5px" class="pure-control-group">
+            <a style="width: 80px;" href="/todos" class="pure-button pure-button-primary">Todo List</a>
+            <a style="width: 80px;" href="/contacts" class="pure-button pure-button-primary">Contacts</a>
+            <a style="width: 80px;" href="/products" class="pure-button pure-button-primary">Products</a>
         </div>
-    </body>
+    </div>
+
+</div>
+</body>
 </html>

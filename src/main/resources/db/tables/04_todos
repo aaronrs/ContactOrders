@@ -1,7 +1,5 @@
-id:INT:SEQ
-contactId:INT
-startDate:DATE
-startTime:DATE
-endDate:TIME
-endTime:TIME
+id::INT:SEQ
+contactId::INT
+start::TIMESTAMP
+end::TIMESTAMP
 notes:500

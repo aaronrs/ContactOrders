@@ -3,16 +3,73 @@
 <head>
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
-    <link rel="stylesheet" type="text/css" href="../css/theme.css"/>
-    <link rel="stylesheet" type="text/css" href="../css/skin.css"/>
+    <link rel="stylesheet" type="text/css" href="/css/theme.css"/>
+    <link rel="stylesheet" type="text/css" href="/css/skin.css"/>
 </head>
 <body>
-    <div id="content">
-        <div th:include="fragments :: header"></div>
-        <h1>Contact</h1>
-        <div th:text="${contact.name}">name</div>
-        <div th:text="${contact.address}">name</div>
-        <div th:text="${contact.telephone}">name</div>
+<div id="content">
+    <div th:include="fragments :: header"></div>
+    <h2 style="text-decoration: underline">Contact</h2>
+
+    <div style="font-size: 1.2em; font-weight: bold; padding-bottom: 10px; padding-left: 20px;">
+    <div style="padding-left: 10px; border: solid 1px; width: 400px;">
+        <div th:text="${contact.name}">Tom Thumb</div>
+        <div th:text="${contact.address}">Somewhere over there</div>
+        <div th:text="${contact.telephone}">0123 45677889</div>
     </div>
+    </div>
+    <div id="todo_form">
+        <form action="/contacts/todo" class="pure-form pure-form-aligned" method="POST">
+            <input type="hidden" name="contactId" th:value="${contact.id}"/>
+
+            <div class="pure-control-group">
+                <span style="font-style: italic; font-weight: bold">New todo</span>
+                <input type="date" placeholder="Start Date" id="date" name="date" tabindex="1" style="width : 130px;"/>
+                <input type="textarea" placeholder="Notes" id="notes" name="notes" tabindex="3"/>
+                <button id="saveButton" class="pure-button pure-button-primary" type="submit">Save</button>
+            </div>
+        </form>
+        <form action="/contacts/order" class="pure-form pure-form-aligned" method="POST">
+            <input type="hidden" name="contactId" th:value="${contact.id}"/>
+
+            <div class="pure-control-group">
+                <span style="font-style: italic; font-weight: bold">New order</span>
+                <input type="date" placeholder="Date" id="date" name="date" tabindex="4" style="width : 130px;"/>
+                <input type="number" placeholder="Amount" id="amount" tabindex="5" style="width : 60px;" value="1"/>
+                <select id="product" name="product" tabindex="6">
+                    <option th:each="product : ${products}" th:value="${product.id}"
+                            th:text="${product.name}">Some product
+                    </option>
+                </select>
+                <button id="saveButton" class="pure-button pure-button-primary" type="submit">Save</button>
+            </div>
+        </form>
+    </div>
+    <h2>Todos</h2>
+    <table class="pure-table pure-table-bordered pure-table-striped" style="width: 750px">
+        <tr style="text-align: left">
+            <th style="width: 120px">Start</th>
+            <th style="width: 120px">End</th>
+            <th style="width: 340px">Notes</th>
+        </tr>
+        <tr th:each="todo : ${todos}">
+            <td style="width: 120px" th:text="${#dates.format(todo.date,'dd/MM/yyyy')}"></td>
+            <td style="width: 340px" th:text="${todo.notes}"></td>
+        </tr>
+    </table>
+    <h2>Orders</h2>
+    <table class="pure-table pure-table-bordered pure-table-striped" style="width: 750px">
+        <tr style="text-align: left">
+            <th style="width: 100px">Date</th>
+            <th style="width: 300px">Product Name</th>
+            <th>Amount</th>
+        </tr>
+        <tr th:each="order : ${orders}">
+            <td style="width: 100px" th:text="${#dates.format(order.date,'dd/MM/yyyy')}"></td>
+            <td style="width: 300px" th:text="${order.name}"></td>
+            <td th:text="${order.amount}"></td>
+        </tr>
+    </table>
+</div>
 </body>
 </html>

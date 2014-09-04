@@ -1,7 +1,6 @@
 package net.astechdesign.clients.repo;
 
 import net.astechdesign.clients.model.contact.ContactRepo;
-import net.astechdesign.clients.model.contact.Name;
 import net.astechdesign.clients.model.todo.Todo;
 import net.astechdesign.clients.model.todo.TodoRepo;
 import org.junit.Test;
@@ -27,8 +26,8 @@ public class ContactRepoTest {
 
         new ContactRepo(dataSource);
 
-        TodoRepo.save(new Todo(-1, 1, Name.DEFAULT, new Date(), new Date(), "stuff"));
-        TodoRepo.save(new Todo(-1, 2, Name.DEFAULT, new Date(), new Date(), "more stuff"));
+        TodoRepo.save(new Todo(-1, 1, new Date(), "stuff"));
+        TodoRepo.save(new Todo(-1, 2, new Date(), "more stuff"));
         List<Todo> todoList = TodoRepo.todos();
         assertThat(todoList.size(), is(2));
         assertThat(todoList.get(0).notes, is(NOTES));

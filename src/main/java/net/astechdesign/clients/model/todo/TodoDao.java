@@ -1,6 +1,5 @@
 package net.astechdesign.clients.model.todo;
 
-import net.astechdesign.clients.model.contact.Name;
 import net.astechdesign.clients.repo.Dao;
 
 import javax.sql.DataSource;
@@ -15,16 +14,19 @@ public class TodoDao extends Dao<Todo> {
     }
 
     public List<Todo> get() throws SQLException {
-        String sql = "SELECT t.id,t.contactId,t.start,t.end,t.notes,c.first,c.last FROM todos as t, contacts as c where t.contactId=c.id";
+        String sql = "SELECT t.id,t.contactId,t.date,t.notes,c.first,c.last FROM todos as t, contacts as c where t.contactId=c.id";
+        return listQuery(sql, Todo.class);
+    }
+
+    public List<Todo> get(int id) throws SQLException {
+        String sql = "SELECT id,contactId,date,notes FROM todos where contactId=" + id;
         return listQuery(sql, Todo.class);
     }
 
     public void save(Todo todo) throws SQLException {
         Map<String, Object> dataMap = new LinkedHashMap<>();
-        dataMap.put("id", todo.id);
         dataMap.put("contactId", todo.contactId);
-        dataMap.put("start", todo.start);
-        dataMap.put("end", todo.end);
+        dataMap.put("date", todo.date);
         dataMap.put("notes", todo.notes);
         save("todos", dataMap);
     }
@@ -33,10 +35,18 @@ public class TodoDao extends Dao<Todo> {
     public <T> T toBean(ResultSet rs, Class<T> type) throws SQLException {
         int id = rs.getInt("id");
         int contactId = rs.getInt("contactId");
-        Name contactName = new Name(rs.getString("first"),rs.getString("last"));
-        Date start = rs.getDate("start");
-        Date end = rs.getDate("end");
+        Date date = rs.getDate("date");
         String notes = rs.getString("notes");
-        return (T)new Todo(id, contactId, contactName, start, end, notes);
+        String first = null;
+        String last = null;
+        try {
+            first = rs.getString("first");
+            last = rs.getString("last");
+        } catch (SQLException e) {
+        }
+        if (first == null) {
+            return (T)new Todo(id, contactId, date, notes);
+        }
+        return (T)new Todo(id, contactId, date, notes, first, last);
     }
 }

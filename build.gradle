@@ -1,9 +1,21 @@
-apply plugin: "java"
-apply plugin: "idea"
-apply plugin: "application"
+buildscript {
+    repositories { jcenter() }
+    dependencies {
+        classpath 'com.github.jengelman.gradle.plugins:shadow:1.1.1'
+    }
+}
+
+apply plugin: 'java'
+apply plugin: 'com.github.johnrengelman.shadow'
+apply plugin: 'idea'
+apply plugin: 'application'
 
 sourceCompatibility = 1.7
 targetCompatibility = 1.7
+
+group = 'net.astechdesign'
+version = '0.1.0'
+mainClassName = 'net.astechdesign.clients.server.JerseyServer'
 
 repositories {
     mavenCentral()
@@ -12,7 +24,7 @@ repositories {
 dependencies {
     compile 'org.eclipse.jetty:jetty-server:9.2.0.M0'
     compile 'org.eclipse.jetty:jetty-servlet:9.2.0.M0'
-    compile 'org.eclipse.jetty:jetty-proxy:9.2.0.M0'
+//    compile 'org.eclipse.jetty:jetty-proxy:9.2.0.M0'
     compile 'com.fasterxml.jackson.core:jackson-databind:2.3.1'
     compile 'com.fasterxml.jackson.datatype:jackson-datatype-joda:2.3.1'
     compile 'org.hsqldb:hsqldb:2.3.2'
@@ -33,6 +45,3 @@ dependencies {
     testCompile 'org.mockito:mockito-core:1.9.5'
 }
 
-jar {
-    manifest.attributes("Main-Class": "net.astechdesign.contacts.server.ContactsServer" )
-}

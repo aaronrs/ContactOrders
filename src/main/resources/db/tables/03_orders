@@ -1,7 +1,5 @@
-id:INT:SEQ
-contactId:INT
-year:INT
-month;INT
-day:INT
-amount:INT
-productId:INT
+id::INT:SEQ
+contactId::INT
+year::DATE
+amount::INT
+productId::INT

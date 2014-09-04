@@ -1,24 +1,28 @@
 package net.astechdesign.clients.model.todo;
 
-import net.astechdesign.clients.model.contact.Name;
-
 import java.util.Date;
 
 public class Todo {
 
     public final int id;
     public final int contactId;
-    public final Name contactName;
-    public final Date start;
-    public final Date end;
+    public final Date date;
     public final String notes;
+    public final String contactName;
 
-    public Todo(int id, int contactId, Name contactName, Date start, Date end, String notes) {
+    public Todo(int id, int contactId, Date date, String notes) {
         this.id = id;
         this.contactId = contactId;
-        this.contactName = contactName;
-        this.start = start;
-        this.end = end;
+        this.date = date;
         this.notes = notes;
+        this.contactName = "";
+    }
+
+    public Todo(int id, int contactId, Date date, String notes, String first, String last) {
+        this.id = id;
+        this.contactId = contactId;
+        this.date = date;
+        this.notes = notes;
+        this.contactName = first + " " + last;
     }
 }

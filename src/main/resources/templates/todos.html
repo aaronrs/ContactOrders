@@ -8,23 +8,21 @@
     <link rel="stylesheet" type="text/css" href="../css/skin.css"/>
 </head>
 <body>
-    <div id="content">
-        <div th:include="fragments :: header"></div>
-        <h2>Todos</h2>
-        <table class="pure-table pure-table-bordered pure-table-striped" style="width: 750px">
-            <tr style="text-align: left">
-                <th style="width: 120px">Start</th>
-                <th style="width: 120px">End</th>
-                <th style="width: 150px">Contact</th>
-                <th style="width: 340px">Notes</th>
-            </tr>
-            <tr th:each="todo : ${todos}">
-                <td style="width: 120px" th:text="${#dates.format(todo.start,'dd MMMM yyyy')}"></td>
-                <td style="width: 120px" th:text="${#dates.format(todo.end,'dd MMMM yyyy')}"></td>
-                <td style="width: 150px" th:text="${todo.contactName}"></td>
-                <td style="width: 340px" th:text="${todo.notes}"></td>
-            </tr>
-        </table>
-    </div>
+<div id="content">
+    <div th:include="fragments :: header"></div>
+    <h2>Todos</h2>
+    <table class="pure-table pure-table-bordered pure-table-striped" style="width: 750px">
+        <tr style="text-align: left">
+            <th style="width: 120px">Start</th>
+            <th style="width: 150px">Contact</th>
+            <th style="width: 340px">Notes</th>
+        </tr>
+        <tr th:each="todo : ${todos}">
+            <td style="width: 120px" th:text="${#dates.format(todo.date,'dd MMMM yyyy')}"></td>
+            <td style="width: 150px"><a th:href="@{/contacts/{id}(id=${todo.contactId})}" th:text="${todo.contactName}">Name</a></td>
+            <td style="width: 340px" th:text="${todo.notes}"></td>
+        </tr>
+    </table>
+</div>
 </body>
 </html>

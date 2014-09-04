@@ -1,7 +1,7 @@
-id:INT:SEQ
+id::INT:SEQ
 first:25
 last:50
-number:INT
+number::INT
 houseName:20:
 address1:60
 town:30

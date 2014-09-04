@@ -1,7 +1,5 @@
 package net.astechdesign.clients.db;
 
-
-import net.astechdesign.clients.repo.DBBuilder;
 import org.hsqldb.jdbc.JDBCDataSource;
 import org.hsqldb.persist.HsqlProperties;
 import org.hsqldb.server.Server;
@@ -12,29 +10,26 @@ import java.util.Properties;
 
 public class HsqlServerRunner implements Runnable {
 
+    public static JDBCDataSource dataSource;
+
     public static void main(String[] args) throws Exception {
-        new Thread(new HsqlServerRunner()).start();
-        init();
+        start();
     }
 
-    private static void init() {
-        String DB_URL = "http://localhost:9001/Contacts";
-        String USER = "SA";
-        String PASSWORD = "";
-        JDBCDataSource jdbcDataSource = new JDBCDataSource();
-        jdbcDataSource.setUrl(DB_URL);
-        jdbcDataSource.setUser(USER);
-        jdbcDataSource.setPassword(PASSWORD);
+    public static void start() throws Exception {
+        new Thread(new HsqlServerRunner()).start();
 
-        DBBuilder.initialiseDb(jdbcDataSource);
+        dataSource = new JDBCDataSource();
+        dataSource.setUrl("jdbc:hsqldb:hsql://localhost/Contacts");
+        dataSource.setUser("SA");
     }
 
     @Override
     public void run() {
         Server server = new Server();
         Properties props = new Properties();
-        props.setProperty("server.database.0", "mem:Contacts");
-        props.setProperty("server.dbname.0", "Contacts");
+        props.setProperty("server.database.0", "file:/home/aaron/db/contacts");
+        props.setProperty("server.dbname.0", "contacts");
         try {
             server.setProperties(new HsqlProperties(props));
         } catch (IOException | ServerAcl.AclFormatException e) {

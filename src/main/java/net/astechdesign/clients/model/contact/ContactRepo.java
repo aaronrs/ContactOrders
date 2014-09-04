@@ -17,12 +17,12 @@ public class ContactRepo {
         return instance.getContact(id);
     }
 
-    public static Contact find(String name) throws SQLException {
-        return instance.findContact(name);
+    public static List<Contact> find(String firstName, String lastName, String address, String postcode, Telephone tel) throws SQLException {
+        return instance.findContacts(firstName, lastName, address, postcode, tel.number);
     }
 
     public static void save(Contact contact) throws SQLException {
-        instance.saveContact(contact.id, contact);
+        instance.saveContact(contact);
     }
 
     public ContactRepo(DataSource dataSource) {
@@ -30,7 +30,7 @@ public class ContactRepo {
         instance = this;
     }
 
-    private void saveContact(int id, Contact contact) throws SQLException {
+    private void saveContact(Contact contact) throws SQLException {
         ContactDao contactDao = new ContactDao(dataSource);
         contactDao.save(contact);
     }
@@ -48,8 +48,8 @@ public class ContactRepo {
         return new ContactDao(dataSource).getContacts();
     }
 
-    public Contact findContact(String name) throws SQLException {
+    public List<Contact> findContacts(String firstName, String lastName, String address, String postcode, String tel) throws SQLException {
         ContactDao contactDao = new ContactDao(dataSource);
-        return contactDao.find(name);
+        return contactDao.find(firstName, lastName, address, postcode, tel);
     }
 }

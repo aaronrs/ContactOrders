@@ -13,6 +13,10 @@ public class TodoRepo {
         return instance.getTodos();
     }
 
+    public static List<Todo> todos(int id) throws SQLException {
+        return instance.getTodos(id);
+    }
+
     public static void save(Todo todo) throws SQLException {
         instance.saveTodo(todo);
     }
@@ -28,5 +32,9 @@ public class TodoRepo {
 
     private List<Todo> getTodos() throws SQLException {
         return new TodoDao(dataSource).get();
+    }
+
+    private List<Todo> getTodos(int id) throws SQLException {
+        return new TodoDao(dataSource).get(id);
     }
 }

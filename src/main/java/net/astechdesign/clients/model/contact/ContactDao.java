@@ -9,7 +9,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 public class ContactDao extends Dao<Contact> {
-    public static final String[] CONTACT_COLUMNS = {"first","last","number","houseName","address1","town","county","postcode","telephone"};
+    public static final String[] CONTACT_COLUMNS = {"first","last","address","postcode","telephone"};
 
     public ContactDao(DataSource dataSource) {
         super(dataSource);
@@ -18,6 +18,15 @@ public class ContactDao extends Dao<Contact> {
     public List<Contact> getContacts() throws SQLException {
         String sql = "SELECT * FROM contacts";
         return listQuery(sql, Contact.class);
+    }
+
+    public List<Contact> find(String first, String last, String address, String postcode, String tel) throws SQLException {
+        String sql = "SELECT * FROM contacts WHERE first like '%?%'" +
+                " or last like '%?%'" +
+                " or address like '%?%'" +
+                " or postcode like '%?%'" +
+                " or telephone like '%?%'";
+        return listQuery(sql, Contact.class, first, last, address, postcode, tel);
     }
 
     public Contact getContact(int id) throws SQLException {
@@ -29,14 +38,10 @@ public class ContactDao extends Dao<Contact> {
         String sql = "UPDATE contacts set " +
                 StringUtils.join(CONTACT_COLUMNS, "=?,") +
                 "=? WHERE id=?";
-        Object[] values = {contact.name.first,
-                contact.name.last,
-                contact.address.number,
-                contact.address.houseName,
-                contact.address.address1,
-                contact.address.town,
-                contact.address.county,
-                contact.address.postcode,
+        Object[] values = {contact.first,
+                contact.last,
+                contact.address,
+                contact.postcode,
                 contact.telephone,
                 contact.id
         };
@@ -49,14 +54,10 @@ public class ContactDao extends Dao<Contact> {
                 "VALUES (?" +
                 StringUtils.repeat(",?", CONTACT_COLUMNS.length - 1) +
                 ")";
-        Object[] values = {contact.name.first,
-                contact.name.last,
-                contact.address.number,
-                contact.address.houseName,
-                contact.address.address1,
-                contact.address.town,
-                contact.address.county,
-                contact.address.postcode,
+        Object[] values = {contact.first,
+                contact.last,
+                contact.address,
+                contact.postcode,
                 contact.telephone.number
         };
         update(sql, values);
@@ -65,20 +66,6 @@ public class ContactDao extends Dao<Contact> {
 
     @Override
     public <T> T toBean(ResultSet rs, Class<T> type) throws SQLException {
-        Name name = new Name(rs.getString("first"), rs.getString("last"));
-        Address address = new Address(
-                rs.getInt("number"),
-                rs.getString("houseName"),
-                rs.getString("address1"),
-                rs.getString("town"),
-                rs.getString("county"),
-                rs.getString("postcode")
-        );
-        return (T)new Contact(rs.getInt("id"), name, address, new Telephone(rs.getString("telephone")));
-    }
-
-    public Contact find(String name) throws SQLException {
-        String sql = "SELECT * FROM contacts WHERE first like '%?%' or last like '%?%'";
-        return query(sql, Contact.class, name, name);
+        return (T)new Contact(rs.getInt("id"), rs.getString("first"), rs.getString("last"), rs.getString("address"), rs.getString("postcode"), new Telephone(rs.getString("telephone")));
     }
 }

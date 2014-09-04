@@ -5,8 +5,10 @@ import net.astechdesign.clients.model.contact.ContactRepo;
 import net.astechdesign.clients.model.order.OrderRepo;
 import net.astechdesign.clients.model.product.ProductRepo;
 import net.astechdesign.clients.model.todo.TodoRepo;
-import net.astechdesign.clients.repo.TestContactsRepo;
-import net.astechdesign.clients.resources.ContactsResource;
+import net.astechdesign.clients.repo.DBBuilder;
+import net.astechdesign.clients.resources.ContactRequests;
+import net.astechdesign.clients.resources.ProductRequests;
+import net.astechdesign.clients.resources.TodoRequests;
 import org.eclipse.jetty.server.Handler;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.handler.HandlerCollection;
@@ -18,6 +20,13 @@ import org.glassfish.jersey.servlet.ServletContainer;
 import org.hsqldb.jdbc.JDBCDataSource;
 
 import javax.sql.DataSource;
+import javax.ws.rs.ext.ParamConverter;
+import javax.ws.rs.ext.ParamConverterProvider;
+import java.lang.annotation.Annotation;
+import java.lang.reflect.Type;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class JerseyServer {
 
@@ -25,7 +34,10 @@ public class JerseyServer {
         initialiseApp();
 
         ResourceConfig resourceConfig = new ResourceConfig();
-        resourceConfig.register(new ContactsResource());
+        resourceConfig.register(new DateConverterProvider());
+        resourceConfig.register(new ProductRequests());
+        resourceConfig.register(new ContactRequests());
+        resourceConfig.register(new TodoRequests());
         resourceConfig.register(new ThymeLeafWriter());
 
         ServletContainer servletContainer = new ServletContainer(resourceConfig);
@@ -50,27 +62,25 @@ public class JerseyServer {
     }
 
     private static void initialiseApp() throws Exception {
-        HsqlServerRunner.main(new String[]{});
+        HsqlServerRunner.start();
         try {
-            DataSource datasource = datasource();
+            DataSource datasource = HsqlServerRunner.dataSource;
+            new ProductRepo(datasource);
             new ContactRepo(datasource);
             new TodoRepo(datasource);
-            new ProductRepo(datasource);
             new OrderRepo(datasource);
-            TestContactsRepo.init();
+            DBBuilder.initialiseDb(datasource);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
     private static DataSource datasource() {
-        String DB_URL = "jdbc:hsqldb:hsql://localhost:9001/Contacts";
+        String DB_URL = "jdbc:hsqldb:hsql://localhost/contacts";
         String USER = "SA";
-        String PASSWORD = "";
         JDBCDataSource jdbcDataSource = new JDBCDataSource();
         jdbcDataSource.setUrl(DB_URL);
         jdbcDataSource.setUser(USER);
-        jdbcDataSource.setPassword(PASSWORD);
         return jdbcDataSource;
     }
 }

@@ -13,8 +13,8 @@ public class OrderRepo {
         return instance.getOrders(contactId);
     }
 
-    public static void save(int contactId, Order order) throws SQLException {
-        instance.saveOrder(contactId, order);
+    public static void save(Order order) throws SQLException {
+        instance.saveOrder(order);
     }
 
     public OrderRepo(DataSource dataSource) {
@@ -22,8 +22,8 @@ public class OrderRepo {
         instance = this;
     }
 
-    private void saveOrder(int contactId, Order order) throws SQLException {
-        new OrdersDao(dataSource).save(contactId, order);
+    private void saveOrder(Order order) throws SQLException {
+        new OrdersDao(dataSource).save(order);
     }
     private List<Order> getOrders(int contactId) throws SQLException {
         return new OrdersDao(dataSource).get(contactId);
