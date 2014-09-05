@@ -1,0 +1,15 @@
+table {
+    width: 500px;
+}
+.id {
+    width: 40px;
+}
+#productId {
+    width: 65px;
+}
+#name {
+    width: 260px;
+}
+form {
+    padding-bottom: 10px;
+}

@@ -5,23 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
     <link rel="stylesheet" type="text/css" href="../css/theme.css"/>
     <link rel="stylesheet" type="text/css" href="../css/skin.css"/>
-    <style type="text/css">
-        table {
-            width: 500px;
-        }
-        .id {
-            width: 40px;
-        }
-        #productId {
-            width: 65px;
-        }
-        #name {
-            width: 260px;
-        }
-        form {
-            padding-bottom: 10px;
-        }
-    </style>
+    <link rel="stylesheet" type="text/css" href="../css/products.css"/>
 </head>
 <body>
 <div id="content">
@@ -31,10 +15,9 @@
     <div id="products_form">
         <form action="products/add" class="pure-form" method="POST">
             <div class="pure-control-group">
-                <span style="font-style: italic; font-weight: bold">New product</span>
                 <input type="text" placeholder="Product Id" id="productId" name="productId" tabindex="1"/>
                 <input type="text" placeholder="Name" id="name" name="name" tabindex="2"/>
-                <button id="saveButton" class="pure-button pure-button-primary" type="submit">Save</button>
+                <button id="saveButton" class="pure-button pure-button-primary" type="submit">Add</button>
             </div>
         </form>
     </div>

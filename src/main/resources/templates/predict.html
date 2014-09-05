@@ -20,7 +20,7 @@
             cursor: pointer;
         }
         #results div span {
-            color: red;
+            color: #950000;
             font-weight: bold;
         }
     </style>
@@ -41,15 +41,13 @@ Here is some text.<br/>
             function()
             {
 
-                var lookFor = [
-                    "Lancaster",
-                    "England",
-                    "Finland",
-                    "Scotland",
-                    "Brazil",
-                    "Manila",
-                    "Atlanta"
-                ];
+                var lookFor = JSON.parse("[{\"id\":0,\"name\":\"Lancaster\"}," +
+                        "{\"id\":1,\"name\":\"England\"}," +
+                        "{\"id\":2,\"name\":\"Finland\"}," +
+                        "{\"id\":3,\"name\":\"Scotland\"}," +
+                        "{\"id\":4,\"name\":\"Brazil\"}," +
+                        "{\"id\":5,\"name\":\"Manila\"}," +
+                        "{\"id\":6,\"name\":\"Atlanta\"}]");
 
                 var form = document.getElementById("theForm");
                 var resultsDiv = document.getElementById("results");
@@ -66,11 +64,10 @@ Here is some text.<br/>
                     node = node.offsetParent;
                 }
                 resultsDiv.style.left = x + "px";
-                resultsDiv.style.top  = (y + 20) + "px";
+                resultsDiv.style.top = (y + 20) + "px";
 
                 // now, attach the keyup handler to the search field:
-                searchField.onkeyup = function()
-                {
+                searchField.onkeyup = function () {
                     var txt = this.value.toLowerCase();
                     if ( txt.length == 0 ) return;
 
@@ -79,7 +76,8 @@ Here is some text.<br/>
                     var top = 0;
                     for ( var s = 0; s < lookFor.length; ++s )
                     {
-                        var srch = lookFor[s];
+                        var value = lookFor[s].name;
+                        var srch = value.name;
                         if ( srch.toLowerCase().indexOf(txt) >= 0 )
                         {
                             srch = srch.replace( txtRE, "<span>$1</span>" );

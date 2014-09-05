@@ -35,8 +35,9 @@ public class ContactRequests {
                                 @FormParam("address") String address,
                                 @FormParam("postcode") String postcode,
                                 @FormParam("telephone") Telephone tel,
-                                @FormParam("telephone") String action) throws SQLException {
-        if (action.equals("find")) return findContacts(firstName, lastName, address, postcode, tel);
+                                @FormParam("action") String action) throws SQLException {
+        String val = firstName + lastName + address + postcode + tel;
+        if (action.equals("Find") && val.trim().length() > 0) return findContacts(firstName, lastName, address, postcode, tel);
         ContactRepo.save(new Contact(id, firstName, lastName, address, postcode, tel));
         return contacts();
     }

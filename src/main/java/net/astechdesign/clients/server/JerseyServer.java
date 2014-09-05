@@ -54,7 +54,7 @@ public class JerseyServer {
         HandlerCollection handlerCollection = new HandlerCollection();
         handlerCollection.setHandlers(new Handler[]{resourceHandler, servletContextHandler});
 
-        Server server = new Server(8000);
+        Server server = new Server(8001);
         server.setHandler(handlerCollection);
 
         server.start();
