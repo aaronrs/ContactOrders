@@ -1,10 +1,12 @@
 package net.astechdesign.clients.model.todo;
 
 import net.astechdesign.clients.repo.Dao;
+import org.joda.time.DateTime;
 
 import javax.sql.DataSource;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 public class TodoDao extends Dao<Todo> {
@@ -14,8 +16,13 @@ public class TodoDao extends Dao<Todo> {
     }
 
     public List<Todo> get() throws SQLException {
-        String sql = "SELECT t.id,t.contactId,t.date,t.notes,c.first,c.last FROM todos as t, contacts as c where t.contactId=c.id";
-        return listQuery(sql, Todo.class);
+        String sql = "SELECT t.id,t.contactId,t.date,t.notes,c.name FROM todos as t, contacts as c where t.contactId=c.id and t.date > ?";
+        return listQuery(sql, Todo.class, new DateTime().withTimeAtStartOfDay().toDate());
+    }
+
+    public List<Todo> get(Date date) throws SQLException {
+        String sql = "SELECT t.id,t.contactId,t.date,t.notes,c.name FROM todos as t, contacts as c where t.contactId=c.id and t.date > ?";
+        return listQuery(sql, Todo.class, date);
     }
 
     public List<Todo> get(int id) throws SQLException {
@@ -37,16 +44,10 @@ public class TodoDao extends Dao<Todo> {
         int contactId = rs.getInt("contactId");
         Date date = rs.getDate("date");
         String notes = rs.getString("notes");
-        String first = null;
-        String last = null;
+        String name = "";
         try {
-            first = rs.getString("first");
-            last = rs.getString("last");
-        } catch (SQLException e) {
-        }
-        if (first == null) {
-            return (T)new Todo(id, contactId, date, notes);
-        }
-        return (T)new Todo(id, contactId, date, notes, first, last);
+            name = rs.getString("name");
+        } catch (Exception e) {}
+        return (T)new Todo(id, contactId, date, notes, name);
     }
 }

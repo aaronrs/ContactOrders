@@ -13,9 +13,9 @@ public class Order {
 
     public Order(int contactId, int productId, Date date, int amount, String name, String description) {
         this.contactId = contactId;
+        this.productId = productId;
         this.date = date;
         this.amount = amount;
-        this.productId = productId;
         this.name = name;
         this.description = description;
     }

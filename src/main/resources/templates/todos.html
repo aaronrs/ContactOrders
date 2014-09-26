@@ -2,27 +2,42 @@
 
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8"/>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
-    <link rel="stylesheet" type="text/css" href="../css/theme.css"/>
-    <link rel="stylesheet" type="text/css" href="../css/skin.css"/>
+    <link href="../static/bootstrap/css/bootstrap.min.css" th:href="@{/static/bootstrap/css/bootstrap.min.css}" rel="stylesheet"/>
+    <link rel="stylesheet" type="text/css" href="../static/css/skin.css" th:href="@{/static/css/skin.css}"/>
 </head>
 <body>
-<div id="content">
-    <div th:include="fragments :: header"></div>
-    <h2>Todos</h2>
-    <table class="pure-table pure-table-bordered pure-table-striped" style="width: 750px">
-        <tr style="text-align: left">
-            <th style="width: 120px">Start</th>
-            <th style="width: 150px">Contact</th>
-            <th style="width: 340px">Notes</th>
-        </tr>
-        <tr th:each="todo : ${todos}">
-            <td style="width: 120px" th:text="${#dates.format(todo.date,'dd MMMM yyyy')}"></td>
-            <td style="width: 150px"><a th:href="@{/contacts/{id}(id=${todo.contactId})}" th:text="${todo.contactName}">Name</a></td>
-            <td style="width: 340px" th:text="${todo.notes}"></td>
-        </tr>
-    </table>
+<div class="container">
+    <div class="col-md-12">
+        <div th:include="fragments :: title">
+            <h1 style="text-align: center;">Marius' Business</h1>
+        </div>
+        <div class="col-md-2">
+            <div th:include="fragments :: menu">
+                <h4>Menu</h4>
+            </div>
+        </div>
+        <div class="col-md-10">
+            <h2>Todos</h2>
+            <table class="pure-table pure-table-bordered pure-table-striped" style="width: 750px">
+                <tr style="text-align: left">
+                    <th style="width: 120px">Start</th>
+                    <th style="width: 150px">Contact</th>
+                    <th style="width: 340px">Notes</th>
+                </tr>
+                <tr th:each="todo : ${todos}">
+                    <td style="width: 120px" th:text="${#dates.format(todo.date,'dd MMMM yyyy')}"></td>
+                    <td style="width: 150px"><a th:href="@{/contacts/{id}(id=${todo.contactId})}"
+                                                th:text="${todo.name}">Name</a></td>
+                    <td style="width: 340px" th:text="${todo.notes}"></td>
+                </tr>
+            </table>
+        </div>
+    </div>
 </div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script src="../static/bootstrap/js/bootstrap.min.js" th:href="@{/static/bootstrap/js/bootstrap.min.js}"></script>
 </body>
 </html>

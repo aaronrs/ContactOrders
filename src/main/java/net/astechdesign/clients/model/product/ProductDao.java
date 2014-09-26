@@ -37,4 +37,7 @@ public class ProductDao extends Dao<Product> {
         return (T)new Product(id, productId, name, description);
     }
 
+    public void delete(int productId) throws SQLException {
+        update("delete from products where productId = ?", productId);
+    }
 }

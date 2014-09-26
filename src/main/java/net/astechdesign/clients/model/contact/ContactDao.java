@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Map;
 
 public class ContactDao extends Dao<Contact> {
-    public static final String[] CONTACT_COLUMNS = {"first","last","address","postcode","telephone"};
+    public static final String[] CONTACT_COLUMNS = {"name","address","postcode","telephone"};
 
     public ContactDao(DataSource dataSource) {
         super(dataSource);
@@ -22,13 +22,10 @@ public class ContactDao extends Dao<Contact> {
         return listQuery(sql, Contact.class);
     }
 
-    public List<Contact> find(String first, String last, String address, String postcode, String tel) throws SQLException {
+    public List<Contact> find(String name, String address, String postcode, String tel) throws SQLException {
         Map<String, String> map = new LinkedHashMap<>();
-        if (first.trim().length() > 0) {
-            map.put("lower(first)", search(first));
-        }
-        if (last.trim().length() > 0) {
-            map.put("lower(last)", search(last));
+        if (name.trim().length() > 0) {
+            map.put("lower(name)", search(name));
         }
         if (address.trim().length() > 0) {
             map.put("lower(address)", search(address));
@@ -58,11 +55,10 @@ public class ContactDao extends Dao<Contact> {
         String sql = "UPDATE contacts set " +
                 StringUtils.join(CONTACT_COLUMNS, "=?,") +
                 "=? WHERE id=?";
-        Object[] values = {contact.first,
-                contact.last,
+        Object[] values = {contact.name,
                 contact.address,
                 contact.postcode,
-                contact.telephone,
+                contact.telephone.number,
                 contact.id
         };
         update(sql, values);
@@ -74,8 +70,7 @@ public class ContactDao extends Dao<Contact> {
                 "VALUES (?" +
                 StringUtils.repeat(",?", CONTACT_COLUMNS.length - 1) +
                 ")";
-        Object[] values = {contact.first,
-                contact.last,
+        Object[] values = {contact.name,
                 contact.address,
                 contact.postcode,
                 contact.telephone.number
@@ -86,6 +81,6 @@ public class ContactDao extends Dao<Contact> {
 
     @Override
     public <T> T toBean(ResultSet rs, Class<T> type) throws SQLException {
-        return (T)new Contact(rs.getInt("id"), rs.getString("first"), rs.getString("last"), rs.getString("address"), rs.getString("postcode"), new Telephone(rs.getString("telephone")));
+        return (T)new Contact(rs.getInt("id"), rs.getString("name"), rs.getString("address"), rs.getString("postcode"), new Telephone(rs.getString("telephone")));
     }
 }

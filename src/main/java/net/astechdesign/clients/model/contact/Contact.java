@@ -3,18 +3,14 @@ package net.astechdesign.clients.model.contact;
 public class Contact {
 
     public final int id;
-    public final String first;
-    public final String last;
     public final String name;
     public final String address;
     public final String postcode;
     public final Telephone telephone;
 
-    public Contact(int id, String first, String last, String address, String postcode, Telephone telephone) {
+    public Contact(int id, String name, String address, String postcode, Telephone telephone) {
         this.id = id;
-        this.first = first;
-        this.last = last;
-        this.name = first + " " + last;
+        this.name = name;
         this.address = address;
         this.postcode = postcode;
         this.telephone = telephone;

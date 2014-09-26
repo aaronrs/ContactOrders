@@ -55,7 +55,7 @@ public class TestContactsRepo {
 
     private static void createContact(String[] data) throws SQLException {
         String address = data[2] + " " + data[3] + " " + data[4] + " " + data[5] + " " + data[6];
-        Contact contact = new Contact(0, data[0], data[1], address, data[7], new Telephone(data[8]));
+        Contact contact = new Contact(0, data[0] + " " + data[1], address, data[7], new Telephone(data[8]));
         ContactRepo.save(contact);
     }
 
@@ -64,7 +64,7 @@ public class TestContactsRepo {
         Todo todo = new Todo(Integer.parseInt(data[0]),
                 Integer.parseInt(data[1]),
                 sdf.parse(data[4]),
-                data[6]);
+                data[6], "");
         TodoRepo.save(todo);
     }
 

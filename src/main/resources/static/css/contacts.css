@@ -1,0 +1,27 @@
+table {
+    width: 650px;
+}
+table th + th, table td + td {
+    width: 350px;
+}
+table th + th + th, table td + td + td {
+    width: 120px;
+}
+.fields {
+    padding-bottom: 5px;
+}
+#name {
+    width: 180px;
+}
+#address {
+    width: 260px;
+}
+#postcode {
+    width: 100px;
+}
+#telephone {
+    width: 100px;
+}
+.controls {
+    padding-bottom: 5px;
+}

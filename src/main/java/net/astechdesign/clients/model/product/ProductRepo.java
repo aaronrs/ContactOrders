@@ -17,6 +17,10 @@ public class ProductRepo {
         instance.saveProduct(product);
     }
 
+    public static void delete(int productId) throws SQLException {
+        instance.deleteProduct(productId);
+    }
+
     public ProductRepo(DataSource dataSource) {
         this.dataSource = dataSource;
         instance = this;
@@ -28,5 +32,9 @@ public class ProductRepo {
 
     private List<Product> getProducts() throws SQLException {
         return new ProductDao(dataSource).get();
+    }
+
+    public void deleteProduct(int productId) throws SQLException {
+        new ProductDao(dataSource).delete(productId);
     }
 }

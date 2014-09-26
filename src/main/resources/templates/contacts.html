@@ -1,57 +1,58 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8"/>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
-    <link rel="stylesheet" type="text/css" href="../css/theme.css"/>
-    <link rel="stylesheet" type="text/css" href="../css/skin.css"/>
-    <script src="../js/predict.js"></script>
-    <style type="text/css">
-        #first, #last {
-            width: 70px;
-        }
-        #address {
-            width: 220px;
-        }
-        #postcode {
-            width: 60px;
-        }
-        #telephone {
-            width: 63px;
-        }
-        .controls {
-            padding-bottom: 5px;
-        }
-    </style>
+    <link href="../static/bootstrap/css/bootstrap.min.css" th:href="@{/static/bootstrap/css/bootstrap.min.css}" rel="stylesheet" type="text/css"/>
+    <link href="../static/css/skin.css" th:href="@{/static/css/skin.css}" rel="stylesheet" type="text/css"/>
+    <link href="../static/css/contacts.css" th:href="@{/static/css/contacts.css}" rel="stylesheet" type="text/css"/>
 </head>
 <body>
-<div id="content">
-    <div th:include="fragments :: header"></div>
-    <h2>Contacts</h2>
-    <form action="/contacts/action" class="pure-form" method="POST">
-        <div class="pure-control-group controls">
-            <input type="text" placeholder="First" id="first" name="first" tabindex="1"/>
-            <input type="text" placeholder="Last" id="last" name="last" tabindex="1"/>
-            <input type="text" placeholder="Address" id="address" name="address" tabindex="2"/>
-            <input type="text" placeholder="Postcode" id="postcode" name="postcode" tabindex="3"/>
-            <input type="text" placeholder="Telephone" id="telephone" name="telephone" tabindex="3"/>
-            <button class="pure-button pure-button-primary" type="submit" name="action" value="Add">Add</button>
-            <button class="pure-button pure-button-primary" type="submit" name="action" value="Find">Find</button>
+<div class="container">
+    <div class="col-md-12">
+        <div th:include="fragments :: title">
+            <h1 style="text-align: center;">Marius' Business</h1>
         </div>
-    </form>
-    <table class="pure-table pure-table-bordered pure-table-striped">
-        <tr style="text-align: left">
-            <th style="width: 150px">Name</th>
-            <th style="width: 350px">Address</th>
-            <th style="width: 100px">Telephone</th>
-        </tr>
-        <tr th:each="contact : ${contacts}">
-            <td style="width: 150px"><a th:href="@{/contacts/{id}(id=${contact.id})}" th:text="${contact.name}">Marius The
-                Fish Man!</a></td>
-            <td style="width: 350px" th:text="${contact.address}">Somewhere in the South East, HP8 4JT</td>
-            <td style="width: 100px" th:text="${contact.telephone}">01234 567890</td>
-        </tr>
-    </table>
+        <div class="col-md-2">
+            <div th:include="fragments :: menu">
+                <h4>Menu</h4>
+            </div>
+        </div>
+        <div class="col-md-10">
+            <h2>Contacts</h2>
+
+            <form action="/contacts/action" class="pure-form" method="POST">
+                <div class="pure-control-group controls">
+                    <div class="fields">
+                        <input type="text" placeholder="Name" id="name" name="name"/>
+                        <input type="text" placeholder="Address" id="address" name="address"/>
+                        <input type="text" placeholder="Postcode" id="postcode" name="postcode"/>
+                        <input type="text" placeholder="Telephone" id="telephone" name="telephone"/>
+                    </div>
+                    <div>
+                        <button class="pure-button" type="submit" name="action" value="add">Add</button>
+                        <button class="pure-button" type="submit" name="action" value="find">Find</button>
+                    </div>
+                </div>
+            </form>
+            <table class="pure-table pure-table-bordered pure-table-striped">
+                <tr>
+                    <th>Name</th>
+                    <th>Address</th>
+                    <th>Telephone</th>
+                </tr>
+                <tr th:each="contact : ${contacts}">
+                    <td><a th:href="@{/contacts/{id}(id=${contact.id})}" th:text="${contact.name}">Marius The Fish Man!</a></td>
+                    <td th:text="${contact.address}">Somewhere in the South East, HP8 4JT</td>
+                    <td th:text="${contact.telephone}">01234 567890</td>
+                </tr>
+            </table>
+        </div>
+    </div>
 </div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script src="../static/bootstrap/js/bootstrap.min.js" th:href="@{/static/bootstrap/js/bootstrap.min.js}"></script>
+<script src="../static/js/predict.js" th:href="@{/static/js/predict.js}"></script>
 </body>
 </html>

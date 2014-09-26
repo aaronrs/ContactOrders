@@ -6,8 +6,7 @@ import org.joda.time.DateTime;
 
 public class ContactBuilder {
 
-    private String first = "Tom";
-    private String last = "Thumb";
+    private String name = "Tom Thumb";
 
     private int number = 1;
     private String house = "house";
@@ -23,13 +22,12 @@ public class ContactBuilder {
 
     public Contact build() {
         String address = number  + " " + house + " " + addressLine1 + " " + town + " " + county;
-        Contact contact = new Contact(0, first, last, address, postcode, new Telephone(telephone));
+        Contact contact = new Contact(0, name, address, postcode, new Telephone(telephone));
         return contact;
     }
 
-    public ContactBuilder withName(String first, String last) {
-        this.first = first;
-        this.last = last;
+    public ContactBuilder withName(String name) {
+        this.name = name;
         return this;
     }
 

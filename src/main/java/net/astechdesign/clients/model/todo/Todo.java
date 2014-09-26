@@ -8,21 +8,21 @@ public class Todo {
     public final int contactId;
     public final Date date;
     public final String notes;
-    public final String contactName;
+    public final String name;
 
-    public Todo(int id, int contactId, Date date, String notes) {
+//    public Todo(int id, int contactId, Date date, String notes) {
+//        this.id = id;
+//        this.contactId = contactId;
+//        this.date = date;
+//        this.notes = notes;
+//        this.name = "";
+//    }
+
+    public Todo(int id, int contactId, Date date, String notes, String name) {
         this.id = id;
         this.contactId = contactId;
         this.date = date;
         this.notes = notes;
-        this.contactName = "";
-    }
-
-    public Todo(int id, int contactId, Date date, String notes, String first, String last) {
-        this.id = id;
-        this.contactId = contactId;
-        this.date = date;
-        this.notes = notes;
-        this.contactName = first + " " + last;
+        this.name = name;
     }
 }

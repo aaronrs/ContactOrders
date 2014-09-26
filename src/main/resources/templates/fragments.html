@@ -3,23 +3,29 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8"/>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
-    <link rel="stylesheet" type="text/css" href="../css/theme.css"/>
-    <link rel="stylesheet" type="text/css" href="../css/skin.css"/>
+    <link href="../static/bootstrap/css/bootstrap.min.css" rel="stylesheet"/>
+    <link rel="stylesheet" type="text/css" href="../static/css/skin.css"/>
 </head>
 <body>
-<div id="content">
-    <div th:fragment="header">
-        <h1>Marius' Business</h1>
+<div class="container">
+    <div th:fragment="title">
+        <h1 style="text-align: center">Marius' Business</h1>
+    </div>
 
-        <div style="width: 450px; padding: 5px" class="pure-control-group">
-            <a style="width: 80px;" href="/todos" class="pure-button pure-button-primary">Todo List</a>
-            <a style="width: 80px;" href="/contacts" class="pure-button pure-button-primary">Contacts</a>
-            <a style="width: 80px;" href="/products" class="pure-button pure-button-primary">Products</a>
+    <div th:fragment="menu">
+        <h4>Menu</h4>
+
+        <div class="pure-control-group">
+            <a href="/todos" class="pure-menu-label">Todo List</a><br/>
+            <a href="/contacts" class="pure-menu-label">Contacts</a><br/>
+            <a href="/products" class="pure-menu-label">Products</a>
         </div>
     </div>
 
 </div>
+<script src="../static/bootstrap/js/bootstrap.min.js" th:href="@{/static/bootstrap/js/bootstrap.min.js}"></script>
 </body>
 </html>

@@ -1,0 +1,21 @@
+table {
+    width: 650px;
+}
+table th + th, table td + td {
+    width: 550px;
+}
+table th + th + th, table td + td + td {
+    width: 50px;
+}
+.id {
+    width: 40px;
+}
+#productId {
+    width: 65px;
+}
+#name {
+    width: 350px;
+}
+form {
+    padding-bottom: 10px;
+}

@@ -11,6 +11,7 @@ import net.astechdesign.clients.resources.ProductRequests;
 import net.astechdesign.clients.resources.TodoRequests;
 import org.eclipse.jetty.server.Handler;
 import org.eclipse.jetty.server.Server;
+import org.eclipse.jetty.server.handler.ContextHandler;
 import org.eclipse.jetty.server.handler.HandlerCollection;
 import org.eclipse.jetty.server.handler.ResourceHandler;
 import org.eclipse.jetty.servlet.ServletContextHandler;
@@ -20,13 +21,6 @@ import org.glassfish.jersey.servlet.ServletContainer;
 import org.hsqldb.jdbc.JDBCDataSource;
 
 import javax.sql.DataSource;
-import javax.ws.rs.ext.ParamConverter;
-import javax.ws.rs.ext.ParamConverterProvider;
-import java.lang.annotation.Annotation;
-import java.lang.reflect.Type;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 public class JerseyServer {
 
@@ -50,9 +44,11 @@ public class JerseyServer {
 
         ResourceHandler resourceHandler = new ResourceHandler();
         resourceHandler.setResourceBase(JerseyServer.class.getResource("/static").toExternalForm());
+        ContextHandler contextHandler = new ContextHandler("/static");
+        contextHandler.setHandler(resourceHandler);
 
         HandlerCollection handlerCollection = new HandlerCollection();
-        handlerCollection.setHandlers(new Handler[]{resourceHandler, servletContextHandler});
+        handlerCollection.setHandlers(new Handler[]{contextHandler, servletContextHandler});
 
         Server server = new Server(8001);
         server.setHandler(handlerCollection);

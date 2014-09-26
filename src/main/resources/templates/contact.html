@@ -1,75 +1,130 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8"/>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
-    <link rel="stylesheet" type="text/css" href="/css/theme.css"/>
-    <link rel="stylesheet" type="text/css" href="/css/skin.css"/>
+    <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
+    <link href="../static/bootstrap/css/bootstrap.min.css" th:href="@{/static/bootstrap/css/bootstrap.min.css}"
+          rel="stylesheet"/>
+    <link rel="stylesheet" type="text/css" href="../static/css/skin.css" th:href="@{/static/css/skin.css}"/>
+    <link rel="stylesheet" type="text/css" href="../static/css/contact.css" th:href="@{/static/css/contact.css}"/>
+    <link rel="stylesheet" type="text/css" href="../static/chosen/chosen.min.css"
+          th:href="@{/static/chosen/chosen.min.css}"/>
 </head>
 <body>
-<div id="content">
-    <div th:include="fragments :: header"></div>
-    <h2 style="text-decoration: underline">Contact</h2>
+<div class="container">
+    <div class="col-md-12">
+        <div th:include="fragments :: title">
+            <h1 style="text-align: center;">Marius' Business</h1>
+        </div>
 
-    <div style="font-size: 1.2em; font-weight: bold; padding-bottom: 10px; padding-left: 20px;">
-    <div style="padding-left: 10px; border: solid 1px; width: 400px;">
-        <div th:text="${contact.name}">Tom Thumb</div>
-        <div th:text="${contact.address}">Somewhere over there</div>
-        <div th:text="${contact.telephone}">0123 45677889</div>
-    </div>
-    </div>
-    <div id="todo_form">
-        <form action="/contacts/todo" class="pure-form pure-form-aligned" method="POST">
-            <input type="hidden" name="contactId" th:value="${contact.id}"/>
-
-            <div class="pure-control-group">
-                <span style="font-style: italic; font-weight: bold">New todo</span>
-                <input type="date" placeholder="Start Date" id="date" name="date" tabindex="1" style="width : 130px;"/>
-                <input type="textarea" placeholder="Notes" id="notes" name="notes" tabindex="3"/>
-                <button id="saveButton" class="pure-button pure-button-primary" type="submit">Save</button>
+        <div class="col-md-2">
+            <div th:include="fragments :: menu">
+                <h4>Menu</h4>
             </div>
-        </form>
-        <form action="/contacts/order" class="pure-form pure-form-aligned" method="POST">
-            <input type="hidden" name="contactId" th:value="${contact.id}"/>
+        </div>
+        <div class="col-md-10">
+            <h2>Contact</h2>
 
-            <div class="pure-control-group">
-                <span style="font-style: italic; font-weight: bold">New order</span>
-                <input type="date" placeholder="Date" id="date" name="date" tabindex="4" style="width : 130px;"/>
-                <input type="number" placeholder="Amount" id="amount" tabindex="5" style="width : 60px;" value="1"/>
-                <select id="product" name="product" tabindex="6">
-                    <option th:each="product : ${products}" th:value="${product.id}"
-                            th:text="${product.name}">Some product
-                    </option>
-                </select>
-                <button id="saveButton" class="pure-button pure-button-primary" type="submit">Save</button>
+            <form action="/contacts/action" method="POST" class="pure-form pure-form-stacked contact">
+                <input type="hidden" name="contactId" th:value="${contact.id}"/>
+                <input type="text" id="name" name="name" th:value="${contact.name}"/>
+                <input type="text" id="address" name="address" th:value="${contact.address}"/>
+                <input type="text" id="postcode" name="postcode" th:value="${contact.postcode}"/>
+                <input type="text" id="telephone" name="telephone" th:value="${contact.telephone}"/>
+                <button id="updateButton" type="submit" name="action" value="update">Update</button>
+            </form>
+
+
+            <div class="panel-group" id="accordion">
+                <div class="panel panel-default">
+                    <div class="panel-heading accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion" data-target="#collapseOne">
+                        <h4 class="panel-title">Todos</h4>
+                    </div>
+                    <div id="collapseOne" class="panel-collapse collapsed">
+                        <div class="panel-body">
+
+                            <form action="/contacts/todo" class="pure-form pure-form-aligned" method="POST">
+                                <input type="hidden" name="contactId" th:value="${contact.id}"/>
+
+                                <div class="pure-control-group">
+                                    <input type="text" placeholder="Start Date" class="date" name="date"/>
+                                    <input type="textarea" placeholder="Notes" id="notes" name="notes"/>
+                                    <button id="saveButton" class="pure-button" type="submit">Add</button>
+                                </div>
+                            </form>
+                            <table class="pure-table pure-table-bordered pure-table-striped">
+                                <tr>
+                                    <th class="date" colspan="2">Date</th>
+                                    <th>Notes</th>
+                                </tr>
+                                <tr th:each="todo : ${todos}">
+                                    <td th:text="${#dates.format(todo.date,'MMMM')}"></td>
+                                    <td class="date" th:text="${#dates.format(todo.date,'EEEE dd')}"></td>
+                                    <td th:text="${todo.notes}"></td>
+                                </tr>
+                            </table>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="panel panel-default">
+                    <div class="panel-heading accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion" data-target="#collapseTwo">
+                        <h4 class="panel-title">Orders</h4>
+                    </div>
+                    <div id="collapseTwo" class="panel-collapse collapse in">
+                        <div class="panel-body">
+                            <div>
+                                <select id="product" data-placeholder="Choose a Product..."
+                                        class="chosen-select">
+                                    <option value=""></option>
+                                    <option value="99">XXX</option>
+                                    <option th:each="product : ${products}" th:value="${product.id}"
+                                            th:text="${product.name}">Some product
+                                    </option>
+                                </select>
+                                <button class="pure-button add_field_button">Add</button>
+                            </div>
+                            <form action="/contacts/order" class="pure-form pure-form-aligned" method="POST">
+                                <input type="hidden" name="contactId" th:value="${contact.id}"/>
+                                <div class="pure-control-group">
+                                    <div class="input_fields_wrap">
+                                    </div>
+                                    <button id="saveOrderButton" class="pure-button" type="submit">Save</button>
+                                </div>
+                            </form>
+                            <table class="pure-table pure-table-bordered pure-table-striped">
+                                <tr style="text-align: left">
+                                    <th class="date">Date</th>
+                                    <th>Product Name</th>
+                                    <th class="amount">Amount</th>
+                                </tr>
+                                <tr th:each="order : ${orders}">
+                                    <td class="date" th:text="${#dates.format(order.date,'dd/MM/yyyy')}"></td>
+                                    <td th:text="${order.name}"></td>
+                                    <td class="amount" th:text="${order.amount}"></td>
+                                </tr>
+                            </table>
+
+                        </div>
+                    </div>
+                </div>
             </div>
-        </form>
+
+        </div>
     </div>
-    <h2>Todos</h2>
-    <table class="pure-table pure-table-bordered pure-table-striped" style="width: 750px">
-        <tr style="text-align: left">
-            <th style="width: 120px">Start</th>
-            <th style="width: 120px">End</th>
-            <th style="width: 340px">Notes</th>
-        </tr>
-        <tr th:each="todo : ${todos}">
-            <td style="width: 120px" th:text="${#dates.format(todo.date,'dd/MM/yyyy')}"></td>
-            <td style="width: 340px" th:text="${todo.notes}"></td>
-        </tr>
-    </table>
-    <h2>Orders</h2>
-    <table class="pure-table pure-table-bordered pure-table-striped" style="width: 750px">
-        <tr style="text-align: left">
-            <th style="width: 100px">Date</th>
-            <th style="width: 300px">Product Name</th>
-            <th>Amount</th>
-        </tr>
-        <tr th:each="order : ${orders}">
-            <td style="width: 100px" th:text="${#dates.format(order.date,'dd/MM/yyyy')}"></td>
-            <td style="width: 300px" th:text="${order.name}"></td>
-            <td th:text="${order.amount}"></td>
-        </tr>
-    </table>
 </div>
+<!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>-->
+<script src="../static/jquery/jquery-1.10.2.min.js" th:href="@{/static/jquery/jquery-1.10.2.min.js}"></script>
+<script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+<script src="../static/bootstrap/js/bootstrap.min.js" th:href="@{/static/bootstrap/js/bootstrap.min.js}"></script>
+<script src="../static/chosen/chosen.jquery.min.js" th:href="@{/static/chosen/chosen.jquery.min.js}"></script>
+<script src="../static/js/contact.js" th:href="@{/static/js/contact.js}"></script>
+<script>
+    $(".chosen-select").chosen();
+    $( ".date" ).datepicker();
+    $("#saveOrderButton").hide();
+</script>
 </body>
 </html>
