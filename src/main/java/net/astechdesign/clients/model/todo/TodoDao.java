@@ -16,18 +16,17 @@ public class TodoDao extends Dao<Todo> {
     }
 
     public List<Todo> get() throws SQLException {
-        String sql = "SELECT t.id,t.contactId,t.date,t.notes,c.name FROM todos as t, contacts as c where t.contactId=c.id and t.date > ?";
-        return listQuery(sql, Todo.class, new DateTime().withTimeAtStartOfDay().toDate());
+        return get(new DateTime().withTimeAtStartOfDay().toDate());
     }
 
     public List<Todo> get(Date date) throws SQLException {
-        String sql = "SELECT t.id,t.contactId,t.date,t.notes,c.name FROM todos as t, contacts as c where t.contactId=c.id and t.date > ?";
+        String sql = "SELECT t.id,t.contactId,t.date,t.notes,c.name FROM todos as t, contacts as c where t.contactId=c.id and t.date >= ? order by t.date";
         return listQuery(sql, Todo.class, date);
     }
 
     public List<Todo> get(int id) throws SQLException {
-        String sql = "SELECT id,contactId,date,notes FROM todos where contactId=" + id;
-        return listQuery(sql, Todo.class);
+        String sql = "SELECT id,contactId,date,notes FROM todos where contactId=? order by date";
+        return listQuery(sql, Todo.class, id);
     }
 
     public void save(Todo todo) throws SQLException {

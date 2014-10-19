@@ -10,14 +10,6 @@ public class Todo {
     public final String notes;
     public final String name;
 
-//    public Todo(int id, int contactId, Date date, String notes) {
-//        this.id = id;
-//        this.contactId = contactId;
-//        this.date = date;
-//        this.notes = notes;
-//        this.name = "";
-//    }
-
     public Todo(int id, int contactId, Date date, String notes, String name) {
         this.id = id;
         this.contactId = contactId;

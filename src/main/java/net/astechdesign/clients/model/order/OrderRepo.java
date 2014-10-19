@@ -25,6 +25,7 @@ public class OrderRepo {
     private void saveOrder(Order order) throws SQLException {
         new OrdersDao(dataSource).save(order);
     }
+
     private List<Order> getOrders(int contactId) throws SQLException {
         return new OrdersDao(dataSource).get(contactId);
     }

@@ -16,10 +16,7 @@ import javax.ws.rs.core.MultivaluedMap;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Path("/contacts")
 @Produces(MediaType.TEXT_HTML)
@@ -76,11 +73,11 @@ public class ContactRequests {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         for (String id : productIds) {
             int productId = Integer.parseInt(id);
-            Date date = sdf.parse(formParams.getFirst("delivery_" + id));
+            Date deliveryDate = sdf.parse(formParams.getFirst("delivery_" + id));
             int amount = Integer.parseInt(formParams.getFirst("amount_" + id));
             String name = formParams.getFirst("name_" + id);
-            OrderRepo.save(new Order(contactId, productId, date, amount, "", ""));
-            TodoRepo.save(new Todo(0, contactId, date, "Delivery for: " + name, ""));
+            OrderRepo.save(new Order(contactId, productId, deliveryDate, amount, "", "", new Date()));
+            TodoRepo.save(new Todo(0, contactId, deliveryDate, "Delivery for: " + name, ""));
         }
         return contact(contactId);
     }
@@ -90,8 +87,34 @@ public class ContactRequests {
     public Viewable contact(@PathParam("id") int id) throws SQLException {
         Map<String, Object> data = new HashMap<>();
         data.put("contact", ContactRepo.get(id));
-        data.put("todos", TodoRepo.todos(id));
-        data.put("orders", OrderRepo.orders(id));
+        SimpleDateFormat sdf = new SimpleDateFormat("MMMM");
+
+        Map<String, List<Todo>> todoMap = new HashMap<>();
+        List<String> months = new ArrayList<>();
+        for (Todo todo : TodoRepo.todos()) {
+            String month = sdf.format(todo.date);
+            if (!todoMap.containsKey(month)) {
+                todoMap.put(month, new ArrayList<Todo>());
+                months.add(month);
+            }
+            todoMap.get(month).add(todo);
+        }
+        data.put("todos", todoMap);
+        data.put("todoMonths", months);
+
+        Map<String, List<Order>> orderMap = new HashMap<>();
+        months = new ArrayList<>();
+        for (Order order : OrderRepo.orders(id)) {
+            String month = sdf.format(order.deliveryDate);
+            if (!orderMap.containsKey(month)) {
+                orderMap.put(month, new ArrayList<Order>());
+                months.add(month);
+            }
+            orderMap.get(month).add(order);
+        }
+
+        data.put("orders", orderMap);
+        data.put("orderMonths", months);
         data.put("products", ProductRepo.products());
         return new Viewable("contact", data);
     }

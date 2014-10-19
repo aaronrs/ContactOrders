@@ -72,7 +72,7 @@ public class TestContactsRepo {
         Order order = new Order(Integer.parseInt(data[0]),Integer.parseInt(data[1]),new DateTime().withDate(
                 Integer.parseInt(data[5]), Integer.parseInt(data[1]),
                 Integer.parseInt(data[4])).toDate(),
-                1, null, null);
+                1, null, null, null);
         OrderRepo.save(order);
     }
 

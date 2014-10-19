@@ -31,6 +31,7 @@ $(document).ready(function () {
                 '<a href="#" class="remove_field">X</a>' +
                 '</div>'
         );
+
     });
 
     $(wrapper).on("click", ".remove_field", function (e) { //user click on remove text
@@ -41,7 +42,5 @@ $(document).ready(function () {
         e.preventDefault();
         $(this).parent('div').remove();
     })
-
-
 });
 

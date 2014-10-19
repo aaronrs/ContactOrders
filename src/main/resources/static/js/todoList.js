@@ -38,7 +38,7 @@ function requestTodos() {
     var xmlHttp = new XMLHttpRequest();
     xmlHttp.open("GET", "../contacts/todo", false);
     xmlHttp.send();
-    var json = "[{\"name\" : \"Fred\",\"date\" : \"01-02-2013\",\"end\" : \"01-02-2013\",\"notes\" : \"ABC\"}]"
+    var json = "[{\"name\" : \"Fred\",\"deliveryDate\" : \"01-02-2013\",\"end\" : \"01-02-2013\",\"notes\" : \"ABC\"}]"
     var jsonList = JSON.parse(json);
 //    var jsonList = JSON.parse(xmlHttp.responseText);
     var todoList = [];

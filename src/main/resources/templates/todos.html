@@ -23,16 +23,19 @@
             <h2>Todos</h2>
             <table class="pure-table pure-table-bordered pure-table-striped" style="width: 750px">
                 <tr style="text-align: left">
-                    <th style="width: 120px">Start</th>
+                    <th style="width: 120px" colspan="2">Start</th>
                     <th style="width: 150px">Contact</th>
                     <th style="width: 340px">Notes</th>
                 </tr>
-                <tr th:each="todo : ${todos}">
-                    <td style="width: 120px" th:text="${#dates.format(todo.date,'dd MMMM yyyy')}"></td>
-                    <td style="width: 150px"><a th:href="@{/contacts/{id}(id=${todo.contactId})}"
-                                                th:text="${todo.name}">Name</a></td>
-                    <td style="width: 340px" th:text="${todo.notes}"></td>
-                </tr>
+                <th:block th:each="month : ${months}">
+                    <tr th:each="todo,counter : ${todos[month]}">
+                        <td style="vertical-align: text-top" th:text="${month}" th:rowspan="${todos[month].size()}" th:if="${counter.first}">January</td>
+                        <td style="width: 120px" th:text="${#dates.format(todo.date,'EEEE dd')}"></td>
+                        <td style="width: 150px"><a th:href="@{/contacts/{id}(id=${todo.contactId})}"
+                                                    th:text="${todo.name}">Name</a></td>
+                        <td style="width: 340px" th:text="${todo.notes}"></td>
+                    </tr>
+                </th:block>
             </table>
         </div>
     </div>
