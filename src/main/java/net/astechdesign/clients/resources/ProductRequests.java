@@ -45,7 +45,9 @@ public class ProductRequests {
     public Viewable saveProduct(@FormParam("productId") int productId,
                      @FormParam("name") String name,
                      @FormParam("description") String description) throws SQLException {
-        ProductRepo.save(new Product(0, productId, name, description));
+        if (name.length() != 0 && ProductRepo.find(productId) == null) {
+            ProductRepo.save(new Product(0, productId, name.toUpperCase(), description));
+        }
         return products();
     }
 }

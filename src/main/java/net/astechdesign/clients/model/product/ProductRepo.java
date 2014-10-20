@@ -17,6 +17,10 @@ public class ProductRepo {
         instance.saveProduct(product);
     }
 
+    public static Product find(int productId) throws SQLException {
+        return instance.findProduct(productId);
+    }
+
     public static void delete(int productId) throws SQLException {
         instance.deleteProduct(productId);
     }
@@ -34,7 +38,13 @@ public class ProductRepo {
         return new ProductDao(dataSource).get();
     }
 
-    public void deleteProduct(int productId) throws SQLException {
+    private Product findProduct(int productId) throws SQLException {
+        return new ProductDao(dataSource).find(productId);
+    }
+
+    private void deleteProduct(int productId) throws SQLException {
         new ProductDao(dataSource).delete(productId);
     }
+
+
 }

@@ -5,11 +5,10 @@ import net.astechdesign.clients.model.todo.TodoRepo;
 import org.glassfish.jersey.server.mvc.Viewable;
 import org.joda.time.DateTime;
 
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import java.sql.SQLException;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -19,7 +18,7 @@ public class TodoRequests {
 
     @GET
     public Viewable todos() throws SQLException {
-        SimpleDateFormat sdf = new SimpleDateFormat("MMMM");
+        SimpleDateFormat sdf = new SimpleDateFormat("MMMM yyyy");
         Map<String, Object> data = new HashMap<>();
         Map<String, List<Todo>> todoMap = new HashMap<>();
         List<String> months = new ArrayList<>();
@@ -35,4 +34,14 @@ public class TodoRequests {
         data.put("months", months);
         return new Viewable("todos", data);
     }
+
+    @POST
+    @Path("/add")
+    public Viewable saveTodo(@FormParam("date") String date,
+                             @FormParam("notes") String notes) throws SQLException, ParseException {
+        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+        TodoRepo.save(new Todo(0, -1, sdf.parse(date), notes, ""));
+        return todos();
+    }
+
 }

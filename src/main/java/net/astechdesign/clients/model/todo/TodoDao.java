@@ -20,8 +20,11 @@ public class TodoDao extends Dao<Todo> {
     }
 
     public List<Todo> get(Date date) throws SQLException {
-        String sql = "SELECT t.id,t.contactId,t.date,t.notes,c.name FROM todos as t, contacts as c where t.contactId=c.id and t.date >= ? order by t.date";
-        return listQuery(sql, Todo.class, date);
+        String sql = "SELECT * FROM (" +
+                "SELECT t.id,t.contactId,t.date,t.notes,c.name FROM todos as t, contacts as c where t.contactId=c.id and t.date >= ? " +
+                " union SELECT id,-1 as contactId,date,notes,'' as name FROM todos where contactId=-1 and date >= ? )" +
+                " order by date";
+        return listQuery(sql, Todo.class, date, date);
     }
 
     public List<Todo> get(int id) throws SQLException {

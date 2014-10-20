@@ -4,13 +4,13 @@
     <meta charset="utf-8"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
-    <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
     <link href="../static/bootstrap/css/bootstrap.min.css" th:href="@{/static/bootstrap/css/bootstrap.min.css}"
-          rel="stylesheet"/>
+    rel="stylesheet"/>
     <link rel="stylesheet" type="text/css" href="../static/css/skin.css" th:href="@{/static/css/skin.css}"/>
-    <link rel="stylesheet" type="text/css" href="../static/css/contact.css" th:href="@{/static/css/contact.css}"/>
+    <link href="../static/css/jquery-ui.min.css" th:href="@{/static/css/jquery-ui.min.css}" rel="stylesheet"/>
     <link rel="stylesheet" type="text/css" href="../static/chosen/chosen.min.css"
           th:href="@{/static/chosen/chosen.min.css}"/>
+    <link rel="stylesheet" type="text/css" href="../static/css/contact.css" th:href="@{/static/css/contact.css}"/>
 </head>
 <body>
 <div class="container">
@@ -26,21 +26,15 @@
         </div>
         <div class="col-md-10">
             <h2>Contact</h2>
-            <h4 th:value="${contact.name}">Tom Thumb</h4>
-            <ul class="nav nav-tabs" role="tablist">
-                <li>
-                    <a href="#contact" role="tab" data-toggle="tab">Details</a>
-                </li>
-                <li>
-                    <a href="#todos" role="tab" data-toggle="tab">Todos</a>
-                </li>
-                <li class="active">
-                    <a href="#orders" role="tab" data-toggle="tab">Orders</a>
-                </li>
-            </ul>
+            <h4 th:text="${contact.name}">Tom Thumb</h4>
+            <div id="tabs">
+                <ul>
+                    <li><a href="#contact">Details</a></li>
+                    <li><a href="#todos">Todos</a></li>
+                    <li><a href="#orders">Orders</a></li>
+                </ul>
 
-            <div class="tab-content">
-                <div id="contact" class="tab-pane fade in">
+                <div id="contact">
                     <form action="/contacts/action" method="POST" class="pure-form pure-form-stacked contact">
                         <input type="hidden" name="name" th:value="${contact.name}"/>
                         <input type="hidden" name="contactId" th:value="${contact.id}"/>
@@ -50,7 +44,7 @@
                         <button id="updateButton" type="submit" name="action" value="update">Update</button>
                     </form>
                 </div>
-                <div id="todos" class="tab-pane fade in">
+                <div id="todos">
                     <form action="/contacts/todo" class="pure-form pure-form-aligned" method="POST">
                         <input type="hidden" name="contactId" th:value="${contact.id}"/>
 
@@ -75,13 +69,12 @@
                         </th:block>
                     </table>
                 </div>
-                <div id="orders" class="tab-pane fade in">
+                <div id="orders">
                     <div>
                         <select id="product" data-placeholder="Choose a Product..." class="chosen-select">
                             <option value=""></option>
                             <option th:each="product : ${products}" th:value="${product.id}"
-                                    th:text="${product.name}">Some product
-                            </option>
+                                    th:text="${product.name}">Some product</option>
                         </select>
                         <button class="pure-button add_field_button">Add</button>
                     </div>
@@ -111,18 +104,92 @@
 
                 </div>
             </div>
+
+
+<!--
+            <div class="tab-content">
+                <div id="contact" class="tab-pane fade in">
+                    <form action="/contacts/action" method="POST" class="pure-form pure-form-stacked contact">
+                        <input type="hidden" name="name" th:value="${contact.name}"/>
+                        <input type="hidden" name="contactId" th:value="${contact.id}"/>
+                        <input type="text" id="address" name="address" th:value="${contact.address}"/>
+                        <input type="text" id="postcode" name="postcode" th:value="${contact.postcode}"/>
+                        <input type="text" id="telephone" name="telephone" th:value="${contact.telephone}"/>
+                        <button id="updateButton" type="submit" name="action" value="update">Update</button>
+                    </form>
+                </div>
+                <div id="todos" class="tab-pane fade active in">
+                    <form action="/contacts/todo" class="pure-form pure-form-aligned" method="POST">
+                        <input type="hidden" name="contactId" th:value="${contact.id}"/>
+
+                        <div class="pure-control-group">
+                            <input type="text" placeholder="Start Date" class="date" name="date"/>
+                            <input type="textarea" placeholder="Notes" id="notes" name="notes"/>
+                            <button id="saveButton" class="pure-button" type="submit">Add</button>
+                        </div>
+                    </form>
+                    <table class="pure-table pure-table-bordered pure-table-striped">
+                        <tr>
+                            <th class="date" colspan="2">Date</th>
+                            <th>Notes</th>
+                        </tr>
+
+                        <th:block th:each="month : ${todoMonths}">
+                            <tr th:each="todo,counter : ${todos[month]}">
+                                <td style="vertical-align: text-top" th:text="${month}" th:rowspan="${todos[month].size()}" th:if="${counter.first}">January</td>
+                                <td class="date" th:text="${#dates.format(todo.date,'EEEE dd')}">Tuesday 03</td>
+                                <td th:text="${todo.notes}">Notes</td>
+                            </tr>
+                        </th:block>
+                    </table>
+                </div>
+                <div id="orders" class="tab-pane fade in">
+                    <div>
+                        <select id="product" data-placeholder="Choose a Product..." class="chosen-select">
+                            <option value=""></option>
+                            <option th:each="product : ${products}" th:value="${product.id}"
+                                    th:text="${product.name}">Some product</option>
+                        </select>
+                        <button class="pure-button add_field_button">Add</button>
+                    </div>
+                    <form action="/contacts/order" class="pure-form pure-form-aligned" method="POST">
+                        <input type="hidden" name="contactId" th:value="${contact.id}"/>
+                        <div class="pure-control-group">
+                            <div class="input_fields_wrap">
+                            </div>
+                            <button id="saveOrderButton" class="pure-button" type="submit">Save</button>
+                        </div>
+                    </form>
+                    <table class="pure-table pure-table-bordered pure-table-striped">
+                        <tr style="text-align: left">
+                            <th class="date" colspan="2">Date</th>
+                            <th>Product Name</th>
+                            <th class="amount">Amount</th>
+                        </tr>
+                        <th:block th:each="month : ${orderMonths}">
+                            <tr th:each="order,counter : ${orders[month]}">
+                                <td style="vertical-align: text-top" th:text="${month}" th:rowspan="${orders[month].size()}" th:if="${counter.first}">January</td>
+                                <td class="date" th:text="${#dates.format(order.deliveryDate,'EEEE dd')}"></td>
+                                <td th:text="${order.name}"></td>
+                                <td class="amount" th:text="${order.amount}"></td>
+                            </tr>
+                        </th:block>
+                    </table>
+
+                </div>
+            </div>
+-->
         </div>
     </div>
 </div>
-<!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>-->
-<script src="../static/jquery/jquery-1.10.2.min.js" th:href="@{/static/jquery/jquery-1.10.2.min.js}"></script>
-<script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+<script src="../static/jquery/jquery-1.11.1.min.js" th:href="@{/static/jquery/jquery-1.11.1.min.js}"></script>
+<script src="../static/jquery/jquery-ui-1.11.1.min.js" th:href="@{/static/jquery/jquery-ui-1.11.1.min.js}"></script>
 <script src="../static/bootstrap/js/bootstrap.min.js" th:href="@{/static/bootstrap/js/bootstrap.min.js}"></script>
 <script src="../static/chosen/chosen.jquery.min.js" th:href="@{/static/chosen/chosen.jquery.min.js}"></script>
 <script src="../static/js/contact.js" th:href="@{/static/js/contact.js}"></script>
 <script>
     $(".chosen-select").chosen();
-    $(".date").datepicker({ dateFormat: "D dd MM yy" });
+    $(".date").datepicker({ dateFormat: "dd-mm-yy" });
     $("#saveOrderButton").hide();
 </script>
 </body>

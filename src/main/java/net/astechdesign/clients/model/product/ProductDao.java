@@ -20,6 +20,11 @@ public class ProductDao extends Dao<Product> {
         return listQuery(sql, Product.class);
     }
 
+    public Product find(int productId) throws SQLException {
+        String sql = "SELECT * FROM products where productId=" + productId;
+        return query(sql, Product.class);
+    }
+
     public void save(Product product) throws SQLException {
         Map<String, Object> dataMap = new LinkedHashMap<>();
         dataMap.put("productId", product.productId);

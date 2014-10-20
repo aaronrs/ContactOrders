@@ -38,12 +38,18 @@ public class ContactRequests {
                                 @FormParam("telephone") Telephone tel,
                                 @FormParam("action") String action) throws SQLException {
         String val = name + address + postcode + tel;
-        if (action.equals("find") && val.trim().length() > 0) return findContacts(name, address, postcode, tel);
-        if (action.equals("update") && val.trim().length() > 0) {
-            ContactRepo.update(new Contact(id, name, address, postcode, tel));
-            return contact(id);
+        if (val.trim().length() > 0) {
+            if (action.equals("find")) {
+                return findContacts(name, address, postcode, tel);
+            }
+            if (action.equals("update")) {
+                ContactRepo.update(new Contact(id, name, address, postcode, tel));
+                return contact(id);
+            }
+            if (ContactRepo.find(name, "", "", new Telephone("")).size() == 0) {
+                ContactRepo.save(new Contact(id, name, address, postcode, tel));
+            }
         }
-        ContactRepo.save(new Contact(id, name, address, postcode, tel));
         return contacts();
     }
 
@@ -59,9 +65,10 @@ public class ContactRequests {
     @POST
     @Path("/todo")
     public Viewable saveTodo(@FormParam("contactId") int contactId,
-                             @FormParam("date") Date date,
-                             @FormParam("notes") String notes) throws SQLException {
-        TodoRepo.save(new Todo(0, contactId, date, notes, ""));
+                             @FormParam("date") String date,
+                             @FormParam("notes") String notes) throws SQLException, ParseException {
+        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+        TodoRepo.save(new Todo(0, contactId, sdf.parse(date), notes, ""));
         return contact(contactId);
     }
 
@@ -70,7 +77,7 @@ public class ContactRequests {
     public Viewable saveOrder(MultivaluedMap<String, String> formParams) throws SQLException, ParseException {
         int contactId = Integer.parseInt(formParams.getFirst("contactId"));
         List<String> productIds = formParams.get("productId");
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
         for (String id : productIds) {
             int productId = Integer.parseInt(id);
             Date deliveryDate = sdf.parse(formParams.getFirst("delivery_" + id));
@@ -87,11 +94,11 @@ public class ContactRequests {
     public Viewable contact(@PathParam("id") int id) throws SQLException {
         Map<String, Object> data = new HashMap<>();
         data.put("contact", ContactRepo.get(id));
-        SimpleDateFormat sdf = new SimpleDateFormat("MMMM");
+        SimpleDateFormat sdf = new SimpleDateFormat("MMMM yyyy");
 
         Map<String, List<Todo>> todoMap = new HashMap<>();
         List<String> months = new ArrayList<>();
-        for (Todo todo : TodoRepo.todos()) {
+        for (Todo todo : TodoRepo.todos(id)) {
             String month = sdf.format(todo.date);
             if (!todoMap.containsKey(month)) {
                 todoMap.put(month, new ArrayList<Todo>());
