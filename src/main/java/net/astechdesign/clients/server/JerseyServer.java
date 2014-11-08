@@ -8,6 +8,7 @@ import net.astechdesign.clients.model.todo.TodoRepo;
 import net.astechdesign.clients.repo.DBBuilder;
 import net.astechdesign.clients.resources.ContactRequests;
 import net.astechdesign.clients.resources.ProductRequests;
+import net.astechdesign.clients.resources.SystemRequests;
 import net.astechdesign.clients.resources.TodoRequests;
 import org.eclipse.jetty.server.Handler;
 import org.eclipse.jetty.server.Server;
@@ -24,6 +25,8 @@ import javax.sql.DataSource;
 
 public class JerseyServer {
 
+    public static Server server;
+
     public static void main(String[] args) throws Exception {
         initialiseApp();
 
@@ -32,6 +35,7 @@ public class JerseyServer {
         resourceConfig.register(new ProductRequests());
         resourceConfig.register(new ContactRequests());
         resourceConfig.register(new TodoRequests());
+        resourceConfig.register(new SystemRequests());
         resourceConfig.register(new ThymeLeafWriter());
 
         ServletContainer servletContainer = new ServletContainer(resourceConfig);
@@ -50,7 +54,7 @@ public class JerseyServer {
         HandlerCollection handlerCollection = new HandlerCollection();
         handlerCollection.setHandlers(new Handler[]{contextHandler, servletContextHandler});
 
-        Server server = new Server(8001);
+        server = new Server(8001);
         server.setHandler(handlerCollection);
 
         server.start();
