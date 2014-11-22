@@ -62,7 +62,7 @@ function saveOrder() {
     var productId = select.options[select.selectedIndex].value;
     if (productId == -1) return;
     var date = document.getElementById("orderDate").valueAsDate;
-    var data = "productId=" + productId +
+    var data = "code=" + productId +
         "&year=" + date.getFullYear() +
         "&month=" + date.getMonth() +
         "&day=" + date.getDate() +

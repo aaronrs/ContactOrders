@@ -52,6 +52,27 @@ public abstract class Dao<T> extends BasicRowProcessor {
         queryRunner().update(stringBuilder.toString(), dataMap.values().toArray());
     }
 
+    protected void replace(String table, Map<String, Object> dataMap, Map<String, Object> keyMap) throws SQLException {
+        StringBuilder stringBuilder = new StringBuilder("UPDATE ");
+        stringBuilder.append(table);
+        stringBuilder.append(" SET ");
+        List<String> values = new ArrayList<>();
+        for (Map.Entry entry : dataMap.entrySet()) {
+            values.add(entry.getKey() + "=" + "'" + entry.getValue() + "'");
+        }
+        stringBuilder.append(StringUtils.join(values,","));
+        stringBuilder.append(" where ");
+        int count = 0;
+        for (Map.Entry entry : keyMap.entrySet()) {
+            if (count > 0) {
+                stringBuilder.append(" AND ");
+            }
+            stringBuilder.append(entry.getKey() + "=" + entry.getValue());
+            count++;
+        }
+        queryRunner().update(stringBuilder.toString());
+    }
+
     protected void update(String sql, Object... values) throws SQLException {
         queryRunner().update(sql, values);
     }

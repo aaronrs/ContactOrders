@@ -10,13 +10,16 @@ import javafx.scene.layout.BorderPane;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class MainController implements Initializable {
+public class ContactsController implements Initializable {
 
     @FXML
     private BorderPane contentPane;
 
     @FXML
     private AnchorPane todosPane;
+
+    @FXML
+    private AnchorPane contactsPane;
 
     @FXML
     private AnchorPane detailsPane;
@@ -30,8 +33,7 @@ public class MainController implements Initializable {
     @FXML
     private Button productsBtn;
 
-    public AnchorPane productsPane;
-    public AnchorPane contactsPane;
+    public AnchorPane productPane;
 
     @FXML
     void selectTodos(ActionEvent event) {
@@ -71,11 +73,4 @@ public class MainController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
     }
 
-    public void showProducts() {
-        contentPane.setCenter(productsPane);
-    }
-
-    public void showContacts() {
-        contentPane.setCenter(contactsPane);
-    }
 }

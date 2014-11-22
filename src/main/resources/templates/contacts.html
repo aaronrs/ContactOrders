@@ -38,11 +38,13 @@
             </form>
             <table class="pure-table pure-table-bordered pure-table-striped">
                 <tr>
+                    <th>No.</th>
                     <th>Name</th>
                     <th>Address</th>
                     <th>Telephone</th>
                 </tr>
-                <tr th:each="contact : ${contacts}">
+                <tr th:each="contact,iter : ${contacts}">
+                    <td th:text="${iter.count}">0</td>
                     <td><a th:href="@{/contacts/{id}(id=${contact.id})}" th:text="${contact.name}">Marius The Fish Man!</a></td>
                     <td th:text="${contact.address}">Somewhere in the South East, HP8 4JT</td>
                     <td th:text="${contact.telephone}">01234 567890</td>
@@ -53,6 +55,5 @@
 </div>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 <script src="../static/bootstrap/js/bootstrap.min.js" th:href="@{/static/bootstrap/js/bootstrap.min.js}"></script>
-<script src="../static/js/predict.js" th:href="@{/static/js/predict.js}"></script>
 </body>
 </html>

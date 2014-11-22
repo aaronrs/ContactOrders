@@ -3,7 +3,7 @@ xmlHttp.open("GET", "/products/list", false);
 xmlHttp.send();
 var productList = JSON.parse(xmlHttp.responseText);
 
-productList = JSON.parse("{[\"\",\"\"]}");
+productList = JSON.parse('[{"":""}]');
 
 var form = document.getElementById("theForm");
 var resultsDiv = document.getElementById("results");

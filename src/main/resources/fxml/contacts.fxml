@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="635.0"
+            prefWidth="726.0" stylesheets="@fxml.css" xmlns="http://javafx.com/javafx/8"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="net.astechdesign.clients.gui.controllers.ContactsController">
+    <children>
+        <VBox prefHeight="347.0" prefWidth="726.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
+              AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <children>
+                <Label text="CONTACTS">
+                    <padding>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
+                    </padding>
+                </Label>
+                <HBox spacing="5.0">
+                    <children>
+                        <TextField promptText="Name"/>
+                        <TextField prefHeight="25.0" prefWidth="253.0" promptText="Address"/>
+                        <TextField prefHeight="25.0" prefWidth="83.0" promptText="Postcode"/>
+                        <TextField prefHeight="25.0" prefWidth="96.0" promptText="Telephone"/>
+                        <Button mnemonicParsing="false" text="ADD"/>
+                    </children>
+                    <VBox.margin>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
+                    </VBox.margin>
+                </HBox>
+                <HBox spacing="5.0">
+                    <children>
+                        <Button mnemonicParsing="false" text="FIND"/>
+                    </children>
+                    <VBox.margin>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
+                    </VBox.margin>
+                </HBox>
+                <TableView prefHeight="326.0" prefWidth="716.0" VBox.vgrow="ALWAYS">
+                    <columns>
+                        <TableColumn prefWidth="75.0" text="NAME"/>
+                        <TableColumn prefWidth="407.0" text="ADDRESS"/>
+                        <TableColumn prefWidth="105.0" text="TELEPHONE"/>
+                    </columns>
+                    <VBox.margin>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
+                    </VBox.margin>
+                </TableView>
+            </children>
+        </VBox>
+    </children>
+</AnchorPane>

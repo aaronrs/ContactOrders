@@ -27,23 +27,24 @@
             <div>
                 <form action="/products/add" class="pure-form" method="POST">
                     <div class="pure-control-group">
-                        <input id="productId" type="text" placeholder="Product Id" name="productId" maxlength="4"/>
-                        <input id="name" type="text" placeholder="Name" name="name" maxlength="50"/>
-                        <button type="submit" class="pure-button">Add
-                        </button>
+                        <input type="hidden" name="id" th:value="${product} ? ${product.id} : '0'"/>
+                        <input id="code" type="text" placeholder="Code" name="code" maxlength="10" th:value="${product} ? ${product.code} : ''"/>
+                        <input id="name" type="text" placeholder="Name" name="name" maxlength="50" th:value="${product} ? ${product.name} : ''"/>
+                        <button type="submit" class="pure-button">Add/Replace</button>
                     </div>
                 </form>
             </div>
             <table class="pure-table pure-table-bordered pure-table-striped">
                 <tr>
-                    <th>Id</th>
+                    <th>Code</th>
                     <th>Name</th>
-                    <th></th>
+                    <th colspan="2"></th>
                 </tr>
                 <tr th:each="product : ${products}">
-                    <td class="id" th:text="${product.productId}">1111</td>
+                    <td class="id" th:text="${product.code}">MKL</td>
                     <td class="name" th:text="${product.name}">Soup</td>
-                    <td><a th:href="@{/products/delete/{id}(id=${product.productId})}">Del</a></td>
+                    <td><a th:href="@{/products/edit/{id}(id=${product.id})}">Edit</a></td>
+                    <td><a th:href="@{/products/delete/{id}(id=${product.id})}">Del</a></td>
                 </tr>
             </table>
         </div>

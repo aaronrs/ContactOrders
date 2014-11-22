@@ -76,14 +76,14 @@ public class ContactRequests {
     @Path("/order")
     public Viewable saveOrder(MultivaluedMap<String, String> formParams) throws SQLException, ParseException {
         int contactId = Integer.parseInt(formParams.getFirst("contactId"));
-        List<String> productIds = formParams.get("productId");
+        List<String> ids = formParams.get("id");
         SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
-        for (String id : productIds) {
+        for (String id : ids) {
             int productId = Integer.parseInt(id);
             Date deliveryDate = sdf.parse(formParams.getFirst("delivery_" + id));
             int amount = Integer.parseInt(formParams.getFirst("amount_" + id));
             String name = formParams.getFirst("name_" + id);
-            OrderRepo.save(new Order(contactId, productId, deliveryDate, amount, "", "", new Date()));
+            OrderRepo.save(new Order(contactId, productId, deliveryDate, amount, "", new Date()));
             TodoRepo.save(new Todo(0, contactId, deliveryDate, "Delivery for: " + name, ""));
         }
         return contact(contactId);

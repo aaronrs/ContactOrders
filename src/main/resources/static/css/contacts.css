@@ -1,11 +1,19 @@
 table {
     width: 650px;
 }
+/* no. */
+table th, table td {
+    width: 30px;
+}
+/* name */
 table th + th, table td + td {
-    width: 350px;
+    width: 170px;
 }
 table th + th + th, table td + td + td {
-    width: 120px;
+    width: 340px;
+}
+table th + th + th + th, table td + td + td + td {
+    width: 110px;
 }
 .fields {
     padding-bottom: 5px;

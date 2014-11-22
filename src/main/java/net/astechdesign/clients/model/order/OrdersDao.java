@@ -17,9 +17,9 @@ public class OrdersDao extends Dao<Order> {
     }
 
     public List<Order> get(int contactId) throws SQLException {
-        String sql = "SELECT o.contactId,o.productId,o.createDate,o.deliveryDate,o.amount,p.name,p.description " +
+        String sql = "SELECT o.contactId,o.productId,o.createDate,o.deliveryDate,o.amount,p.name,p.price " +
                 "FROM orders as o, products as p where o.productId=p.id " +
-                "and contactId=? order by o.deliveryDate";
+                "and o.contactId=? order by o.deliveryDate";
         return listQuery(sql, Order.class, contactId);
     }
 
@@ -46,7 +46,6 @@ public class OrdersDao extends Dao<Order> {
         int amount = rs.getInt("amount");
         int productId = rs.getInt("productId");
         String name = rs.getString("name");
-        String description = rs.getString("description");
-        return (T)new Order(contactId, productId, deliveryDate, amount, name, description, createDate);
+        return (T)new Order(contactId, productId, deliveryDate, amount, name, createDate);
     }
 }

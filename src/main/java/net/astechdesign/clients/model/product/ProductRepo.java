@@ -17,12 +17,15 @@ public class ProductRepo {
         instance.saveProduct(product);
     }
 
-    public static Product find(int productId) throws SQLException {
-        return instance.findProduct(productId);
+    public static Product findByName(String name) throws SQLException {
+        return instance.findProductByName(name);
+    }
+    public static Product find(int id) throws SQLException {
+        return instance.findProduct(id);
     }
 
-    public static void delete(int productId) throws SQLException {
-        instance.deleteProduct(productId);
+    public static void delete(int id) throws SQLException {
+        instance.deleteProduct(id);
     }
 
     public ProductRepo(DataSource dataSource) {
@@ -38,13 +41,15 @@ public class ProductRepo {
         return new ProductDao(dataSource).get();
     }
 
-    private Product findProduct(int productId) throws SQLException {
-        return new ProductDao(dataSource).find(productId);
+    private Product findProduct(int id) throws SQLException {
+        return new ProductDao(dataSource).find(id);
     }
 
-    private void deleteProduct(int productId) throws SQLException {
-        new ProductDao(dataSource).delete(productId);
+    private Product findProductByName(String name) throws SQLException {
+        return new ProductDao(dataSource).findByName(name);
     }
 
-
+    private void deleteProduct(int id) throws SQLException {
+        new ProductDao(dataSource).delete(id);
+    }
 }

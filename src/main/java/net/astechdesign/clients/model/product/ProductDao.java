@@ -20,29 +20,44 @@ public class ProductDao extends Dao<Product> {
         return listQuery(sql, Product.class);
     }
 
-    public Product find(int productId) throws SQLException {
-        String sql = "SELECT * FROM products where productId=" + productId;
+    public Product find(int id) throws SQLException {
+        String sql = "SELECT * FROM products where id=" + id;
+        return query(sql, Product.class);
+    }
+
+    public Product findByName(String name) throws SQLException {
+        String sql = "SELECT * FROM products where name='" + name + "'";
         return query(sql, Product.class);
     }
 
     public void save(Product product) throws SQLException {
-        Map<String, Object> dataMap = new LinkedHashMap<>();
-        dataMap.put("productId", product.productId);
-        dataMap.put("name", product.name);
-        dataMap.put("description", product.description);
-        save("products", dataMap);
+        if (ProductRepo.findByName(product.getName()) == null) {
+            Map<String, Object> dataMap = new LinkedHashMap<>();
+            dataMap.put("code", product.getCode());
+            dataMap.put("name", product.getName());
+            dataMap.put("price", product.getPrice());
+            save("products", dataMap);
+        } else {
+            Map<String, Object> keyMap = new LinkedHashMap<>();
+            keyMap.put("id", product.getId());
+            Map<String, Object> dataMap = new LinkedHashMap<>();
+            dataMap.put("code", product.getCode());
+            dataMap.put("name", product.getName());
+            dataMap.put("price", product.getPrice());
+            replace("products", dataMap, keyMap);
+        }
+    }
+
+    public void delete(int id) throws SQLException {
+        update("delete from products where id = ?", id);
     }
 
     @Override
     public <T> T toBean(ResultSet rs, Class<T> type) throws SQLException {
         int id = rs.getInt("id");
-        int productId = rs.getInt("productId");
+        String productId = rs.getString("code");
         String name = rs.getString("name");
-        String description = rs.getString("description");
-        return (T)new Product(id, productId, name, description);
-    }
-
-    public void delete(int productId) throws SQLException {
-        update("delete from products where productId = ?", productId);
+        String price = rs.getString("price");
+        return (T)new Product(id, productId, name, price);
     }
 }

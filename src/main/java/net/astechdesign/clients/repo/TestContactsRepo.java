@@ -20,7 +20,7 @@ import java.util.List;
 public class TestContactsRepo {
 
     private static boolean initialised = false;
-    private static int oldProId;
+    private static String oldProId;
 
     public static void init() throws Exception {
         if (initialised) return;
@@ -41,15 +41,16 @@ public class TestContactsRepo {
     }
 
     private static void createProduct(String[] data) {
-
-
-        int productId = Integer.parseInt(data[0]);
-        if (productId == oldProId) return;
-        oldProId = productId;
-        Product product = new Product(0, productId, data[2], "");
+        String name = data[0];
+        String code = "";
+        for (String val :name.split(" ")) {
+            code += val.substring(0,1);
+        }
+        Product product = new Product(0, code, name, data[1]);
         try {
             ProductRepo.save(product);
         } catch (SQLException e) {
+            e.printStackTrace();
         }
     }
 
@@ -72,7 +73,7 @@ public class TestContactsRepo {
         Order order = new Order(Integer.parseInt(data[0]),Integer.parseInt(data[1]),new DateTime().withDate(
                 Integer.parseInt(data[5]), Integer.parseInt(data[1]),
                 Integer.parseInt(data[4])).toDate(),
-                1, null, null, null);
+                1, null, null);
         OrderRepo.save(order);
     }
 

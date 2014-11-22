@@ -12,7 +12,8 @@ $(document).ready(function () {
             $("#saveOrderButton").show();
         }
         var val = $("#product option:selected").attr("value");
-        var txt = $("#product option:selected").text();
+        var txt = $("#product option:selected").text().split(":")[1];
+        if (txt === undefined) return;
 
         var d = new Date();
         var monthNum = d.getMonth() + 1;
@@ -24,7 +25,7 @@ $(document).ready(function () {
 
         $(wrapper).append(
                 '<div>' +
-                '<input type="hidden" name="productId" value="' + val + '"/>' +
+                '<input type="hidden" name="id" value="' + val + '"/>' +
                 '<input style="width:300px;" type="text" name="name_' + val + '" value="' + txt + '"/>' +
                 '<input type="number" placeholder="Amount" class="amount" name="amount_' + val + '" value="1"/>' +
                 'Delivery: <input type="text" placeholder="Date" class="date" name="delivery_' + val + '" value="' + output + '"/>' +
