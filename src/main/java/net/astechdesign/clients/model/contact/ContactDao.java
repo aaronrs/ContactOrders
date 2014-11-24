@@ -55,11 +55,11 @@ public class ContactDao extends Dao<Contact> {
         String sql = "UPDATE contacts set " +
                 StringUtils.join(CONTACT_COLUMNS, "=?,") +
                 "=? WHERE id=?";
-        Object[] values = {contact.name,
-                contact.address,
-                contact.postcode,
-                contact.telephone.number,
-                contact.id
+        Object[] values = {contact.getName(),
+                contact.getAddress(),
+                contact.getPostcode(),
+                contact.getTelephone().number,
+                contact.getId()
         };
         update(sql, values);
     }
@@ -70,10 +70,10 @@ public class ContactDao extends Dao<Contact> {
                 "VALUES (?" +
                 StringUtils.repeat(",?", CONTACT_COLUMNS.length - 1) +
                 ")";
-        Object[] values = {contact.name,
-                contact.address,
-                contact.postcode,
-                contact.telephone.number
+        Object[] values = {contact.getName(),
+                contact.getAddress(),
+                contact.getPostcode(),
+                contact.getTelephone().number
         };
         update(sql, values);
     }

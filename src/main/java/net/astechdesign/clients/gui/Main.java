@@ -9,6 +9,7 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import net.astechdesign.clients.db.HsqlServerRunner;
+import net.astechdesign.clients.gui.controllers.ContactsController;
 import net.astechdesign.clients.gui.controllers.MainController;
 import net.astechdesign.clients.model.contact.ContactRepo;
 import net.astechdesign.clients.model.order.OrderRepo;
@@ -28,18 +29,29 @@ public class Main extends Application {
     public void start(Stage primaryStage) throws Exception {
         initialiseApp();
         ClassLoader classLoader = Main.class.getClassLoader();
-        FXMLLoader fxmlLoader = new FXMLLoader(classLoader.getResource("fxml/main.fxml"));
-        VBox main = fxmlLoader.load();
-        MainController mainController = fxmlLoader.getController();
+        FXMLLoader mainLoader = new FXMLLoader(classLoader.getResource("fxml/main.fxml"));
+        VBox main = mainLoader.load();
+        MainController mainController = mainLoader.getController();
 
         FXMLLoader productsLoader = new FXMLLoader(classLoader.getResource("fxml/products.fxml"));
         AnchorPane productsPane = productsLoader.load();
         mainController.productsPane = productsPane;
-        mainController.showProducts();
 
         FXMLLoader contactsLoader = new FXMLLoader(classLoader.getResource("fxml/contacts.fxml"));
         AnchorPane contactsPane = contactsLoader.load();
+        ContactsController contactsController = contactsLoader.getController();
+        contactsController.mainController = mainController;
         mainController.contactsPane = contactsPane;
+
+        FXMLLoader detailsLoader = new FXMLLoader(classLoader.getResource("fxml/details.fxml"));
+        AnchorPane detailsPane = detailsLoader.load();
+        mainController.detailsPane = detailsPane;
+//
+//        FXMLLoader todosLoader = new FXMLLoader(classLoader.getResource("fxml/todos.fxml"));
+//        AnchorPane todosPane = todosLoader.load();
+//        mainController.todosPane = todosPane;
+//        mainController.showTodos();
+
         mainController.showContacts();
 
         primaryStage.setScene(new Scene(main, main.getPrefWidth(), main.getPrefHeight()));

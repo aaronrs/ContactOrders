@@ -104,15 +104,12 @@ public class ProductsController implements Initializable {
     }
 
     private void updateProductTable() {
-        List<Product> productList = null;
         try {
-            productList = ProductRepo.products();
+            List<Product> productList = ProductRepo.products();
+            productsTable.setItems(FXCollections.observableArrayList(productList));
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        productsList = FXCollections.observableArrayList();
-        productsList.addAll(productList);
-        productsTable.setItems(productsList);
     }
 
     private class ButtonCell extends TableCell<Product, Boolean> {
@@ -122,7 +119,13 @@ public class ProductsController implements Initializable {
             cellButton.setOnAction(new EventHandler<ActionEvent>() {
                 @Override
                 public void handle(ActionEvent event) {
-                    productsList.remove(productsTable.getItems().get(getIndex()));
+                    Product product = (Product)productsTable.getItems().get(getIndex());
+                    try {
+                        ProductRepo.delete(product.getId());
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
+                    updateProductTable();
                 }
             });
         }

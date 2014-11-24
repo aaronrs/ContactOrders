@@ -10,7 +10,7 @@ import javafx.scene.layout.BorderPane;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class MainController implements Initializable {
+public class DetailsController implements Initializable {
 
     @FXML
     private BorderPane contentPane;
