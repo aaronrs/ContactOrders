@@ -18,7 +18,7 @@ public class ContactDao extends Dao<Contact> {
     }
 
     public List<Contact> getContacts() throws SQLException {
-        String sql = "SELECT * FROM contacts";
+        String sql = "SELECT * FROM contacts WHERE active = true";
         return listQuery(sql, Contact.class);
     }
 
@@ -37,8 +37,8 @@ public class ContactDao extends Dao<Contact> {
             map.put("lower(telephone)", search(tel));
         }
 
-        String sql = "SELECT * FROM contacts WHERE ";
-        sql += StringUtils.join(map.keySet(), " like ? or ") + " like ?";
+        String sql = "SELECT * FROM contacts WHERE active = true and (";
+        sql += StringUtils.join(map.keySet(), " like ? or ") + " like ?)";
         return listQuery(sql, Contact.class, map.values().toArray());
     }
 
@@ -78,9 +78,14 @@ public class ContactDao extends Dao<Contact> {
         update(sql, values);
     }
 
-
     @Override
     public <T> T toBean(ResultSet rs, Class<T> type) throws SQLException {
         return (T)new Contact(rs.getInt("id"), rs.getString("name"), rs.getString("address"), rs.getString("postcode"), new Telephone(rs.getString("telephone")));
+    }
+
+    public void delete(int id) throws SQLException {
+        String sql = "UPDATE contacts set active = false WHERE id=?";
+        Object[] values = {id};
+        update(sql, values);
     }
 }

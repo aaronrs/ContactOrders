@@ -1,8 +1,9 @@
 package net.astechdesign.clients.model.contact;
 
 import javafx.beans.property.*;
+import net.astechdesign.clients.model.Item;
 
-public class Contact {
+public class Contact implements Item {
 
     public final IntegerProperty id;
     public final StringProperty name;

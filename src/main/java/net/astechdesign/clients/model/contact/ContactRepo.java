@@ -29,6 +29,10 @@ public class ContactRepo {
         instance.updateContact(contact);
     }
 
+    public static void delete(int id) throws SQLException {
+        instance.deleteContact(id);
+    }
+
     public ContactRepo(DataSource dataSource) {
         this.dataSource = dataSource;
         instance = this;
@@ -52,8 +56,13 @@ public class ContactRepo {
         return new ContactDao(dataSource).getContacts();
     }
 
-    public List<Contact> findContacts(String name, String address, String postcode, String tel) throws SQLException {
+    private List<Contact> findContacts(String name, String address, String postcode, String tel) throws SQLException {
         ContactDao contactDao = new ContactDao(dataSource);
         return contactDao.find(name, address, postcode, tel);
+    }
+
+    private void deleteContact(int id) throws SQLException {
+        ContactDao contactDao = new ContactDao(dataSource);
+        contactDao.delete(id);
     }
 }

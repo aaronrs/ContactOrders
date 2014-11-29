@@ -4,8 +4,9 @@ import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
+import net.astechdesign.clients.model.Item;
 
-public class Product {
+public class Product implements Item {
 
     public final IntegerProperty id;
     public final StringProperty code;

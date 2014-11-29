@@ -3,82 +3,81 @@ package net.astechdesign.clients.gui.controllers;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
+import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.VBox;
+import net.astechdesign.clients.model.contact.Contact;
+import net.astechdesign.clients.model.contact.ContactRepo;
+import net.astechdesign.clients.model.order.Order;
+import net.astechdesign.clients.model.todo.Todo;
 
 import java.net.URL;
+import java.sql.SQLException;
 import java.util.ResourceBundle;
 
 public class DetailsController implements Initializable {
 
-    @FXML
-    private BorderPane contentPane;
+    private Contact contact;
 
     @FXML
-    private Button todosBtn;
+    private Label name;
 
     @FXML
-    private Button contactsBtn;
+    private AnchorPane detailsTabPane;
 
     @FXML
-    private Button productsBtn;
-
-    public AnchorPane productsPane;
-    public AnchorPane contactsPane;
-    public AnchorPane detailsPane;
-    public AnchorPane todosPane;
+    private AnchorPane todosTabPane;
 
     @FXML
-    void selectTodos(ActionEvent event) {
-        showAll();
+    private AnchorPane ordersTabPane;
 
-        todosBtn.setDisable(true);
+    @FXML
+    private TextField todoNotes;
+
+    @FXML
+    private DatePicker todoDate;
+
+    @FXML
+    private TableView<Todo> todoTable;
+
+    @FXML
+    private TableView<Order> orderTable;
+
+    @FXML
+    void addTodo(ActionEvent event) {
     }
 
     @FXML
-    void selectContacts(ActionEvent event) {
-        showAll();
-        showContacts();
-        contactsBtn.setDisable(true);
+    void addProduct(ActionEvent event) {
     }
 
     @FXML
-    void selectProducts(ActionEvent event) {
-        showAll();
-        showProducts();
-        productsBtn.setDisable(true);
-    }
-
-    @FXML
-    void exitAction(ActionEvent event) {
-        System.exit(0);
-    }
-
-    private void showAll() {
-        todosBtn.setDisable(false);
-        contactsBtn.setDisable(false);
-        productsBtn.setDisable(false);
+    void saveOrder(ActionEvent event) {
     }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        newOrderDialog.setVisible(false);
+        selectContact(0);
     }
 
-    public void showProducts() {
-        contentPane.setCenter(productsPane);
+    public Contact selectContact(int id) {
+        try {
+            contact = ContactRepo.get(id);
+            name.setText(contact.getName());
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return contact;
     }
 
-    public void showContacts() {
-        contentPane.setCenter(contactsPane);
-    }
+    @FXML
+    private AnchorPane newOrderDialog;
 
-    public void showDetails(int id) {
-        showAll();
-        contentPane.setCenter(detailsPane);
-    }
+    @FXML
+    private ListView newOrderList;
 
-    public void showTodos() {
-        contentPane.setCenter(todosPane);
+    public void setContactDetailsPane(VBox contactDetailsPane) {
+        detailsTabPane.getChildren().add(contactDetailsPane);
     }
 }

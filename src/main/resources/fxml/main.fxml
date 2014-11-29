@@ -6,7 +6,7 @@
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="635.0" prefWidth="726.0" stylesheets="@fxml.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="net.astechdesign.clients.gui.controllers.MainController">
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="810.0" prefWidth="900.0" stylesheets="@fxml.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="net.astechdesign.clients.gui.controllers.MainController">
    <children>
       <HBox alignment="CENTER">
          <children>
@@ -29,205 +29,7 @@
             <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
          </VBox.margin>
       </HBox>
-      <BorderPane fx:id="contentPane" prefHeight="380.0" prefWidth="600.0" VBox.vgrow="ALWAYS">
-         <center>
-            <StackPane>
-               <children>
-                  <AnchorPane fx:id="detailsPane" prefHeight="200.0" prefWidth="200.0" visible="false">
-                     <children>
-                        <VBox prefHeight="347.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                           <children>
-                              <Label text="NAME">
-                                 <padding>
-                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                                 </padding>
-                              </Label>
-                              <TabPane layoutX="25.0" layoutY="32.0" prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE" VBox.vgrow="ALWAYS">
-                                <tabs>
-                                  <Tab text="Details">
-                                    <content>
-                                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-                                             <children>
-                                                <VBox layoutX="14.0" layoutY="14.0" prefHeight="200.0" prefWidth="329.0" spacing="10.0">
-                                                   <children>
-                                                      <TextField promptText="Address" />
-                                                      <TextField promptText="Postcode" />
-                                                      <TextField prefHeight="25.0" prefWidth="178.0" promptText="Telephone" />
-                                                      <Button mnemonicParsing="false" text="UPDATE" />
-                                                   </children>
-                                                </VBox>
-                                             </children>
-                                          </AnchorPane>
-                                    </content>
-                                  </Tab>
-                                  <Tab text="Todos">
-                                    <content>
-                                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-                                             <children>
-                                                <VBox layoutX="93.0" layoutY="14.0" prefHeight="289.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-                                                <VBox layoutX="10.0" layoutY="10.0" prefHeight="289.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                                                   <children>
-                                                      <HBox spacing="5.0">
-                                                         <children>
-                                                            <TextField prefHeight="25.0" prefWidth="417.0" promptText="Notes" />
-                                                            <DatePicker prefHeight="25.0" prefWidth="112.0" promptText="Date" />
-                                                            <Button mnemonicParsing="false" text="ADD" />
-                                                         </children>
-                                                         <padding>
-                                                            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                                                         </padding>
-                                                      </HBox>
-                                                      <TableView prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
-                                                         <columns>
-                                                            <TableColumn prefWidth="109.0" text="DATE" />
-                                                            <TableColumn prefWidth="350.0" text="NOTES" />
-                                                         </columns>
-                                                         <VBox.margin>
-                                                            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                                                         </VBox.margin>
-                                                      </TableView>
-                                                   </children>
-                                                </VBox>
-                                             </children>
-                                          </AnchorPane>
-                                    </content>
-                                  </Tab>
-                                    <Tab text="Orders">
-                                      <content>
-                                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-                                             <children>
-                                                <StackPane prefHeight="289.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                                                   <children>
-                                                      <AnchorPane prefHeight="200.0" prefWidth="200.0">
-                                                         <children>
-                                                            <VBox prefHeight="437.0" prefWidth="716.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                                                               <children>
-                                                                  <Button mnemonicParsing="false" text="ADD">
-                                                                     <VBox.margin>
-                                                                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                                                                     </VBox.margin>
-                                                                  </Button>
-                                                                  <TableView prefHeight="398.0" prefWidth="685.0" VBox.vgrow="ALWAYS">
-                                                                    <columns>
-                                                                      <TableColumn prefWidth="75.0" text="DATE" />
-                                                                      <TableColumn prefWidth="471.0" text="PRODUCT NAME" />
-                                                                        <TableColumn prefWidth="44.0" text="NO." />
-                                                                    </columns>
-                                                                     <VBox.margin>
-                                                                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                                                                     </VBox.margin>
-                                                                  </TableView>
-                                                               </children>
-                                                            </VBox>
-                                                         </children>
-                                                      </AnchorPane>
-                                                      <AnchorPane prefHeight="200.0" prefWidth="200.0" visible="false">
-                                                         <children>
-                                                            <VBox layoutX="94.0" prefHeight="289.0" prefWidth="600.0" spacing="5.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                                                               <padding>
-                                                                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                                                               </padding>
-                                                               <children>
-                                                                  <HBox spacing="5.0">
-                                                                     <children>
-                                                                        <TextField prefHeight="25.0" prefWidth="94.0" />
-                                                                        <ComboBox prefHeight="25.0" prefWidth="432.0" HBox.hgrow="ALWAYS" />
-                                                                        <Button mnemonicParsing="false" text="ADD" />
-                                                                     </children>
-                                                                  </HBox>
-                                                                  <Button mnemonicParsing="false" text="SAVE" />
-                                                                  <ListView prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS" />
-                                                               </children>
-                                                            </VBox>
-                                                         </children>
-                                                      </AnchorPane>
-                                                   </children>
-                                                </StackPane>
-                                             </children>
-                                          </AnchorPane>
-                                      </content>
-                                    </Tab>
-                                </tabs>
-                              </TabPane>
-                           </children>
-                        </VBox>
-                     </children>
-                  </AnchorPane>
-                  <AnchorPane fx:id="contactsPane" visible="false">
-                     <children>
-                        <VBox prefHeight="347.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                           <children>
-                              <Label text="CONTACTS">
-                                 <padding>
-                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                                 </padding>
-                              </Label>
-                              <HBox spacing="5.0">
-                                 <children>
-                                    <TextField promptText="Name" />
-                                    <TextField prefHeight="25.0" prefWidth="253.0" promptText="Address" />
-                                    <TextField prefHeight="25.0" prefWidth="83.0" promptText="Postcode" />
-                                    <TextField prefHeight="25.0" prefWidth="96.0" promptText="Telephone" />
-                                 </children>
-                                 <VBox.margin>
-                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                                 </VBox.margin>
-                              </HBox>
-                              <HBox spacing="5.0">
-                                 <children>
-                                    <Button mnemonicParsing="false" text="ADD" />
-                                    <Button mnemonicParsing="false" text="FIND" />
-                                 </children>
-                                 <VBox.margin>
-                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                                 </VBox.margin>
-                              </HBox>
-                              <TableView VBox.vgrow="ALWAYS">
-                                <columns>
-                                  <TableColumn prefWidth="75.0" text="NAME" />
-                                  <TableColumn prefWidth="407.0" text="ADDRESS" />
-                                    <TableColumn prefWidth="105.0" text="TELEPHONE" />
-                                </columns>
-                                 <VBox.margin>
-                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                                 </VBox.margin>
-                              </TableView>
-                           </children>
-                        </VBox>
-                     </children>
-                  </AnchorPane>
-                  <AnchorPane fx:id="todosPane" prefHeight="200.0" prefWidth="200.0" visible="false" BorderPane.alignment="CENTER">
-                     <children>
-                        <VBox prefHeight="347.0" prefWidth="600.0" spacing="5.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                           <children>
-                              <Label text="TODOS" />
-                              <HBox spacing="5.0">
-                                 <children>
-                                    <TextField prefHeight="25.0" prefWidth="550.0" promptText="Notes" />
-                                    <DatePicker prefHeight="25.0" prefWidth="137.0" promptText="Date" />
-                                    <Button mnemonicParsing="false" prefHeight="25.0" prefWidth="63.0" text="ADD" />
-                                 </children>
-                              </HBox>
-                              <TableView VBox.vgrow="ALWAYS">
-                                <columns>
-                                  <TableColumn prefWidth="109.0" text="DATE" />
-                                  <TableColumn minWidth="0.0" prefWidth="138.0" text="CONTACT" />
-                                    <TableColumn prefWidth="350.0" text="NOTES" />
-                                </columns>
-                                 <VBox.margin>
-                                    <Insets />
-                                 </VBox.margin>
-                              </TableView>
-                           </children>
-                           <padding>
-                              <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                           </padding>
-                        </VBox>
-                     </children>
-                  </AnchorPane>
-               </children>
-            </StackPane>
-         </center>
+      <BorderPane fx:id="contentPane" VBox.vgrow="ALWAYS">
          <bottom>
             <HBox>
                <children>
@@ -241,9 +43,6 @@
                </padding>
             </HBox>
          </bottom>
-         <padding>
-            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-         </padding>
       </BorderPane>
    </children>
 </VBox>

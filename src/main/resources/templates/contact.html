@@ -96,7 +96,7 @@
                             <tr th:each="order,counter : ${orders[month]}">
                                 <td style="vertical-align: text-top" th:text="${month}" th:rowspan="${orders[month].size()}" th:if="${counter.first}">January</td>
                                 <td class="date" th:text="${#dates.format(order.deliveryDate,'EEEE dd')}"></td>
-                                <td th:text="${order.name}"></td>
+                                <td th:text="${order.product}"></td>
                                 <td class="amount" th:text="${order.amount}"></td>
                             </tr>
                         </th:block>

@@ -3,18 +3,17 @@ package net.astechdesign.clients.json;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.SerializerProvider;
-import org.joda.time.DateTime;
-import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
 
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
-public class CustomDateSerializer extends JsonSerializer<DateTime> {
+public class CustomDateSerializer extends JsonSerializer<LocalDate> {
 
-    private static DateTimeFormatter formatter = DateTimeFormat.forPattern("yyyy-MM-dd");
+    private static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
     @Override
-    public void serialize(DateTime value, JsonGenerator jgen, SerializerProvider provider) throws IOException {
-        jgen.writeString(formatter.print(value));
+    public void serialize(LocalDate value, JsonGenerator jgen, SerializerProvider provider) throws IOException {
+        jgen.writeString(formatter.format(value));
     }
 }

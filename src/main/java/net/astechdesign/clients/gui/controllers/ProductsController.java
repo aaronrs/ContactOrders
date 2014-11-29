@@ -3,7 +3,6 @@ package net.astechdesign.clients.gui.controllers;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -11,6 +10,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
+import javafx.scene.layout.AnchorPane;
 import javafx.util.Callback;
 import net.astechdesign.clients.model.product.Product;
 import net.astechdesign.clients.model.product.ProductRepo;
@@ -21,8 +21,6 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 public class ProductsController implements Initializable {
-
-    private ObservableList<Product> productsList;
 
     @FXML
     private Button productsBtn;
@@ -55,6 +53,17 @@ public class ProductsController implements Initializable {
     private TableColumn priceCol;
 
     @FXML
+    private AnchorPane confirmDialog;
+
+    @FXML
+    private Label dialogCode;
+
+    @FXML
+    private Label dialogDescription;
+
+    public Product deleteProduct;
+
+    @FXML
     void editCodeCol(TableColumn.CellEditEvent<Product, String> event) {
         Product product = (Product) event.getTableView().getItems().get(event.getTablePosition().getRow());
         product.setCode(event.getNewValue());
@@ -68,7 +77,7 @@ public class ProductsController implements Initializable {
 
     @FXML
     void addProduct(ActionEvent event) {
-        Product product = new Product(0, code.getText(), description.getText(), "");
+        Product product = new Product(0, code.getText(), description.getText(), price.getText());
         try {
             ProductRepo.save(product);
             updateProductTable();
@@ -80,8 +89,25 @@ public class ProductsController implements Initializable {
         price.clear();
     }
 
+    @FXML
+    void confirmDelete(ActionEvent event) {
+        try {
+            ProductRepo.delete(deleteProduct.getId());
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        updateProductTable();
+        confirmDialog.setVisible(false);
+    }
+
+    @FXML
+    void cancelDelete(ActionEvent event) {
+        confirmDialog.setVisible(false);
+    }
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        confirmDialog.setVisible(false);
         updateProductTable();
 
         codeCol.setCellValueFactory(new PropertyValueFactory<Product, String>("code"));
@@ -98,12 +124,12 @@ public class ProductsController implements Initializable {
         delCol.setCellFactory(new Callback<TableColumn<Product, Boolean>, TableCell<Product, Boolean>>() {
             @Override
             public TableCell<Product, Boolean> call(TableColumn<Product, Boolean> param) {
-                return new ButtonCell(productsList);
+                return new ButtonCell2();
             }
         });
     }
 
-    private void updateProductTable() {
+    public void updateProductTable() {
         try {
             List<Product> productList = ProductRepo.products();
             productsTable.setItems(FXCollections.observableArrayList(productList));
@@ -112,20 +138,19 @@ public class ProductsController implements Initializable {
         }
     }
 
-    private class ButtonCell extends TableCell<Product, Boolean> {
+    private class ButtonCell2 extends TableCell<Product, Boolean> {
         final Button cellButton = new Button("X");
 
-        ButtonCell(final ObservableList<Product> data) {
+        ButtonCell2() {
             cellButton.setOnAction(new EventHandler<ActionEvent>() {
+
                 @Override
                 public void handle(ActionEvent event) {
                     Product product = (Product)productsTable.getItems().get(getIndex());
-                    try {
-                        ProductRepo.delete(product.getId());
-                    } catch (SQLException e) {
-                        e.printStackTrace();
-                    }
-                    updateProductTable();
+                    deleteProduct = product;
+                    dialogCode.setText(product.getCode());
+                    dialogDescription.setText(product.getName());
+                    confirmDialog.setVisible(true);
                 }
             });
         }

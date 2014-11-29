@@ -1,19 +1,21 @@
 package net.astechdesign.clients.gui.controllers;
 
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
+import javafx.util.Callback;
 import net.astechdesign.clients.model.contact.Contact;
 import net.astechdesign.clients.model.contact.ContactRepo;
 import net.astechdesign.clients.model.contact.Telephone;
+import net.astechdesign.clients.model.product.Product;
 
 import java.net.URL;
 import java.sql.SQLException;
@@ -48,7 +50,18 @@ public class ContactsController implements Initializable {
     @FXML
     private TableColumn telCol;
 
+    @FXML
+    private TableColumn delCol;
+
+    @FXML
+    private AnchorPane confirmDialog;
+
+    @FXML
+    private Label dialogName;
+
     public MainController mainController;
+
+    private Contact deleteContact;
 
     @FXML
     void addContact(ActionEvent event) {
@@ -56,6 +69,9 @@ public class ContactsController implements Initializable {
         try {
             ContactRepo.save(contact);
             updateContactsTable();
+            address.clear();
+            postcode.clear();
+            telephone.clear();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -74,8 +90,26 @@ public class ContactsController implements Initializable {
     void findContact(ActionEvent event) {
     }
 
+    @FXML
+    void confirmDelete(ActionEvent event) {
+        try {
+            ContactRepo.delete(deleteContact.getId());
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        updateContactsTable();
+        confirmDialog.setVisible(false);
+    }
+
+    @FXML
+    void cancelDelete(ActionEvent event) {
+        confirmDialog.setVisible(false);
+    }
+
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        confirmDialog.setVisible(false);
         updateContactsTable();
         nameCol.setCellValueFactory(new PropertyValueFactory<Contact, String>("name"));
         addressCol.setCellValueFactory(new PropertyValueFactory<Contact, String>("address"));
@@ -88,6 +122,39 @@ public class ContactsController implements Initializable {
                 mainController.showDetails(id);
             }
         });
+        delCol.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<Product, Boolean>, ObservableValue<Boolean>>() {
+            @Override public ObservableValue<Boolean> call(TableColumn.CellDataFeatures<Product, Boolean> features) {
+                return new SimpleBooleanProperty(features.getValue() != null);
+            }
+        });
+        delCol.setCellFactory(new Callback<TableColumn<Contact, Boolean>, TableCell<Contact, Boolean>>() {
+            @Override
+            public TableCell<Contact, Boolean> call(TableColumn<Contact, Boolean> param) {
+                return new ButtonCell();
+            }
+        });
     }
 
+    private class ButtonCell extends TableCell<Contact, Boolean> {
+        final Button cellButton = new Button("X");
+
+        ButtonCell() {
+            cellButton.setOnAction(new EventHandler<ActionEvent>() {
+                @Override
+                public void handle(ActionEvent event) {
+                    deleteContact = (Contact)contactsTable.getItems().get(getIndex());
+                    dialogName.setText(deleteContact.getName());
+                    confirmDialog.setVisible(true);
+                }
+            });
+        }
+
+        @Override
+        protected void updateItem(Boolean item, boolean empty) {
+            super.updateItem(item, empty);
+            if (!empty) {
+                setGraphic(cellButton);
+            }
+        }
+    }
 }

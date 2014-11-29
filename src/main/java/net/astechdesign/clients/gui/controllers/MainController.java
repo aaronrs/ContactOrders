@@ -6,6 +6,8 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.VBox;
+import net.astechdesign.clients.model.contact.Contact;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -27,12 +29,16 @@ public class MainController implements Initializable {
     public AnchorPane productsPane;
     public AnchorPane contactsPane;
     public AnchorPane detailsPane;
-    public AnchorPane todosPane;
+    public VBox todosPane;
+
+    public DetailsController detailsController;
+    public ContactDetailsController contactDetailsController;
+    public ProductsController productsController;
 
     @FXML
     void selectTodos(ActionEvent event) {
         showAll();
-
+        showTodos();
         todosBtn.setDisable(true);
     }
 
@@ -66,6 +72,7 @@ public class MainController implements Initializable {
     }
 
     public void showProducts() {
+        productsController.updateProductTable();
         contentPane.setCenter(productsPane);
     }
 
@@ -75,6 +82,8 @@ public class MainController implements Initializable {
 
     public void showDetails(int id) {
         showAll();
+        Contact contact = detailsController.selectContact(id);
+        contactDetailsController.setContact(contact);
         contentPane.setCenter(detailsPane);
     }
 

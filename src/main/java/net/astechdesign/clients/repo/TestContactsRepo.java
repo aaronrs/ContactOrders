@@ -1,20 +1,20 @@
 package net.astechdesign.clients.repo;
 
 import com.google.common.io.CharStreams;
-import net.astechdesign.clients.model.contact.*;
-import net.astechdesign.clients.model.order.Order;
-import net.astechdesign.clients.model.order.OrderRepo;
+import net.astechdesign.clients.model.contact.Contact;
+import net.astechdesign.clients.model.contact.ContactRepo;
+import net.astechdesign.clients.model.contact.Telephone;
 import net.astechdesign.clients.model.product.Product;
 import net.astechdesign.clients.model.product.ProductRepo;
 import net.astechdesign.clients.model.todo.Todo;
 import net.astechdesign.clients.model.todo.TodoRepo;
-import org.joda.time.DateTime;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.sql.SQLException;
-import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 public class TestContactsRepo {
@@ -55,26 +55,20 @@ public class TestContactsRepo {
     }
 
     private static void createContact(String[] data) throws SQLException {
-        String address = data[2] + " " + data[3] + " " + data[4] + " " + data[5] + " " + data[6];
-        Contact contact = new Contact(0, data[0] + " " + data[1], address, data[7], new Telephone(data[8]));
+        Contact contact = new Contact(0, data[0], data[1], data[2], new Telephone(data[3]));
         ContactRepo.save(contact);
     }
 
     private static void createTodo(String[] data) throws Exception {
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
         Todo todo = new Todo(Integer.parseInt(data[0]),
                 Integer.parseInt(data[1]),
-                sdf.parse(data[4]),
+                LocalDate.parse(data[4], DateTimeFormatter.ofPattern("yyyy/MM/dd")),
                 data[6], "");
         TodoRepo.save(todo);
     }
 
     private static void createOrder(String[] data) throws SQLException {
-        Order order = new Order(Integer.parseInt(data[0]),Integer.parseInt(data[1]),new DateTime().withDate(
-                Integer.parseInt(data[5]), Integer.parseInt(data[1]),
-                Integer.parseInt(data[4])).toDate(),
-                1, null, null);
-        OrderRepo.save(order);
+        // TODO
     }
 
     private static List<String> readData(String fileName) {

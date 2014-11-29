@@ -16,6 +16,8 @@ import javax.ws.rs.core.MultivaluedMap;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 @Path("/contacts")
@@ -65,10 +67,10 @@ public class ContactRequests {
     @POST
     @Path("/todo")
     public Viewable saveTodo(@FormParam("contactId") int contactId,
-                             @FormParam("date") String date,
+                             @FormParam("date") String todoDate,
                              @FormParam("notes") String notes) throws SQLException, ParseException {
-        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
-        TodoRepo.save(new Todo(0, contactId, sdf.parse(date), notes, ""));
+        LocalDate date = LocalDate.parse(todoDate, DateTimeFormatter.ofPattern("dd-MM-yyyy"));
+        TodoRepo.save(new Todo(0, contactId, date, notes, ""));
         return contact(contactId);
     }
 
@@ -76,14 +78,16 @@ public class ContactRequests {
     @Path("/order")
     public Viewable saveOrder(MultivaluedMap<String, String> formParams) throws SQLException, ParseException {
         int contactId = Integer.parseInt(formParams.getFirst("contactId"));
+        String contact = ContactRepo.get(contactId).getName();
         List<String> ids = formParams.get("id");
         SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
         for (String id : ids) {
             int productId = Integer.parseInt(id);
-            Date deliveryDate = sdf.parse(formParams.getFirst("delivery_" + id));
+            String product = ProductRepo.find(productId).getName();
+            LocalDate deliveryDate = LocalDate.parse(formParams.getFirst("delivery_" + id), DateTimeFormatter.ofPattern("dd-MM-yyyy"));
             int amount = Integer.parseInt(formParams.getFirst("amount_" + id));
             String name = formParams.getFirst("name_" + id);
-            OrderRepo.save(new Order(contactId, productId, deliveryDate, amount, "", new Date()));
+            OrderRepo.save(new Order(contact, product, deliveryDate, amount, LocalDate.now()));
             TodoRepo.save(new Todo(0, contactId, deliveryDate, "Delivery for: " + name, ""));
         }
         return contact(contactId);
@@ -94,12 +98,11 @@ public class ContactRequests {
     public Viewable contact(@PathParam("id") int id) throws SQLException {
         Map<String, Object> data = new HashMap<>();
         data.put("contact", ContactRepo.get(id));
-        SimpleDateFormat sdf = new SimpleDateFormat("MMMM yyyy");
 
         Map<String, List<Todo>> todoMap = new HashMap<>();
         List<String> months = new ArrayList<>();
         for (Todo todo : TodoRepo.todos(id)) {
-            String month = sdf.format(todo.date);
+            String month = todo.date.format(DateTimeFormatter.ofPattern("MMMM yyyy"));
             if (!todoMap.containsKey(month)) {
                 todoMap.put(month, new ArrayList<Todo>());
                 months.add(month);
@@ -112,7 +115,7 @@ public class ContactRequests {
         Map<String, List<Order>> orderMap = new HashMap<>();
         months = new ArrayList<>();
         for (Order order : OrderRepo.orders(id)) {
-            String month = sdf.format(order.deliveryDate);
+            String month = order.deliveryDate.format(DateTimeFormatter.ofPattern("MMMM yyyy"));
             if (!orderMap.containsKey(month)) {
                 orderMap.put(month, new ArrayList<Order>());
                 months.add(month);

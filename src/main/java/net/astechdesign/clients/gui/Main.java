@@ -10,6 +10,7 @@ import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import net.astechdesign.clients.db.HsqlServerRunner;
 import net.astechdesign.clients.gui.controllers.ContactsController;
+import net.astechdesign.clients.gui.controllers.DetailsController;
 import net.astechdesign.clients.gui.controllers.MainController;
 import net.astechdesign.clients.model.contact.ContactRepo;
 import net.astechdesign.clients.model.order.OrderRepo;
@@ -36,6 +37,7 @@ public class Main extends Application {
         FXMLLoader productsLoader = new FXMLLoader(classLoader.getResource("fxml/products.fxml"));
         AnchorPane productsPane = productsLoader.load();
         mainController.productsPane = productsPane;
+        mainController.productsController = productsLoader.getController();
 
         FXMLLoader contactsLoader = new FXMLLoader(classLoader.getResource("fxml/contacts.fxml"));
         AnchorPane contactsPane = contactsLoader.load();
@@ -45,14 +47,21 @@ public class Main extends Application {
 
         FXMLLoader detailsLoader = new FXMLLoader(classLoader.getResource("fxml/details.fxml"));
         AnchorPane detailsPane = detailsLoader.load();
+        DetailsController detailsController = detailsLoader.getController();
         mainController.detailsPane = detailsPane;
-//
-//        FXMLLoader todosLoader = new FXMLLoader(classLoader.getResource("fxml/todos.fxml"));
-//        AnchorPane todosPane = todosLoader.load();
-//        mainController.todosPane = todosPane;
-//        mainController.showTodos();
+        mainController.detailsController = detailsController;
 
-        mainController.showContacts();
+        FXMLLoader contactDetailsLoader = new FXMLLoader(classLoader.getResource("fxml/contactDetails.fxml"));
+        VBox contactDetailsPane = contactDetailsLoader.load();
+        mainController.contactDetailsController = contactDetailsLoader.getController();
+        detailsController.setContactDetailsPane(contactDetailsPane);
+
+        FXMLLoader todosLoader = new FXMLLoader(classLoader.getResource("fxml/todos.fxml"));
+        VBox todosPane = todosLoader.load();
+        mainController.todosPane = todosPane;
+        mainController.showTodos();
+
+//        mainController.showContacts();
 
         primaryStage.setScene(new Scene(main, main.getPrefWidth(), main.getPrefHeight()));
         primaryStage.setTitle("Order Management");

@@ -1,22 +1,20 @@
 package net.astechdesign.clients.model.order;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 public class Order {
 
-    public final int contactId;
-    public final Date deliveryDate;
+    public final String contact;
+    public final String product;
+    public final LocalDate deliveryDate;
     public final int amount;
-    public final int productId;
-    public final String name;
-    public final Date createDate;
+    public final LocalDate createDate;
 
-    public Order(int contactId, int productId, Date deliveryDate, int amount, String name, Date createDate) {
-        this.contactId = contactId;
-        this.productId = productId;
+    public Order(String contact, String product, LocalDate deliveryDate, int amount, LocalDate createDate) {
+        this.contact = contact;
+        this.product = product;
         this.deliveryDate = deliveryDate;
         this.amount = amount;
-        this.name = name;
         this.createDate = createDate;
     }
 }

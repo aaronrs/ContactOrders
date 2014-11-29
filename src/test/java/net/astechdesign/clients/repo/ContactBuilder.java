@@ -2,7 +2,8 @@ package net.astechdesign.clients.repo;
 
 import net.astechdesign.clients.model.contact.Contact;
 import net.astechdesign.clients.model.contact.Telephone;
-import org.joda.time.DateTime;
+
+import java.time.LocalDate;
 
 public class ContactBuilder {
 
@@ -16,7 +17,7 @@ public class ContactBuilder {
     private String postcode = "AB1 2CD";
     private String telephone = "01234567890";
 
-    private DateTime orderDate = new DateTime();
+    private LocalDate orderDate = LocalDate.now();
     private String orderName = "Name";
     private String orderDescription = "Description";
 

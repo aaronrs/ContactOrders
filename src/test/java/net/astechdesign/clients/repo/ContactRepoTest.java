@@ -6,7 +6,7 @@ import net.astechdesign.clients.model.todo.TodoRepo;
 import org.junit.Test;
 
 import javax.sql.DataSource;
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 import static org.hamcrest.CoreMatchers.is;
@@ -26,8 +26,8 @@ public class ContactRepoTest {
 
         new ContactRepo(dataSource);
 
-        TodoRepo.save(new Todo(-1, 1, new Date(), "stuff", ""));
-        TodoRepo.save(new Todo(-1, 2, new Date(), "more stuff", ""));
+        TodoRepo.save(new Todo(-1, 1, LocalDate.now(), "stuff", ""));
+        TodoRepo.save(new Todo(-1, 2, LocalDate.now(), "more stuff", ""));
         List<Todo> todoList = TodoRepo.todos();
         assertThat(todoList.size(), is(2));
         assertThat(todoList.get(0).notes, is(NOTES));

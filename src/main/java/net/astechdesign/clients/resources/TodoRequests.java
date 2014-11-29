@@ -1,18 +1,20 @@
 package net.astechdesign.clients.resources;
 
-import net.astechdesign.clients.model.contact.Contact;
 import net.astechdesign.clients.model.todo.Todo;
 import net.astechdesign.clients.model.todo.TodoRepo;
 import org.glassfish.jersey.server.mvc.Viewable;
-import org.joda.time.DateTime;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.Instant;
-import java.util.*;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Path("/todos")
 @Produces(MediaType.TEXT_HTML)
@@ -77,10 +79,10 @@ public class TodoRequests {
 
     @POST
     @Path("/add")
-    public Viewable saveTodo(@FormParam("date") String date,
+    public Viewable saveTodo(@FormParam("date") String todoDate,
                              @FormParam("notes") String notes) throws SQLException, ParseException {
-        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
-        TodoRepo.save(new Todo(0, -1, sdf.parse(date), notes, ""));
+        LocalDate date = LocalDate.parse(todoDate, DateTimeFormatter.ofPattern("dd-MM-yyyy"));
+        TodoRepo.save(new Todo(0, -1, date, notes, ""));
         return todos();
     }
 
