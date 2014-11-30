@@ -14,7 +14,7 @@ public class Todos {
     private SimpleDateFormat sdf = new SimpleDateFormat("MMMM yyyy");
 
     public void add(Todo todo) {
-        todoMap.put(sdf.format(todo.date), null);
+        todoMap.put(sdf.format(todo.getDate()), null);
     }
 
     public Map<String, List<Map<Date, List<Map<Contact, List<String>>>>>> get() {

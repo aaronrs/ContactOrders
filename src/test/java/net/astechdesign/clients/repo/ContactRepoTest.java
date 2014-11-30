@@ -30,10 +30,10 @@ public class ContactRepoTest {
         TodoRepo.save(new Todo(-1, 2, LocalDate.now(), "more stuff", ""));
         List<Todo> todoList = TodoRepo.todos();
         assertThat(todoList.size(), is(2));
-        assertThat(todoList.get(0).notes, is(NOTES));
+        assertThat(todoList.get(0).getNotes(), is(NOTES));
 
         todoList = TodoRepo.todos();
         assertThat(todoList.size(), is(1));
-        assertThat(todoList.get(0).notes, is(NOTES2));
+        assertThat(todoList.get(0).getNotes(), is(NOTES2));
     }
 }

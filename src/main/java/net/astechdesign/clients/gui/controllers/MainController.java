@@ -81,6 +81,7 @@ public class MainController implements Initializable {
     }
 
     public void showDetails(int id) {
+        if (id < 0) return;
         showAll();
         Contact contact = detailsController.selectContact(id);
         contactDetailsController.setContact(contact);

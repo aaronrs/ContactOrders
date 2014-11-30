@@ -8,10 +8,13 @@
 
 <VBox prefHeight="680.0" prefWidth="900.0" spacing="5.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="net.astechdesign.clients.gui.controllers.TodosController">
    <children>
-      <Label text="TODOS" />
+      <Label text="TODOS">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font></Label>
       <HBox spacing="5.0">
          <children>
-            <TextField fx:id="todoNote" prefHeight="25.0" prefWidth="550.0" promptText="Notes" />
+            <TextArea fx:id="todoNotes" prefHeight="50.0" prefWidth="400.0" promptText="Notes" wrapText="true" />
             <DatePicker fx:id="todoDate" prefHeight="25.0" prefWidth="137.0" promptText="Date" />
             <Button mnemonicParsing="false" onAction="#addTodo" prefHeight="25.0" prefWidth="63.0" text="ADD" />
          </children>

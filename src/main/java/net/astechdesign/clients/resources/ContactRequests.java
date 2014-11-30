@@ -102,7 +102,7 @@ public class ContactRequests {
         Map<String, List<Todo>> todoMap = new HashMap<>();
         List<String> months = new ArrayList<>();
         for (Todo todo : TodoRepo.todos(id)) {
-            String month = todo.date.format(DateTimeFormatter.ofPattern("MMMM yyyy"));
+            String month = todo.getDate().format(DateTimeFormatter.ofPattern("MMMM yyyy"));
             if (!todoMap.containsKey(month)) {
                 todoMap.put(month, new ArrayList<Todo>());
                 months.add(month);

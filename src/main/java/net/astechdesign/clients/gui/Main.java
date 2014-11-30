@@ -12,6 +12,7 @@ import net.astechdesign.clients.db.HsqlServerRunner;
 import net.astechdesign.clients.gui.controllers.ContactsController;
 import net.astechdesign.clients.gui.controllers.DetailsController;
 import net.astechdesign.clients.gui.controllers.MainController;
+import net.astechdesign.clients.gui.controllers.TodosController;
 import net.astechdesign.clients.model.contact.ContactRepo;
 import net.astechdesign.clients.model.order.OrderRepo;
 import net.astechdesign.clients.model.product.ProductRepo;
@@ -58,8 +59,10 @@ public class Main extends Application {
 
         FXMLLoader todosLoader = new FXMLLoader(classLoader.getResource("fxml/todos.fxml"));
         VBox todosPane = todosLoader.load();
+        TodosController todosController = todosLoader.getController();
         mainController.todosPane = todosPane;
         mainController.showTodos();
+        todosController.mainController = mainController;
 
 //        mainController.showContacts();
 

@@ -5,10 +5,7 @@ import net.astechdesign.clients.repo.Dao;
 import javax.sql.DataSource;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.time.Instant;
 import java.time.LocalDate;
-import java.time.ZoneId;
-import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -28,12 +25,7 @@ public class TodoDao extends Dao<Todo> {
                 "SELECT t.id,t.contactId,t.date,t.notes,c.name FROM todos as t, contacts as c where t.contactId=c.id and t.date >= ? " +
                 " union SELECT id,-1 as contactId,date,notes,'' as name FROM todos where contactId=-1 and date >= ? )" +
                 " order by date";
-        return listQuery(sql, Todo.class, convert(date), convert(date));
-    }
-
-    private Date convert(LocalDate date) {
-        Instant instant = date.atStartOfDay().atZone(ZoneId.systemDefault()).toInstant();
-        return Date.from(instant);
+        return listQuery(sql, Todo.class, date, date);
     }
 
     public List<Todo> get(int id) throws SQLException {
@@ -43,9 +35,9 @@ public class TodoDao extends Dao<Todo> {
 
     public void save(Todo todo) throws SQLException {
         Map<String, Object> dataMap = new LinkedHashMap<>();
-        dataMap.put("contactId", todo.contactId);
-        dataMap.put("date", todo.date);
-        dataMap.put("notes", todo.notes);
+        dataMap.put("contactId", todo.getContactId());
+        dataMap.put("date", todo.getDate());
+        dataMap.put("notes", todo.getNotes());
         save("todos", dataMap);
     }
 

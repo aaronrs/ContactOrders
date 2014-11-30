@@ -10,7 +10,11 @@ import org.apache.commons.lang.StringUtils;
 import javax.sql.DataSource;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -32,12 +36,12 @@ public abstract class Dao<T> extends BasicRowProcessor {
 
     protected T query(String sql, Class<T> clazz, Object... values) throws SQLException {
         ResultSetHandler<T> handler = new BeanHandler<>(clazz, this);
-        return queryRunner().query(sql, handler, values);
+        return queryRunner().query(sql, handler, convertDates(values));
     }
 
     protected List<T> listQuery(String sql, Class<T> clazz, Object... values) throws SQLException {
         ResultSetHandler<List<T>> handler = new BeanListHandler<>(clazz, this);
-        return queryRunner().query(sql, handler, values);
+        return queryRunner().query(sql, handler, convertDates(values));
     }
 
     protected void save(String table, Map<String, Object> dataMap) throws SQLException {
@@ -49,7 +53,7 @@ public abstract class Dao<T> extends BasicRowProcessor {
         stringBuilder.append(StringUtils.repeat("?,", dataMap.size() -1));
         stringBuilder.append("?)");
 
-        queryRunner().update(stringBuilder.toString(), dataMap.values().toArray());
+        queryRunner().update(stringBuilder.toString(), convertDates(dataMap.values().toArray()));
     }
 
     protected void replace(String table, Map<String, Object> dataMap, Map<String, Object> keyMap) throws SQLException {
@@ -60,7 +64,7 @@ public abstract class Dao<T> extends BasicRowProcessor {
         for (Map.Entry entry : dataMap.entrySet()) {
             values.add(entry.getKey() + "=" + "'" + entry.getValue() + "'");
         }
-        stringBuilder.append(StringUtils.join(values,","));
+        stringBuilder.append(StringUtils.join(values, ","));
         stringBuilder.append(" where ");
         int count = 0;
         for (Map.Entry entry : keyMap.entrySet()) {
@@ -74,10 +78,24 @@ public abstract class Dao<T> extends BasicRowProcessor {
     }
 
     protected void update(String sql, Object... values) throws SQLException {
-        queryRunner().update(sql, values);
+        queryRunner().update(sql, convertDates(values));
+    }
+
+    private Object[] convertDates(Object[] values) {
+        for (int i=0; i < values.length; i++) {
+            if (values[i] instanceof LocalDate) {
+                values[i] = convert((LocalDate)values[i]);
+            }
+        }
+        return values;
     }
 
     private QueryRunner queryRunner() {
         return new QueryRunner(dataSource);
+    }
+
+    private Date convert(LocalDate date) {
+        Instant instant = date.atStartOfDay().atZone(ZoneId.systemDefault()).toInstant();
+        return Date.from(instant);
     }
 }

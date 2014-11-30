@@ -27,7 +27,7 @@ public class TodoRequests {
         Map<String, List<Todo>> todoMap = new HashMap<>();
         List<String> months = new ArrayList<>();
         for (Todo todo : TodoRepo.todos()) {
-            String month = sdf.format(todo.date);
+            String month = sdf.format(todo.getDate());
             if (!todoMap.containsKey(month)) {
                 todoMap.put(month, new ArrayList<Todo>());
                 months.add(month);
