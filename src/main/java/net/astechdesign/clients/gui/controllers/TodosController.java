@@ -69,8 +69,9 @@ public class TodosController implements Initializable {
 
     }
     public void updateTodosTable() {
+        List<Todo> list = null;
         try {
-            List<Todo> list = TodoRepo.todos();
+            list = TodoRepo.todos();
             todosTable.getSelectionModel().clearSelection();
             todosTable.setItems(FXCollections.observableArrayList(list));
         } catch (SQLException e) {

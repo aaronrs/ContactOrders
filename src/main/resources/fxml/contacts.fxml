@@ -24,17 +24,8 @@
                           <children>
                               <TextField fx:id="name" promptText="Name" />
                               <TextField fx:id="address" prefHeight="25.0" prefWidth="253.0" promptText="Address" />
-                              <TextField fx:id="postcode" prefHeight="25.0" prefWidth="83.0" promptText="Postcode" />
-                              <TextField fx:id="telephone" prefHeight="25.0" prefWidth="96.0" promptText="Telephone" />
-                              <Button mnemonicParsing="false" onAction="#addContact" text="ADD" />
-                          </children>
-                          <VBox.margin>
-                              <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                          </VBox.margin>
-                      </HBox>
-                      <HBox spacing="5.0">
-                          <children>
                               <Button mnemonicParsing="false" onAction="#findContact" text="FIND" />
+                        <Button mnemonicParsing="false" onAction="#findContact" text="NEW CONTACT" />
                           </children>
                           <VBox.margin>
                               <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
