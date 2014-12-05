@@ -20,7 +20,7 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.ResourceBundle;
 
-public class ProductsController implements Initializable {
+public class ProductsController extends Controller implements Initializable {
 
     @FXML
     private Button productsBtn;

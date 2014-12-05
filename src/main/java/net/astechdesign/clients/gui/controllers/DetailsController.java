@@ -5,7 +5,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.VBox;
 import net.astechdesign.clients.model.contact.Contact;
 import net.astechdesign.clients.model.contact.ContactRepo;
 import net.astechdesign.clients.model.order.Order;
@@ -15,7 +14,7 @@ import java.net.URL;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
 
-public class DetailsController implements Initializable {
+public class DetailsController extends Controller implements Initializable {
 
     private Contact contact;
 
@@ -57,27 +56,37 @@ public class DetailsController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        newOrderDialog.setVisible(false);
-        selectContact(0);
+        selectContact(-1);
     }
 
     public Contact selectContact(int id) {
-        try {
-            contact = ContactRepo.get(id);
-            name.setText(contact.getName());
-        } catch (SQLException e) {
-            e.printStackTrace();
+        if (id == -1) {
+            contact = new Contact(-1, "", "", "", null);
+        } else {
+
+            try {
+                contact = ContactRepo.get(id);
+                name.setText(contact.getName());
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
         return contact;
     }
 
-    @FXML
-    private AnchorPane newOrderDialog;
+    public void setContactDetailsPane(AnchorPane pane) {
+        detailsTabPane.getChildren().add(pane);
+    }
 
-    @FXML
-    private ListView newOrderList;
+    public void setTodosDetailsPane(AnchorPane pane) {
+        todosTabPane.getChildren().add(pane);
+    }
 
-    public void setContactDetailsPane(VBox contactDetailsPane) {
-        detailsTabPane.getChildren().add(contactDetailsPane);
+    public void setOrdersDetailsPane(AnchorPane pane) {
+        ordersTabPane.getChildren().add(pane);
+    }
+
+    public Label getNameLabel() {
+        return name;
     }
 }

@@ -17,8 +17,8 @@ public class ContactRepo {
         return instance.getContact(id);
     }
 
-    public static List<Contact> find(String name, String address, String postcode, Telephone tel) throws SQLException {
-        return instance.findContacts(name, address, postcode, tel.number);
+    public static List<Contact> find(String name, String address, String postcode, String tel) throws SQLException {
+        return instance.findContacts(name, address, postcode, tel);
     }
 
     public static void save(Contact contact) throws SQLException {

@@ -6,7 +6,10 @@ import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.*;
+import javafx.scene.control.DatePicker;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.cell.PropertyValueFactory;
 import net.astechdesign.clients.model.todo.Todo;
 import net.astechdesign.clients.model.todo.TodoRepo;
@@ -17,7 +20,7 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.ResourceBundle;
 
-public class TodosController extends Controller implements Initializable {
+public class TodoDetailsController extends Controller implements Initializable {
 
     @FXML
     private TextArea todoNotes;
@@ -77,4 +80,5 @@ public class TodosController extends Controller implements Initializable {
             e.printStackTrace();
         }
     }
+
 }

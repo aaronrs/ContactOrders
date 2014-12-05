@@ -8,7 +8,7 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="680.0" prefWidth="900.0" stylesheets="@fxml.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="net.astechdesign.clients.gui.controllers.OrderDetailsController">
          <children>
-      <StackPane prefHeight="613.0" prefWidth="900.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <StackPane AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
                   <VBox prefWidth="600.0" spacing="5.0">
                      <children>
@@ -24,9 +24,6 @@
                            </VBox.margin>
                         </TableView>
                      </children>
-               <padding>
-                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-               </padding>
                   </VBox>
             <AnchorPane fx:id="newOrderDialog" prefHeight="200.0" prefWidth="200.0">
                <children>
@@ -50,7 +47,7 @@
             </AnchorPane>
          </children>
       </StackPane>
-      <AnchorPane fx:id="confirmDialog" layoutX="10.0" layoutY="10.0" visible="false">
+      <AnchorPane fx:id="confirmDialog" layoutX="10.0" layoutY="10.0">
          <children>
             <VBox alignment="CENTER" layoutX="244.0" layoutY="290.0" prefHeight="200.0" prefWidth="413.0" spacing="10.0" style="-fx-border-color: #999; -fx-border-radius: 10px; -fx-border-width: 3px; -fx-background-color: #EEE;">
                <children>
@@ -88,4 +85,7 @@
          </children>
       </AnchorPane>
          </children>
+   <padding>
+      <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+   </padding>
       </AnchorPane>

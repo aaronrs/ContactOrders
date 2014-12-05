@@ -4,24 +4,19 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.AnchorPane;
 import net.astechdesign.clients.model.contact.Contact;
-import net.astechdesign.clients.model.contact.ContactRepo;
-import net.astechdesign.clients.model.contact.Telephone;
 
 import java.net.URL;
-import java.sql.SQLException;
 import java.util.ResourceBundle;
 
-public class ContactDetailsController extends Controller implements Initializable {
+public class OrderDetailsController extends Controller implements Initializable {
 
     private Contact contact = new Contact(0, "", "", "", null);
 
-    private Label titleName;
-
     @FXML
-    private TextField name;
+    private AnchorPane newOrderDialog;
 
     @FXML
     private TextField address;
@@ -34,15 +29,22 @@ public class ContactDetailsController extends Controller implements Initializabl
 
     @FXML
     private Button updateDetailsBtn;
+    private String name;
 
     @FXML
-    void updateDetails(ActionEvent event) {
-        Contact newContact = new Contact(contact.getId(), contact.getName(), address.getText(), postcode.getText(), new Telephone(telephone.getText()));
-        try {
-            ContactRepo.update(newContact);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+    void addProduct(ActionEvent event) {
+    }
+
+    @FXML
+    void saveOrder(ActionEvent event) {
+    }
+
+    @FXML
+    void confirmDelete(ActionEvent event) {
+    }
+
+    @FXML
+    void cancelDelete(ActionEvent event) {
     }
 
     @Override
@@ -55,11 +57,6 @@ public class ContactDetailsController extends Controller implements Initializabl
     }
 
     public void setContact(Contact contact) {
-        if (contact.getId() == -1) {
-            name.setVisible(true);
-        } else {
-            name.setVisible(false);
-        }
         this.contact.setId(contact.getId());
         this.contact.setName(contact.getName());
         this.contact.setAddress(contact.getAddress());
@@ -68,13 +65,6 @@ public class ContactDetailsController extends Controller implements Initializabl
 
         address.setText(contact.getAddress());
         postcode.setText(contact.getPostcode());
-        if (contact.getTelephone() != null) {
-            telephone.setText(contact.getTelephone().number);
-        }
-    }
-
-    public void setTitleName(Label nameLabel) {
-        titleName = nameLabel;
-        name.textProperty().bindBidirectional(titleName.textProperty());
+        telephone.setText(contact.getTelephone().number);
     }
 }

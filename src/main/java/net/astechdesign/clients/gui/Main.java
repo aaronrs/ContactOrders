@@ -2,17 +2,13 @@ package net.astechdesign.clients.gui;
 
 import javafx.application.Application;
 import javafx.event.EventHandler;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import net.astechdesign.clients.db.HsqlServerRunner;
-import net.astechdesign.clients.gui.controllers.ContactsController;
-import net.astechdesign.clients.gui.controllers.DetailsController;
 import net.astechdesign.clients.gui.controllers.MainController;
-import net.astechdesign.clients.gui.controllers.TodosController;
+import net.astechdesign.clients.gui.fxml.FmxlWrapper;
 import net.astechdesign.clients.model.contact.ContactRepo;
 import net.astechdesign.clients.model.order.OrderRepo;
 import net.astechdesign.clients.model.product.ProductRepo;
@@ -31,40 +27,10 @@ public class Main extends Application {
     public void start(Stage primaryStage) throws Exception {
         initialiseApp();
         ClassLoader classLoader = Main.class.getClassLoader();
-        FXMLLoader mainLoader = new FXMLLoader(classLoader.getResource("fxml/main.fxml"));
-        VBox main = mainLoader.load();
-        MainController mainController = mainLoader.getController();
+        FmxlWrapper<MainController, VBox> mainWrapper = new FmxlWrapper(classLoader, "fxml/main.fxml", null);
+        MainController mainController = mainWrapper.getController();
 
-        FXMLLoader productsLoader = new FXMLLoader(classLoader.getResource("fxml/products.fxml"));
-        AnchorPane productsPane = productsLoader.load();
-        mainController.productsPane = productsPane;
-        mainController.productsController = productsLoader.getController();
-
-        FXMLLoader contactsLoader = new FXMLLoader(classLoader.getResource("fxml/contacts.fxml"));
-        AnchorPane contactsPane = contactsLoader.load();
-        ContactsController contactsController = contactsLoader.getController();
-        contactsController.mainController = mainController;
-        mainController.contactsPane = contactsPane;
-
-        FXMLLoader detailsLoader = new FXMLLoader(classLoader.getResource("fxml/details.fxml"));
-        AnchorPane detailsPane = detailsLoader.load();
-        DetailsController detailsController = detailsLoader.getController();
-        mainController.detailsPane = detailsPane;
-        mainController.detailsController = detailsController;
-
-        FXMLLoader contactDetailsLoader = new FXMLLoader(classLoader.getResource("fxml/contactDetails.fxml"));
-        VBox contactDetailsPane = contactDetailsLoader.load();
-        mainController.contactDetailsController = contactDetailsLoader.getController();
-        detailsController.setContactDetailsPane(contactDetailsPane);
-
-        FXMLLoader todosLoader = new FXMLLoader(classLoader.getResource("fxml/todos.fxml"));
-        VBox todosPane = todosLoader.load();
-        TodosController todosController = todosLoader.getController();
-        mainController.todosPane = todosPane;
-        mainController.showTodos();
-        todosController.mainController = mainController;
-
-//        mainController.showContacts();
+        VBox main = mainWrapper.getPane();
 
         primaryStage.setScene(new Scene(main, main.getPrefWidth(), main.getPrefHeight()));
         primaryStage.setTitle("Order Management");

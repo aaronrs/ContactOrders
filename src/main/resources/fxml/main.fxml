@@ -10,7 +10,7 @@
    <children>
       <HBox alignment="CENTER">
          <children>
-            <Label text="Marius' Orders">
+            <Label text="Customer Orders">
                <font>
                   <Font name="System Bold" size="24.0" />
                </font></Label>
@@ -34,6 +34,11 @@
             <HBox>
                <children>
                   <Button mnemonicParsing="false" onAction="#exitAction" text="EXIT" BorderPane.alignment="CENTER" />
+                  <Label alignment="CENTER_RIGHT" prefHeight="22.0" prefWidth="821.0" text="ASTECH DESIGN LTD" HBox.hgrow="ALWAYS">
+                     <font>
+                        <Font name="System Bold Italic" size="13.0" />
+                     </font>
+                  </Label>
                </children>
                <BorderPane.margin>
                   <Insets />

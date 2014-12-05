@@ -6,31 +6,36 @@
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-<VBox prefHeight="680.0" prefWidth="900.0" spacing="5.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="net.astechdesign.clients.gui.controllers.TodosController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="680.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="net.astechdesign.clients.gui.controllers.TodosController">
    <children>
-      <Label text="TODOS">
-         <font>
-            <Font name="System Bold" size="18.0" />
-         </font></Label>
-      <HBox spacing="5.0">
+      <VBox layoutX="10.0" layoutY="10.0" prefHeight="680.0" prefWidth="880.0" spacing="5.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-            <TextArea fx:id="todoNotes" prefHeight="50.0" prefWidth="400.0" promptText="Notes" wrapText="true" />
-            <DatePicker fx:id="todoDate" prefHeight="25.0" prefWidth="137.0" promptText="Date" />
-            <Button mnemonicParsing="false" onAction="#addTodo" prefHeight="25.0" prefWidth="63.0" text="ADD" />
+            <Label text="TODOS">
+               <font>
+                  <Font name="System Bold" size="18.0" />
+               </font>
+            </Label>
+            <HBox spacing="5.0">
+               <children>
+                  <TextArea fx:id="todoNotes" prefHeight="50.0" prefWidth="400.0" promptText="Notes" wrapText="true" />
+                  <DatePicker fx:id="todoDate" prefHeight="25.0" prefWidth="137.0" promptText="Date" />
+                  <Button mnemonicParsing="false" onAction="#addTodo" prefHeight="25.0" prefWidth="63.0" text="ADD" />
+               </children>
+            </HBox>
+            <TableView fx:id="todosTable" VBox.vgrow="ALWAYS">
+               <columns>
+                  <TableColumn fx:id="dateCol" prefWidth="91.0" text="DATE" />
+                  <TableColumn fx:id="contactCol" minWidth="0.0" prefWidth="205.0" text="CONTACT" />
+                  <TableColumn fx:id="notesCol" prefWidth="566.0" text="NOTES" />
+               </columns>
+               <VBox.margin>
+                  <Insets />
+               </VBox.margin>
+            </TableView>
          </children>
-      </HBox>
-      <TableView fx:id="todosTable" VBox.vgrow="ALWAYS">
-         <columns>
-            <TableColumn fx:id="dateCol" prefWidth="109.0" text="DATE" />
-            <TableColumn fx:id="contactCol" minWidth="0.0" prefWidth="242.0" text="CONTACT" />
-            <TableColumn fx:id="notesCol" prefWidth="523.0" text="NOTES" />
-         </columns>
-         <VBox.margin>
-            <Insets />
-         </VBox.margin>
-      </TableView>
+      </VBox>
    </children>
    <padding>
-      <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+      <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
    </padding>
-</VBox>
+</AnchorPane>

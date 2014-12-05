@@ -24,16 +24,16 @@ public class ContactDao extends Dao<Contact> {
 
     public List<Contact> find(String name, String address, String postcode, String tel) throws SQLException {
         Map<String, String> map = new LinkedHashMap<>();
-        if (name.trim().length() > 0) {
+        if (name != null && name.trim().length() > 0) {
             map.put("lower(name)", search(name));
         }
-        if (address.trim().length() > 0) {
+        if (address != null && address.trim().length() > 0) {
             map.put("lower(address)", search(address));
         }
-        if (postcode.trim().length() > 0) {
+        if (postcode != null && postcode.trim().length() > 0) {
             map.put("lower(postcode)", search(postcode));
         }
-        if (tel.trim().length() > 0) {
+        if (tel != null && tel.trim().length() > 0) {
             map.put("lower(telephone)", search(tel));
         }
 

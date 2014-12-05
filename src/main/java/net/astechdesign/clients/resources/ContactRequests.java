@@ -42,13 +42,13 @@ public class ContactRequests {
         String val = name + address + postcode + tel;
         if (val.trim().length() > 0) {
             if (action.equals("find")) {
-                return findContacts(name, address, postcode, tel);
+                return findContacts(name, address, postcode, tel.number);
             }
             if (action.equals("update")) {
                 ContactRepo.update(new Contact(id, name, address, postcode, tel));
                 return contact(id);
             }
-            if (ContactRepo.find(name, "", "", new Telephone("")).size() == 0) {
+            if (ContactRepo.find(name, "", "", "").size() == 0) {
                 ContactRepo.save(new Contact(id, name, address, postcode, tel));
             }
         }
@@ -58,7 +58,7 @@ public class ContactRequests {
     private Viewable findContacts(String name,
                                   String address,
                                   String postcode,
-                                  Telephone tel) throws SQLException {
+                                  String tel) throws SQLException {
         Map<String, Object> data = new HashMap<>();
         data.put("contacts", ContactRepo.find(name, address, postcode, tel));
         return new Viewable("contacts", data);
