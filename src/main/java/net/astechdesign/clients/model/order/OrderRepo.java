@@ -1,5 +1,7 @@
 package net.astechdesign.clients.model.order;
 
+import net.astechdesign.clients.model.todo.TodoRepo;
+
 import javax.sql.DataSource;
 import java.sql.SQLException;
 import java.util.List;
@@ -15,6 +17,11 @@ public class OrderRepo {
 
     public static void save(Order order) throws SQLException {
         instance.saveOrder(order);
+        TodoRepo.add(order);
+    }
+
+    public static void deleteOrder(Order order) throws SQLException {
+        instance.delete(order);
     }
 
     public OrderRepo(DataSource dataSource) {
@@ -28,5 +35,9 @@ public class OrderRepo {
 
     private List<Order> getOrders(int contactId) throws SQLException {
         return new OrdersDao(dataSource).get(contactId);
+    }
+
+    private void delete(Order order) throws SQLException {
+        new OrdersDao(dataSource).delete(order);
     }
 }

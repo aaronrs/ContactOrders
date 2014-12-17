@@ -3,7 +3,10 @@ package net.astechdesign.clients.gui.controllers;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.*;
+import javafx.scene.control.DatePicker;
+import javafx.scene.control.Label;
+import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import net.astechdesign.clients.model.contact.Contact;
 import net.astechdesign.clients.model.contact.ContactRepo;
@@ -63,7 +66,6 @@ public class DetailsController extends Controller implements Initializable {
         if (id == -1) {
             contact = new Contact(-1, "", "", "", null);
         } else {
-
             try {
                 contact = ContactRepo.get(id);
                 name.setText(contact.getName());
@@ -89,4 +91,7 @@ public class DetailsController extends Controller implements Initializable {
     public Label getNameLabel() {
         return name;
     }
+
+    @Override
+    public void update() {}
 }

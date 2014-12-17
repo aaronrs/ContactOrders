@@ -7,7 +7,6 @@ import javafx.scene.control.Button;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import net.astechdesign.clients.gui.fxml.FmxlWrapper;
-import net.astechdesign.clients.model.contact.Contact;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -32,29 +31,35 @@ public class MainController extends Controller implements Initializable {
     public AnchorPane detailsPane;
 
     public ProductsController productsController;
+    public ContactsController contactsController;
     public ContactDetailsController contactDetailsController;
     public TodosController todosController;
     public DetailsController detailsController;
+    public OrderDetailsController orderDetailsController;
+    public TodoDetailsController todoDetailsController;
 
     @FXML
     void selectTodos(ActionEvent event) {
         showAll();
-        showTodos();
         todosBtn.setDisable(true);
+        todosController.update();
+        contentPane.setCenter(todosPane);
     }
 
     @FXML
     void selectContacts(ActionEvent event) {
         showAll();
-        showContacts();
         contactsBtn.setDisable(true);
+        contactsController.update();
+        contentPane.setCenter(contactsPane);
     }
 
     @FXML
     void selectProducts(ActionEvent event) {
         showAll();
-        showProducts();
         productsBtn.setDisable(true);
+        productsController.update();
+        contentPane.setCenter(productsPane);
     }
 
     @FXML
@@ -86,39 +91,30 @@ public class MainController extends Controller implements Initializable {
         detailsPane = detailsWrapper.getPane();
 
         productsController = productsWrapper.getController();
-        contactDetailsController = contactDetailsWrapper.getController();
+        contactsController = contactsWrapper.getController();
         todosController = todosWrapper.getController();
         detailsController = detailsWrapper.getController();
+        contactDetailsController = contactDetailsWrapper.getController();
+        orderDetailsController = ordersDetailsWrapper.getController();
+        todoDetailsController = todosDetailsWrapper.getController();
 
         detailsController.setContactDetailsPane(contactDetailsWrapper.getPane());
         detailsController.setTodosDetailsPane(todosDetailsWrapper.getPane());
         detailsController.setOrdersDetailsPane(ordersDetailsWrapper.getPane());
         contactDetailsController.setTitleName(detailsController.getNameLabel());
 
-        showTodos();
+        selectTodos(null);
     }
 
-    public void showProducts() {
-        productsController.updateProductTable();
-        contentPane.setCenter(productsPane);
-    }
-
-    public void showContacts() {
-        contentPane.setCenter(contactsPane);
-    }
-
-    public void showDetails(int id) {
+    public void showDetails() {
         showAll();
-        Contact contact = detailsController.selectContact(id);
-        contactDetailsController.setContact(contact);
+        contactDetailsController.update();
+        todoDetailsController.update();
+        orderDetailsController.update();
         contentPane.setCenter(detailsPane);
     }
 
-    public void showTodos() {
-        contentPane.setCenter(todosPane);
-    }
-
-    public void newContact() {
-        showDetails(-1);
+    @Override
+    public void update() {
     }
 }

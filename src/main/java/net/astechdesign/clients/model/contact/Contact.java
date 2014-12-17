@@ -2,6 +2,7 @@ package net.astechdesign.clients.model.contact;
 
 import javafx.beans.property.*;
 import net.astechdesign.clients.model.Item;
+import org.apache.commons.lang.StringUtils;
 
 public class Contact implements Item {
 
@@ -95,5 +96,9 @@ public class Contact implements Item {
     @Override
     public int hashCode() {
         return id.getValue();
+    }
+
+    public boolean incomplete() {
+        return StringUtils.isEmpty(getName()) || StringUtils.isEmpty(getAddress());
     }
 }

@@ -48,7 +48,7 @@ public class ContactRequests {
                 ContactRepo.update(new Contact(id, name, address, postcode, tel));
                 return contact(id);
             }
-            if (ContactRepo.find(name, "", "", "").size() == 0) {
+            if (ContactRepo.find(name).size() == 0) {
                 ContactRepo.save(new Contact(id, name, address, postcode, tel));
             }
         }
@@ -60,7 +60,7 @@ public class ContactRequests {
                                   String postcode,
                                   String tel) throws SQLException {
         Map<String, Object> data = new HashMap<>();
-        data.put("contacts", ContactRepo.find(name, address, postcode, tel));
+        data.put("contacts", ContactRepo.find(name));
         return new Viewable("contacts", data);
     }
 
@@ -78,16 +78,16 @@ public class ContactRequests {
     @Path("/order")
     public Viewable saveOrder(MultivaluedMap<String, String> formParams) throws SQLException, ParseException {
         int contactId = Integer.parseInt(formParams.getFirst("contactId"));
-        String contact = ContactRepo.get(contactId).getName();
+        Contact contact = ContactRepo.get(contactId);
         List<String> ids = formParams.get("id");
-        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+
         for (String id : ids) {
             int productId = Integer.parseInt(id);
             String product = ProductRepo.find(productId).getName();
             LocalDate deliveryDate = LocalDate.parse(formParams.getFirst("delivery_" + id), DateTimeFormatter.ofPattern("dd-MM-yyyy"));
             int amount = Integer.parseInt(formParams.getFirst("amount_" + id));
             String name = formParams.getFirst("name_" + id);
-            OrderRepo.save(new Order(contact, product, deliveryDate, amount, LocalDate.now()));
+            OrderRepo.save(new Order(-1, contact, product, deliveryDate, amount, LocalDate.now()));
             TodoRepo.save(new Todo(0, contactId, deliveryDate, "Delivery for: " + name, ""));
         }
         return contact(contactId);
@@ -115,7 +115,7 @@ public class ContactRequests {
         Map<String, List<Order>> orderMap = new HashMap<>();
         months = new ArrayList<>();
         for (Order order : OrderRepo.orders(id)) {
-            String month = order.deliveryDate.format(DateTimeFormatter.ofPattern("MMMM yyyy"));
+            String month = order.deliveryDate.getValue().format(DateTimeFormatter.ofPattern("MMMM yyyy"));
             if (!orderMap.containsKey(month)) {
                 orderMap.put(month, new ArrayList<Order>());
                 months.add(month);

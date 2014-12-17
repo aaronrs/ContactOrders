@@ -6,7 +6,7 @@
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="680.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="net.astechdesign.clients.gui.controllers.ProductsController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1100.0" stylesheets="@Login.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="net.astechdesign.clients.gui.controllers.ProductsController">
     <children>
       <StackPane prefHeight="680.0" prefWidth="900.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
@@ -18,18 +18,18 @@
                      </font></Label>
                       <HBox spacing="5.0">
                           <children>
-                              <TextField fx:id="code" prefHeight="25.0" prefWidth="73.0" promptText="CODE" />
-                              <TextField fx:id="description" prefHeight="25.0" prefWidth="489.0" promptText="DESCRIPTION" HBox.hgrow="ALWAYS" />
+                              <TextField fx:id="code" prefHeight="31.0" prefWidth="117.0" promptText="CODE" />
+                              <TextField fx:id="description" prefHeight="31.0" prefWidth="634.0" promptText="DESCRIPTION" HBox.hgrow="ALWAYS" />
                               <TextField fx:id="price" prefHeight="25.0" prefWidth="78.0" promptText="PRICE" />
-                              <Button mnemonicParsing="false" onAction="#addProduct" prefHeight="25.0" prefWidth="55.0" text="ADD" />
+                              <Button mnemonicParsing="false" onAction="#addProduct" prefHeight="25.0" prefWidth="80.0" styleClass="button1" text="ADD" />
                           </children>
                       </HBox>
                       <TableView fx:id="productsTable" editable="true" VBox.vgrow="ALWAYS">
                           <columns>
-                              <TableColumn fx:id="codeCol" onEditCommit="#editCodeCol" prefWidth="73.0" resizable="false" text="CODE" />
-                              <TableColumn fx:id="descriptionCol" prefWidth="493.0" resizable="false" text="DESCRIPTION" />
-                              <TableColumn fx:id="priceCol" prefWidth="84.0" resizable="false" text="PRICE" />
-                              <TableColumn fx:id="delCol" minWidth="1.0" prefWidth="40.0" resizable="false" text="DEL" />
+                              <TableColumn fx:id="codeCol" onEditCommit="#editCodeCol" prefWidth="120.0" resizable="false" text="CODE" />
+                              <TableColumn fx:id="descriptionCol" prefWidth="618.0" resizable="false" text="DESCRIPTION" />
+                              <TableColumn fx:id="priceCol" minWidth="6.0" prefWidth="102.0" resizable="false" text="PRICE" />
+                              <TableColumn fx:id="delCol" minWidth="0.0" prefWidth="64.0" resizable="false" text="DEL" />
                           </columns>
                           <VBox.margin>
                               <Insets />
@@ -42,7 +42,7 @@
               </VBox>
             <AnchorPane fx:id="confirmDialog">
                <children>
-                  <VBox alignment="CENTER" layoutX="244.0" layoutY="290.0" prefHeight="200.0" prefWidth="413.0" spacing="10.0" style="-fx-border-color: #999; -fx-border-radius: 10px; -fx-border-width: 3px; -fx-background-color: #EEE;">
+                  <VBox alignment="CENTER" layoutX="334.0" layoutY="290.0" prefHeight="200.0" prefWidth="413.0" spacing="10.0" style="-fx-border-color: #999; -fx-border-radius: 10px; -fx-border-width: 3px; -fx-background-color: #EEE;">
                      <children>
                         <Label text="Confirm Delete:" />
                         <HBox alignment="CENTER" spacing="5.0">
@@ -64,10 +64,10 @@
                               </Label>
                            </children>
                         </HBox>
-                        <HBox alignment="CENTER" spacing="10.0">
+                        <HBox alignment="CENTER" spacing="20.0">
                            <children>
-                              <Button mnemonicParsing="false" onAction="#confirmDelete" text="OK" />
-                              <Button mnemonicParsing="false" onAction="#cancelDelete" text="CANCEL" />
+                              <Button mnemonicParsing="false" onAction="#confirmDelete" styleClass="button1" text="OK" />
+                              <Button mnemonicParsing="false" onAction="#cancelDelete" styleClass="button1" text="CANCEL" />
                            </children>
                         </HBox>
                      </children>

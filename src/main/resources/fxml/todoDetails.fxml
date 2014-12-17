@@ -6,7 +6,7 @@
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="680.0" prefWidth="900.0" stylesheets="@fxml.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="net.astechdesign.clients.gui.controllers.TodoDetailsController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="680.0" prefWidth="900.0" stylesheets="@Login.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="net.astechdesign.clients.gui.controllers.TodoDetailsController">
          <children>
       <VBox layoutX="20.0" layoutY="20.0" spacing="5.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
@@ -14,7 +14,7 @@
                <children>
                   <TextArea fx:id="todoNotes" prefHeight="50.0" prefWidth="400.0" promptText="Notes" wrapText="true" />
                   <DatePicker fx:id="todoDate" prefHeight="25.0" prefWidth="137.0" promptText="Date" />
-                  <Button mnemonicParsing="false" onAction="#addTodo" prefHeight="25.0" prefWidth="63.0" text="ADD" />
+                  <Button mnemonicParsing="false" onAction="#addTodo" prefHeight="30.0" prefWidth="77.0" styleClass="button1" text="ADD" />
                </children>
             </HBox>
             <TableView fx:id="todosTable" VBox.vgrow="ALWAYS">
@@ -31,6 +31,6 @@
       </VBox>
          </children>
    <padding>
-      <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+      <Insets top="5.0" />
    </padding>
       </AnchorPane>

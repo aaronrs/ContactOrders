@@ -1,11 +1,15 @@
 package net.astechdesign.clients.gui.controllers;
 
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import net.astechdesign.clients.model.contact.Contact;
 import net.astechdesign.clients.model.contact.ContactRepo;
 import net.astechdesign.clients.model.contact.Telephone;
@@ -16,27 +20,27 @@ import java.util.ResourceBundle;
 
 public class ContactDetailsController extends Controller implements Initializable {
 
-    private Contact contact = new Contact(0, "", "", "", null);
+    @FXML
+    private VBox contactDetails;
+
+    @FXML
+    private AnchorPane confirmDialog;
+
+    @FXML
+    private  Label dialogName;
 
     private Label titleName;
-
-    @FXML
-    private TextField name;
-
-    @FXML
-    private TextField address;
-
-    @FXML
-    private TextField postcode;
-
-    @FXML
-    private TextField telephone;
-
-    @FXML
-    private Button updateDetailsBtn;
+    private TextField name = new TextField();
+    private TextField address = new TextField();
+    private TextField postcode = new TextField();
+    private TextField telephone = new TextField();
+    private Button updateDetailsBtn = new Button("UPDATE");
+    private Button saveDetailsBtn = new Button("SAVE");
+    private Button deleteContactBtn = new Button("DELETE");
 
     @FXML
     void updateDetails(ActionEvent event) {
+        Contact contact = getContact();
         Contact newContact = new Contact(contact.getId(), contact.getName(), address.getText(), postcode.getText(), new Telephone(telephone.getText()));
         try {
             ContactRepo.update(newContact);
@@ -45,36 +49,120 @@ public class ContactDetailsController extends Controller implements Initializabl
         }
     }
 
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
-//        updateDetailsBtn.disableProperty().bind(
-//                Bindings.equal(address.textProperty(), contact.getAddress())
-//                .and(Bindings.equal(postcode.textProperty(),contact.getPostcode()))
-//                .and(Bindings.equal(telephone.textProperty(),contact.getTelephone().number))
-//        );
+    @FXML
+    void deleteContact(ActionEvent event) {
+        confirmDialog.setVisible(true);
     }
 
-    public void setContact(Contact contact) {
-        if (contact.getId() == -1) {
-            name.setVisible(true);
-        } else {
-            name.setVisible(false);
+    @FXML
+    void confirmDelete(ActionEvent e) {
+        try {
+            ContactRepo.delete(getContactId());
+        } catch (SQLException ex) {
+            ex.printStackTrace();
         }
-        this.contact.setId(contact.getId());
-        this.contact.setName(contact.getName());
-        this.contact.setAddress(contact.getAddress());
-        this.contact.setPostcode(contact.getPostcode());
-        this.contact.setTelephone(contact.getTelephone());
+        confirmDialog.setVisible(false);
+        mainController.selectContacts(null);
+    }
 
+    @FXML
+    void cancelDelete(ActionEvent e) {
+        confirmDialog.setVisible(false);
+    }
+
+    @FXML
+    void saveDetails(ActionEvent event) {
+        Contact newContact = new Contact(-1, name.getText(), address.getText(), postcode.getText(), new Telephone(telephone.getText()));
+        if (newContact.incomplete()) return;
+        try {
+            ContactRepo.save(newContact);
+            setContact(newContact);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        update();
+    }
+
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        confirmDialog.setVisible(false);
+
+        name.setPromptText("name");
+        address.setPromptText("address");
+        postcode.setPromptText("postcode");
+        telephone.setPromptText("telephone");
+        updateDetailsBtn.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                updateDetails(event);
+            }
+        });
+        saveDetailsBtn.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                saveDetails(event);
+            }
+        });
+        deleteContactBtn = new Button("DELETE");
+        deleteContactBtn.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                deleteContact(event);
+            }
+        });
+
+        updateDetailsBtn.getStyleClass().add("button1");
+        saveDetailsBtn.getStyleClass().add("button1");
+        deleteContactBtn.getStyleClass().add("button1");
+    }
+
+    @Override
+    public void update() {
+        contactDetails.getChildren().clear();
+        if (getContactId() == -1) {
+            setupNewContact();
+        } else {
+            editContact();
+        }
+        Contact contact = getContact();
+        name.setText(contact.getName());
         address.setText(contact.getAddress());
         postcode.setText(contact.getPostcode());
         if (contact.getTelephone() != null) {
             telephone.setText(contact.getTelephone().number);
+        } else {
+            telephone.clear();
         }
+    }
+
+    private void setupNewContact() {
+        updateDetailsBtn.setVisible(false);
+        deleteContactBtn.setVisible(false);
+        saveDetailsBtn.setVisible(true);
+        contactDetails.getChildren().add(name);
+        contactDetails.getChildren().add(address);
+        contactDetails.getChildren().add(postcode);
+        contactDetails.getChildren().add(telephone);
+        contactDetails.getChildren().add(saveDetailsBtn);
+    }
+
+    private void editContact() {
+        updateDetailsBtn.setVisible(true);
+        deleteContactBtn.setVisible(true);
+        saveDetailsBtn.setVisible(false);
+        contactDetails.getChildren().add(address);
+        contactDetails.getChildren().add(postcode);
+        contactDetails.getChildren().add(telephone);
+        HBox hBox = new HBox();
+        hBox.setSpacing(20);
+        hBox.getChildren().add(updateDetailsBtn);
+        hBox.getChildren().add(deleteContactBtn);
+        contactDetails.getChildren().add(hBox);
     }
 
     public void setTitleName(Label nameLabel) {
         titleName = nameLabel;
         name.textProperty().bindBidirectional(titleName.textProperty());
+        dialogName.textProperty().bindBidirectional(titleName.textProperty());
     }
 }

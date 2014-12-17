@@ -3,13 +3,13 @@ package net.astechdesign.clients.gui.controllers;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import net.astechdesign.clients.model.contact.Contact;
 import net.astechdesign.clients.model.contact.ContactRepo;
@@ -27,12 +27,6 @@ public class ContactsController extends Controller implements Initializable {
     private TableView contactsTable;
 
     @FXML
-    private TextField name;
-
-    @FXML
-    private TextField address;
-
-    @FXML
     private TableColumn nameCol;
 
     @FXML
@@ -42,15 +36,14 @@ public class ContactsController extends Controller implements Initializable {
     private TableColumn telCol;
 
     @FXML
-    void findContact(ActionEvent event) {
+    private TextField searchText;
+
+    @FXML
+    void searchContacts(KeyEvent event) {
+        String text = searchText.getText();
+        if (text == null) return;
         try {
-            String name = this.name.getText();
-            String address1 = address.getText();
-            if (name.trim().length() == 0 && address1.trim().length() == 0) {
-                updateContactsTable();
-            } else {
-                updateContactsTable(ContactRepo.find(name, address1, null, null));
-            }
+            updateContactsTable(ContactRepo.find(text));
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -58,11 +51,14 @@ public class ContactsController extends Controller implements Initializable {
 
     @FXML
     void newContact() {
-        mainController.newContact();
+        setContact(-1);
+        mainController.showDetails();
     }
 
-    private void updateContactsTable() {
+    @Override
+    public void update() {
         try {
+            contactsTable.getSelectionModel().clearSelection();
             updateContactsTable(ContactRepo.get());
         } catch (SQLException e) {
             e.printStackTrace();
@@ -75,16 +71,24 @@ public class ContactsController extends Controller implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        updateContactsTable();
+        update();
         nameCol.setCellValueFactory(new PropertyValueFactory<Contact, String>("name"));
         addressCol.setCellValueFactory(new PropertyValueFactory<Contact, String>("address"));
         telCol.setCellValueFactory(new PropertyValueFactory<Contact, String>("telephone"));
 
+        nameCol.setStyle(Css.COL_FONT_SIZE);
+        addressCol.setStyle(Css.COL_FONT_SIZE);
+        telCol.setStyle(Css.COL_FONT_SIZE);
+
+
         contactsTable.getSelectionModel().selectedItemProperty().addListener(new ChangeListener() {
             @Override
             public void changed(ObservableValue observable, Object oldValue, Object newValue) {
-                int id = ((Contact) newValue).getId();
-                mainController.showDetails(id);
+                if (contactsTable.getSelectionModel().getSelectedItem() != null) {
+                    searchText.setText(null);
+                    setContact((Contact) newValue);
+                    mainController.showDetails();
+                }
             }
         });
     }

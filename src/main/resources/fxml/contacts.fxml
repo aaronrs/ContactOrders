@@ -6,7 +6,7 @@
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="680.0" prefWidth="900.0" stylesheets="@fxml.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="net.astechdesign.clients.gui.controllers.ContactsController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1100.0" stylesheets="@Login.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="net.astechdesign.clients.gui.controllers.ContactsController">
     <children>
       <StackPane AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
@@ -16,13 +16,14 @@
                      <font>
                         <Font name="System Bold" size="18.0" />
                      </font>
+                     <padding>
+                        <Insets bottom="10.0" />
+                     </padding>
                       </Label>
-                      <HBox spacing="5.0">
+                      <HBox spacing="20.0">
                           <children>
-                              <TextField fx:id="name" promptText="Name" />
-                              <TextField fx:id="address" prefHeight="25.0" prefWidth="253.0" promptText="Address" />
-                              <Button mnemonicParsing="false" onAction="#findContact" text="FIND" />
-                        <Button mnemonicParsing="false" onAction="#newContact" text="NEW CONTACT" />
+                        <Button mnemonicParsing="false" onAction="#newContact" styleClass="button1" text="NEW CONTACT" />
+                              <TextField fx:id="searchText" onKeyTyped="#searchContacts" prefHeight="31.0" prefWidth="639.0" promptText="Search" />
                           </children>
                           <VBox.margin>
                               <Insets />
@@ -30,9 +31,9 @@
                       </HBox>
                       <TableView fx:id="contactsTable" VBox.vgrow="ALWAYS">
                           <columns>
-                              <TableColumn fx:id="nameCol" editable="false" prefWidth="172.0" text="NAME" />
-                              <TableColumn fx:id="addressCol" editable="false" prefWidth="494.0" text="ADDRESS" />
-                              <TableColumn fx:id="telCol" editable="false" prefWidth="121.0" text="TEL" />
+                              <TableColumn fx:id="nameCol" editable="false" prefWidth="231.0" text="NAME" />
+                              <TableColumn fx:id="addressCol" editable="false" prefWidth="661.0" text="ADDRESS" />
+                              <TableColumn fx:id="telCol" editable="false" prefWidth="167.0" text="TEL" />
                           </columns>
                           <VBox.margin>
                               <Insets />

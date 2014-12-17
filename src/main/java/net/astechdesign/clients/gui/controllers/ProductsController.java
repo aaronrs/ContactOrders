@@ -72,7 +72,7 @@ public class ProductsController extends Controller implements Initializable {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        updateProductTable();
+        update();
     }
 
     @FXML
@@ -80,9 +80,9 @@ public class ProductsController extends Controller implements Initializable {
         Product product = new Product(0, code.getText(), description.getText(), price.getText());
         try {
             ProductRepo.save(product);
-            updateProductTable();
+            update();
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.out.println(e.getMessage());
         }
         code.clear();
         description.clear();
@@ -96,7 +96,7 @@ public class ProductsController extends Controller implements Initializable {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        updateProductTable();
+        update();
         confirmDialog.setVisible(false);
     }
 
@@ -108,7 +108,7 @@ public class ProductsController extends Controller implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         confirmDialog.setVisible(false);
-        updateProductTable();
+        update();
 
         codeCol.setCellValueFactory(new PropertyValueFactory<Product, String>("code"));
         codeCol.setCellFactory(TextFieldTableCell.forTableColumn());
@@ -127,9 +127,14 @@ public class ProductsController extends Controller implements Initializable {
                 return new ButtonCell2();
             }
         });
+
+        codeCol.setStyle(Css.COL_FONT_SIZE);
+        descriptionCol.setStyle(Css.COL_FONT_SIZE);
+        priceCol.setStyle(Css.COL_FONT_SIZE);
     }
 
-    public void updateProductTable() {
+    @Override
+    public void update() {
         try {
             List<Product> productList = ProductRepo.products();
             productsTable.setItems(FXCollections.observableArrayList(productList));

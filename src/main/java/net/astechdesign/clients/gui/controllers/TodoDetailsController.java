@@ -1,7 +1,5 @@
 package net.astechdesign.clients.gui.controllers;
 
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -42,7 +40,7 @@ public class TodoDetailsController extends Controller implements Initializable {
 
     @FXML
     void addTodo(ActionEvent event) {
-        Todo todo = new Todo(0, -1, todoDate.getValue(), todoNotes.getText(), "");
+        Todo todo = new Todo(0, getContactId(), todoDate.getValue(), todoNotes.getText(), getContact().getName());
         try {
             TodoRepo.save(todo);
             todoNotes.clear();
@@ -50,27 +48,23 @@ public class TodoDetailsController extends Controller implements Initializable {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        updateTodosTable();
+        update();
     }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        updateTodosTable();
+        update();
         dateCol.setCellValueFactory(new PropertyValueFactory<Todo, LocalDate>("date"));
         contactCol.setCellValueFactory(new PropertyValueFactory<Todo, String>("name"));
         notesCol.setCellValueFactory(new PropertyValueFactory<Todo, String>("notes"));
 
-        todosTable.getSelectionModel().selectedItemProperty().addListener(new ChangeListener() {
-            @Override
-            public void changed(ObservableValue observable, Object oldValue, Object newValue) {
-                int id = ((Todo) newValue).getContactId();
-                if (id == -1) return;
-                mainController.showDetails(id);
-            }
-        });
-
+        dateCol.setStyle(Css.COL_FONT_SIZE);
+        contactCol.setStyle(Css.COL_FONT_SIZE);
+        notesCol.setStyle(Css.COL_FONT_SIZE);
     }
-    public void updateTodosTable() {
+
+    @Override
+    public void update() {
         List<Todo> list = null;
         try {
             list = TodoRepo.todos();
@@ -80,5 +74,4 @@ public class TodoDetailsController extends Controller implements Initializable {
             e.printStackTrace();
         }
     }
-
 }

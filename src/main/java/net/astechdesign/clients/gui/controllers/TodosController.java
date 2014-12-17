@@ -6,7 +6,10 @@ import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.*;
+import javafx.scene.control.DatePicker;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.cell.PropertyValueFactory;
 import net.astechdesign.clients.model.todo.Todo;
 import net.astechdesign.clients.model.todo.TodoRepo;
@@ -14,7 +17,6 @@ import net.astechdesign.clients.model.todo.TodoRepo;
 import java.net.URL;
 import java.sql.SQLException;
 import java.time.LocalDate;
-import java.util.List;
 import java.util.ResourceBundle;
 
 public class TodosController extends Controller implements Initializable {
@@ -47,32 +49,37 @@ public class TodosController extends Controller implements Initializable {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        updateTodosTable();
+        update();
     }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        updateTodosTable();
+        update();
         dateCol.setCellValueFactory(new PropertyValueFactory<Todo, LocalDate>("date"));
         contactCol.setCellValueFactory(new PropertyValueFactory<Todo, String>("name"));
         notesCol.setCellValueFactory(new PropertyValueFactory<Todo, String>("notes"));
+
+        dateCol.setStyle(Css.COL_FONT_SIZE);
+        contactCol.setStyle(Css.COL_FONT_SIZE);
+        notesCol.setStyle(Css.COL_FONT_SIZE);
 
         todosTable.getSelectionModel().selectedItemProperty().addListener(new ChangeListener() {
             @Override
             public void changed(ObservableValue observable, Object oldValue, Object newValue) {
                 int id = ((Todo) newValue).getContactId();
                 if (id == -1) return;
-                mainController.showDetails(id);
+                setContact(id);
+                mainController.showDetails();
             }
         });
 
     }
-    public void updateTodosTable() {
-        List<Todo> list = null;
+
+    @Override
+    public void update() {
         try {
-            list = TodoRepo.todos();
             todosTable.getSelectionModel().clearSelection();
-            todosTable.setItems(FXCollections.observableArrayList(list));
+            todosTable.setItems(FXCollections.observableArrayList(TodoRepo.todos()));
         } catch (SQLException e) {
             e.printStackTrace();
         }

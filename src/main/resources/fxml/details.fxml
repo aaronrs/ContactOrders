@@ -6,7 +6,7 @@
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="680.0" prefWidth="900.0" stylesheets="@fxml.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="net.astechdesign.clients.gui.controllers.DetailsController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1100.0" stylesheets="@Login.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="net.astechdesign.clients.gui.controllers.DetailsController">
          <children>
             <VBox alignment="TOP_CENTER" spacing="5.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                <children>
@@ -15,21 +15,21 @@
                   <Font name="System Bold" size="18.0" />
                </font>
                   </Label>
-                  <TabPane layoutX="25.0" layoutY="32.0" prefHeight="200.0" prefWidth="200.0" style="-fx-border-color: #CCC;" tabClosingPolicy="UNAVAILABLE" VBox.vgrow="ALWAYS">
+                  <TabPane layoutX="25.0" layoutY="32.0" style="-fx-border-color: #CCC;" tabClosingPolicy="UNAVAILABLE" VBox.vgrow="ALWAYS">
                     <tabs>
                       <Tab text="Details">
                         <content>
-                          <AnchorPane fx:id="detailsTabPane" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                          <AnchorPane fx:id="detailsTabPane" />
                         </content>
                       </Tab>
                       <Tab fx:id="todosTab" text="Todos">
                         <content>
-                          <AnchorPane fx:id="todosTabPane" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                          <AnchorPane fx:id="todosTabPane" />
                         </content>
                       </Tab>
                         <Tab fx:id="ordersTab" text="Orders">
                           <content>
-                            <AnchorPane fx:id="ordersTabPane" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                            <AnchorPane fx:id="ordersTabPane" />
                           </content>
                         </Tab>
                     </tabs>

@@ -28,8 +28,13 @@ public class TestContactsRepo {
         for (String row: readData("products")) {
             createProduct(row.split(delim));
         }
-        for (String row: readData("contacts")) {
-            createContact(row.split(delim));
+        for (String row: readData("marius.csv")) {
+//            System.out.println(row);
+            String[] data = row.split(",");
+            String address = data[2] + " " + data[3] + " " + data[4] + " " + data[5] + " " + data[7];
+            Contact contact = new Contact(0, data[0], address.replace("  ", " ").trim(), data[9], null);
+            ContactRepo.save(contact);
+//            createContact(row.split(delim));
         }
         for (String row: readData("todos")) {
 //            createTodo(row.split(delim));

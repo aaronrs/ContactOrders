@@ -22,20 +22,13 @@ public class ContactDao extends Dao<Contact> {
         return listQuery(sql, Contact.class);
     }
 
-    public List<Contact> find(String name, String address, String postcode, String tel) throws SQLException {
+    public List<Contact> find(String text) throws SQLException {
         Map<String, String> map = new LinkedHashMap<>();
-        if (name != null && name.trim().length() > 0) {
-            map.put("lower(name)", search(name));
-        }
-        if (address != null && address.trim().length() > 0) {
-            map.put("lower(address)", search(address));
-        }
-        if (postcode != null && postcode.trim().length() > 0) {
-            map.put("lower(postcode)", search(postcode));
-        }
-        if (tel != null && tel.trim().length() > 0) {
-            map.put("lower(telephone)", search(tel));
-        }
+        text = text.toLowerCase();
+        map.put("lower(name)", search(text));
+        map.put("lower(address)", search(text));
+        map.put("lower(postcode)", search(text));
+        map.put("lower(telephone)", search(text));
 
         String sql = "SELECT * FROM contacts WHERE active = true and (";
         sql += StringUtils.join(map.keySet(), " like ? or ") + " like ?)";
@@ -73,7 +66,7 @@ public class ContactDao extends Dao<Contact> {
         Object[] values = {contact.getName(),
                 contact.getAddress(),
                 contact.getPostcode(),
-                contact.getTelephone().number
+                contact.getTelephone() != null ? contact.getTelephone().number : ""
         };
         update(sql, values);
     }

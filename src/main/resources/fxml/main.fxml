@@ -6,7 +6,7 @@
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="810.0" prefWidth="900.0" stylesheets="@fxml.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="net.astechdesign.clients.gui.controllers.MainController">
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="960.0" prefWidth="1200.0" stylesheets="@Login.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="net.astechdesign.clients.gui.controllers.MainController">
    <children>
       <HBox alignment="CENTER">
          <children>
@@ -21,9 +21,9 @@
       </HBox>
       <HBox spacing="10.0">
          <children>
-            <Button fx:id="todosBtn" disable="true" mnemonicParsing="false" onAction="#selectTodos" text="TODOS" />
-            <Button fx:id="contactsBtn" mnemonicParsing="false" onAction="#selectContacts" text="CONTACTS" />
-            <Button fx:id="productsBtn" mnemonicParsing="false" onAction="#selectProducts" text="PRODUCTS" />
+            <Button fx:id="todosBtn" disable="true" mnemonicParsing="false" onAction="#selectTodos" styleClass="button2" text="TODOS" />
+            <Button fx:id="contactsBtn" mnemonicParsing="false" onAction="#selectContacts" styleClass="button2" text="CONTACTS" />
+            <Button fx:id="productsBtn" mnemonicParsing="false" onAction="#selectProducts" styleClass="button2" text="PRODUCTS" />
          </children>
          <VBox.margin>
             <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
@@ -33,8 +33,8 @@
          <bottom>
             <HBox>
                <children>
-                  <Button mnemonicParsing="false" onAction="#exitAction" text="EXIT" BorderPane.alignment="CENTER" />
-                  <Label alignment="CENTER_RIGHT" prefHeight="22.0" prefWidth="821.0" text="ASTECH DESIGN LTD" HBox.hgrow="ALWAYS">
+                  <Button mnemonicParsing="false" onAction="#exitAction" prefHeight="38.0" prefWidth="90.0" styleClass="button2" text="EXIT" BorderPane.alignment="CENTER" />
+                  <Label alignment="CENTER_RIGHT" prefHeight="22.0" prefWidth="1128.0" text="ASTECH DESIGN LTD" HBox.hgrow="ALWAYS">
                      <font>
                         <Font name="System Bold Italic" size="13.0" />
                      </font>
