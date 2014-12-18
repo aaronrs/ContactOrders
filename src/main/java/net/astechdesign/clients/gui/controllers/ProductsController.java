@@ -50,7 +50,7 @@ public class ProductsController extends Controller implements Initializable {
     private TableColumn delCol;
 
     @FXML
-    private TableColumn priceCol;
+    private TableColumn<Product, String> priceCol;
 
     @FXML
     private AnchorPane confirmDialog;
@@ -77,7 +77,10 @@ public class ProductsController extends Controller implements Initializable {
 
     @FXML
     void addProduct(ActionEvent event) {
-        Product product = new Product(0, code.getText(), description.getText(), price.getText());
+        String codeVal = code.getText().toUpperCase();
+        String name = description.getText().toUpperCase();
+        String priceVal = price.getText();
+        Product product = new Product(0, codeVal, name, priceVal);
         try {
             ProductRepo.save(product);
             update();
@@ -114,10 +117,22 @@ public class ProductsController extends Controller implements Initializable {
         codeCol.setCellFactory(TextFieldTableCell.forTableColumn());
 
         descriptionCol.setCellValueFactory(new PropertyValueFactory<Product, String>("name"));
-        priceCol.setCellValueFactory(new PropertyValueFactory<Product, String>("price"));
+        priceCol.setCellValueFactory(new PropertyValueFactory<>("price"));
+        priceCol.setCellFactory(column -> {
+            return new TableCell<Product, String>() {
+                @Override
+                protected void updateItem(String item, boolean empty) {
+                    super.updateItem(item, empty);
+                    if (item != null) {
+                        setText("£" + item);
+                    }
+                }
+            };
+        });
 
         delCol.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<Product, Boolean>, ObservableValue<Boolean>>() {
-            @Override public ObservableValue<Boolean> call(TableColumn.CellDataFeatures<Product, Boolean> features) {
+            @Override
+            public ObservableValue<Boolean> call(TableColumn.CellDataFeatures<Product, Boolean> features) {
                 return new SimpleBooleanProperty(features.getValue() != null);
             }
         });

@@ -64,7 +64,7 @@ public class DetailsController extends Controller implements Initializable {
 
     public Contact selectContact(int id) {
         if (id == -1) {
-            contact = new Contact(-1, "", "", "", null);
+            contact = new Contact(-1, "", "", "", "", null);
         } else {
             try {
                 contact = ContactRepo.get(id);

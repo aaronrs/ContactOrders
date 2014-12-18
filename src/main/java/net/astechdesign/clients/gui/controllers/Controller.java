@@ -8,7 +8,7 @@ import java.sql.SQLException;
 
 public abstract class Controller {
 
-    private static final Contact CONTACT = new Contact(-1, "", "", "", new Telephone(""));
+    private static final Contact CONTACT = new Contact(-1, "", "", "", "", new Telephone(""));
 
     private static Contact contact;
 

@@ -33,9 +33,6 @@ public class TodoDetailsController extends Controller implements Initializable {
     private TableColumn dateCol;
 
     @FXML
-    private TableColumn contactCol;
-
-    @FXML
     private TableColumn notesCol;
 
     @FXML
@@ -55,11 +52,9 @@ public class TodoDetailsController extends Controller implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         update();
         dateCol.setCellValueFactory(new PropertyValueFactory<Todo, LocalDate>("date"));
-        contactCol.setCellValueFactory(new PropertyValueFactory<Todo, String>("name"));
         notesCol.setCellValueFactory(new PropertyValueFactory<Todo, String>("notes"));
 
         dateCol.setStyle(Css.COL_FONT_SIZE);
-        contactCol.setStyle(Css.COL_FONT_SIZE);
         notesCol.setStyle(Css.COL_FONT_SIZE);
     }
 

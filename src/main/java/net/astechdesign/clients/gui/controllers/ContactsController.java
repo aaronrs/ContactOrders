@@ -5,6 +5,7 @@ import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
@@ -39,6 +40,12 @@ public class ContactsController extends Controller implements Initializable {
     private TextField searchText;
 
     @FXML
+    private Button deleteContactBtn;
+
+    @FXML
+    private Button editContactBtn;
+
+    @FXML
     void searchContacts(KeyEvent event) {
         String text = searchText.getText();
         if (text == null) return;
@@ -51,6 +58,18 @@ public class ContactsController extends Controller implements Initializable {
 
     @FXML
     void newContact() {
+        setContact(-1);
+        mainController.showDetails();
+    }
+
+    @FXML
+    void deleteContact() {
+        setContact(-1);
+        mainController.showDetails();
+    }
+
+    @FXML
+    void editContact() {
         setContact(-1);
         mainController.showDetails();
     }

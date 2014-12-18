@@ -11,14 +11,14 @@ import java.util.List;
 import java.util.Map;
 
 public class ContactDao extends Dao<Contact> {
-    public static final String[] CONTACT_COLUMNS = {"name","address","postcode","telephone"};
+    public static final String[] CONTACT_COLUMNS = {"name","address","county","postcode","telephone"};
 
     public ContactDao(DataSource dataSource) {
         super(dataSource);
     }
 
     public List<Contact> getContacts() throws SQLException {
-        String sql = "SELECT * FROM contacts WHERE active = true";
+        String sql = "SELECT * FROM contacts WHERE active = true order by name";
         return listQuery(sql, Contact.class);
     }
 
@@ -27,6 +27,7 @@ public class ContactDao extends Dao<Contact> {
         text = text.toLowerCase();
         map.put("lower(name)", search(text));
         map.put("lower(address)", search(text));
+        map.put("lower(county)", search(text));
         map.put("lower(postcode)", search(text));
         map.put("lower(telephone)", search(text));
 
@@ -50,6 +51,7 @@ public class ContactDao extends Dao<Contact> {
                 "=? WHERE id=?";
         Object[] values = {contact.getName(),
                 contact.getAddress(),
+                contact.getCounty(),
                 contact.getPostcode(),
                 contact.getTelephone().number,
                 contact.getId()
@@ -65,6 +67,7 @@ public class ContactDao extends Dao<Contact> {
                 ")";
         Object[] values = {contact.getName(),
                 contact.getAddress(),
+                contact.getCounty(),
                 contact.getPostcode(),
                 contact.getTelephone() != null ? contact.getTelephone().number : ""
         };
@@ -73,7 +76,7 @@ public class ContactDao extends Dao<Contact> {
 
     @Override
     public <T> T toBean(ResultSet rs, Class<T> type) throws SQLException {
-        return (T)new Contact(rs.getInt("id"), rs.getString("name"), rs.getString("address"), rs.getString("postcode"), new Telephone(rs.getString("telephone")));
+        return (T)new Contact(rs.getInt("id"), rs.getString("name"), rs.getString("address"), rs.getString("county"), rs.getString("postcode"), new Telephone(rs.getString("telephone")));
     }
 
     public void delete(int id) throws SQLException {

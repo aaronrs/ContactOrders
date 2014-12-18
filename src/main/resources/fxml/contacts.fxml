@@ -22,8 +22,10 @@
                       </Label>
                       <HBox spacing="20.0">
                           <children>
-                        <Button mnemonicParsing="false" onAction="#newContact" styleClass="button1" text="NEW CONTACT" />
                               <TextField fx:id="searchText" onKeyTyped="#searchContacts" prefHeight="31.0" prefWidth="639.0" promptText="Search" />
+                        <Button mnemonicParsing="false" onAction="#newContact" styleClass="button1" text="NEW CONTACT" />
+                        <Button fx:id="deleteContactBtn" mnemonicParsing="false" onAction="#deleteContact" styleClass="button1" text="DELETE" />
+                        <Button fx:id="editContactBtn" mnemonicParsing="false" onAction="#editContact" styleClass="button1" text="EDIT" />
                           </children>
                           <VBox.margin>
                               <Insets />
@@ -31,8 +33,8 @@
                       </HBox>
                       <TableView fx:id="contactsTable" VBox.vgrow="ALWAYS">
                           <columns>
-                              <TableColumn fx:id="nameCol" editable="false" prefWidth="231.0" text="NAME" />
-                              <TableColumn fx:id="addressCol" editable="false" prefWidth="661.0" text="ADDRESS" />
+                              <TableColumn fx:id="nameCol" editable="false" prefWidth="240.0" text="NAME" />
+                              <TableColumn fx:id="addressCol" editable="false" prefWidth="652.0" text="ADDRESS" />
                               <TableColumn fx:id="telCol" editable="false" prefWidth="167.0" text="TEL" />
                           </columns>
                           <VBox.margin>

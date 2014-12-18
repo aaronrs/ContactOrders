@@ -9,14 +9,16 @@ public class Contact implements Item {
     public final IntegerProperty id;
     public final StringProperty name;
     public final StringProperty address;
+    public final StringProperty county;
     public final StringProperty postcode;
     public final ObjectProperty<Telephone> telephone;
 
-    public Contact(int id, String name, String address, String postcode, Telephone telephone) {
+    public Contact(int id, String name, String address, String county, String postcode, Telephone telephone) {
 
         this.id  = new SimpleIntegerProperty(this, "id", id);
         this.name = new SimpleStringProperty(this, "name", name);
         this.address = new SimpleStringProperty(this, "address", address);
+        this.county = new SimpleStringProperty(this, "county", county);
         this.postcode = new SimpleStringProperty(this, "postcode", postcode);
         this.telephone = new SimpleObjectProperty<>(this, "telephone", telephone);
     }
@@ -31,6 +33,10 @@ public class Contact implements Item {
 
     public String getAddress() {
         return address.getValue();
+    }
+
+    public String getCounty() {
+        return county.getValue();
     }
 
     public String getPostcode() {
@@ -53,6 +59,10 @@ public class Contact implements Item {
         this.address.set(address);
     }
 
+    public void setCounty(String value) {
+        this.county.set(value);
+    }
+
     public void setPostcode(String postcode) {
         this.postcode.set(postcode);
     }
@@ -73,12 +83,20 @@ public class Contact implements Item {
         return address;
     }
 
+    public StringProperty countyProperty() {
+        return county;
+    }
+
     public StringProperty postcodeProperty() {
         return postcode;
     }
 
     public ObjectProperty<Telephone> telephoneProperty() {
         return telephone;
+    }
+
+    public boolean incomplete() {
+        return StringUtils.isEmpty(getName()) || StringUtils.isEmpty(getAddress());
     }
 
     @Override
@@ -88,17 +106,18 @@ public class Contact implements Item {
 
         Contact contact = (Contact) o;
 
-        if (id != contact.id) return false;
+        if (getName() != null ? !getName().equals(contact.getName()) : contact.getName() != null) return false;
+        if (getAddress() != null ? !getAddress().equals(contact.getAddress()) : contact.getAddress() != null) return false;
+        if (getPostcode() != null ? !getPostcode().equals(contact.getPostcode()) : contact.getPostcode() != null) return false;
 
         return true;
     }
 
     @Override
     public int hashCode() {
-        return id.getValue();
-    }
-
-    public boolean incomplete() {
-        return StringUtils.isEmpty(getName()) || StringUtils.isEmpty(getAddress());
+        int result = getName() != null ? getName().hashCode() : 0;
+        result = 31 * result + (getAddress() != null ? getAddress().hashCode() : 0);
+        result = 31 * result + (getPostcode() != null ? getPostcode().hashCode() : 0);
+        return result;
     }
 }

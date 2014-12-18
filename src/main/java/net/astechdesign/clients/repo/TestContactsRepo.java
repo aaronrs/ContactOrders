@@ -3,7 +3,6 @@ package net.astechdesign.clients.repo;
 import com.google.common.io.CharStreams;
 import net.astechdesign.clients.model.contact.Contact;
 import net.astechdesign.clients.model.contact.ContactRepo;
-import net.astechdesign.clients.model.contact.Telephone;
 import net.astechdesign.clients.model.product.Product;
 import net.astechdesign.clients.model.product.ProductRepo;
 import net.astechdesign.clients.model.todo.Todo;
@@ -24,25 +23,51 @@ public class TestContactsRepo {
 
     public static void init() throws Exception {
         if (initialised) return;
-        String delim = "\\|";
         for (String row: readData("products")) {
-            createProduct(row.split(delim));
+            createProduct(row.split("\\|"));
         }
         for (String row: readData("marius.csv")) {
 //            System.out.println(row);
-            String[] data = row.split(",");
-            String address = data[2] + " " + data[3] + " " + data[4] + " " + data[5] + " " + data[7];
-            Contact contact = new Contact(0, data[0], address.replace("  ", " ").trim(), data[9], null);
-            ContactRepo.save(contact);
-//            createContact(row.split(delim));
+//            FullName,Organisation,Property,Street,Locality,Town,County,Postcode
+            String[] data = row.split("\\|");
+            String fullname = data[0].trim();
+            String property = data[2].trim();
+            String street = data[3].trim();
+            String locality = data[4].trim();
+            String town = data[5].trim();
+            String county = data[6].trim();
+            String postcode = data[7].trim();
+
+            StringBuilder address = new StringBuilder();
+            if (property.length() > 0) {
+                address.append(property);
+            }
+            addressAppend(street, address);
+            addressAppend(locality, address);
+            addressAppend(town, address);
+
+            Contact contact = new Contact(0, fullname, address.toString(), county, postcode, null);
+            List<Contact> contacts = ContactRepo.find(fullname);
+            if (!contacts.contains(contact)) {
+                ContactRepo.save(contact);
+            }
         }
-        for (String row: readData("todos")) {
+//        for (String row: readData("todos")) {
 //            createTodo(row.split(delim));
-        }
-        for (String row: readData("orders")) {
+//        }
+//        for (String row: readData("orders")) {
 //            createOrder(row.split(delim));
-        }
+//        }
         initialised = true;
+    }
+
+    private static void addressAppend(String street, StringBuilder address) {
+        if (street.length() > 0) {
+            if (address.length() > 0) {
+                address.append(", ");
+            }
+            address.append(street);
+        }
     }
 
     private static void createProduct(String[] data) {
@@ -51,17 +76,13 @@ public class TestContactsRepo {
         for (String val :name.split(" ")) {
             code += val.substring(0,1);
         }
-        Product product = new Product(0, code, name, data[1]);
+        String price = data[1].substring(1);
+        Product product = new Product(0, code, name, price);
         try {
             ProductRepo.save(product);
         } catch (SQLException e) {
             e.printStackTrace();
         }
-    }
-
-    private static void createContact(String[] data) throws SQLException {
-        Contact contact = new Contact(0, data[0], data[1], data[2], new Telephone(data[3]));
-        ContactRepo.save(contact);
     }
 
     private static void createTodo(String[] data) throws Exception {

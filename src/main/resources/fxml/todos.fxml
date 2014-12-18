@@ -14,10 +14,13 @@
                <font>
                   <Font name="System Bold" size="18.0" />
                </font>
+               <padding>
+                  <Insets bottom="10.0" />
+               </padding>
             </Label>
             <HBox spacing="5.0">
                <children>
-                  <TextArea fx:id="todoNotes" prefHeight="90.0" prefWidth="549.0" promptText="Notes" wrapText="true" />
+                  <TextArea fx:id="todoNotes" prefHeight="62.0" prefWidth="549.0" promptText="Notes" wrapText="true" />
                   <DatePicker fx:id="todoDate" prefHeight="31.0" prefWidth="187.0" promptText="Date" />
                   <Button mnemonicParsing="false" onAction="#addTodo" prefHeight="19.0" prefWidth="75.0" styleClass="button1" text="ADD" />
                </children>
@@ -26,7 +29,7 @@
                <columns>
                   <TableColumn fx:id="dateCol" prefWidth="128.0" text="DATE" />
                   <TableColumn fx:id="contactCol" minWidth="0.0" prefWidth="205.0" text="CONTACT" />
-                  <TableColumn fx:id="notesCol" prefWidth="529.0" text="NOTES" />
+                  <TableColumn fx:id="notesCol" prefWidth="726.0" text="NOTES" />
                </columns>
                <VBox.margin>
                   <Insets />

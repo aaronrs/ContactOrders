@@ -15,7 +15,6 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.MultivaluedMap;
 import java.sql.SQLException;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
@@ -36,6 +35,7 @@ public class ContactRequests {
     public Viewable saveContact(@FormParam("contactId") int id,
                                 @FormParam("name") String name,
                                 @FormParam("address") String address,
+                                @FormParam("county") String county,
                                 @FormParam("postcode") String postcode,
                                 @FormParam("telephone") Telephone tel,
                                 @FormParam("action") String action) throws SQLException {
@@ -45,11 +45,11 @@ public class ContactRequests {
                 return findContacts(name, address, postcode, tel.number);
             }
             if (action.equals("update")) {
-                ContactRepo.update(new Contact(id, name, address, postcode, tel));
+                ContactRepo.update(new Contact(id, name, address, county, postcode, tel));
                 return contact(id);
             }
             if (ContactRepo.find(name).size() == 0) {
-                ContactRepo.save(new Contact(id, name, address, postcode, tel));
+                ContactRepo.save(new Contact(id, name, address, county, postcode, tel));
             }
         }
         return contacts();

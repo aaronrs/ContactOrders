@@ -32,6 +32,7 @@ public class ContactDetailsController extends Controller implements Initializabl
     private Label titleName;
     private TextField name = new TextField();
     private TextField address = new TextField();
+    private TextField county = new TextField();
     private TextField postcode = new TextField();
     private TextField telephone = new TextField();
     private Button updateDetailsBtn = new Button("UPDATE");
@@ -41,7 +42,7 @@ public class ContactDetailsController extends Controller implements Initializabl
     @FXML
     void updateDetails(ActionEvent event) {
         Contact contact = getContact();
-        Contact newContact = new Contact(contact.getId(), contact.getName(), address.getText(), postcode.getText(), new Telephone(telephone.getText()));
+        Contact newContact = new Contact(contact.getId(), contact.getName(), address.getText(), county.getText(), postcode.getText(), new Telephone(telephone.getText()));
         try {
             ContactRepo.update(newContact);
         } catch (SQLException e) {
@@ -72,7 +73,7 @@ public class ContactDetailsController extends Controller implements Initializabl
 
     @FXML
     void saveDetails(ActionEvent event) {
-        Contact newContact = new Contact(-1, name.getText(), address.getText(), postcode.getText(), new Telephone(telephone.getText()));
+        Contact newContact = new Contact(-1, name.getText(), address.getText(), county.getText(), postcode.getText(), new Telephone(telephone.getText()));
         if (newContact.incomplete()) return;
         try {
             ContactRepo.save(newContact);
@@ -89,6 +90,7 @@ public class ContactDetailsController extends Controller implements Initializabl
 
         name.setPromptText("name");
         address.setPromptText("address");
+        county.setPromptText("county");
         postcode.setPromptText("postcode");
         telephone.setPromptText("telephone");
         updateDetailsBtn.setOnAction(new EventHandler<ActionEvent>() {
@@ -127,6 +129,7 @@ public class ContactDetailsController extends Controller implements Initializabl
         Contact contact = getContact();
         name.setText(contact.getName());
         address.setText(contact.getAddress());
+        county.setText(contact.getCounty());
         postcode.setText(contact.getPostcode());
         if (contact.getTelephone() != null) {
             telephone.setText(contact.getTelephone().number);
@@ -141,6 +144,7 @@ public class ContactDetailsController extends Controller implements Initializabl
         saveDetailsBtn.setVisible(true);
         contactDetails.getChildren().add(name);
         contactDetails.getChildren().add(address);
+        contactDetails.getChildren().add(county);
         contactDetails.getChildren().add(postcode);
         contactDetails.getChildren().add(telephone);
         contactDetails.getChildren().add(saveDetailsBtn);
@@ -151,6 +155,7 @@ public class ContactDetailsController extends Controller implements Initializabl
         deleteContactBtn.setVisible(true);
         saveDetailsBtn.setVisible(false);
         contactDetails.getChildren().add(address);
+        contactDetails.getChildren().add(county);
         contactDetails.getChildren().add(postcode);
         contactDetails.getChildren().add(telephone);
         HBox hBox = new HBox();
