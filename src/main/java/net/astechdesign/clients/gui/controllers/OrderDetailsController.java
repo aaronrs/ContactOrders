@@ -9,6 +9,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -22,9 +23,56 @@ import java.net.URL;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 import java.util.ResourceBundle;
 
 public class OrderDetailsController extends Controller implements Initializable {
+
+    @FXML
+    private TableColumn dateCol;
+
+    @FXML
+    private TableColumn productCol;
+
+    @FXML
+    private TableColumn amountCol;
+
+    @FXML
+    private TableColumn deliveryDateCol;
+
+    private void initMain(){
+        deleteOrderBtn.setVisible(false);
+        dateCol.setCellValueFactory(new PropertyValueFactory<Order, LocalDate>("createDate"));
+        productCol.setCellValueFactory(new PropertyValueFactory<Order, String>("product"));
+        amountCol.setCellValueFactory(new PropertyValueFactory<Order, Integer>("amount"));
+        deliveryDateCol.setCellValueFactory(new PropertyValueFactory<Order, LocalDate>("deliveryDate"));
+
+        dateCol.setStyle(Css.COL_FONT_SIZE);
+        productCol.setStyle(Css.COL_FONT_SIZE);
+        amountCol.setStyle(Css.COL_FONT_SIZE);
+        deliveryDateCol.setStyle(Css.COL_FONT_SIZE);
+
+        orderTable.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            if (orderTable.getSelectionModel().getSelectedItem() != null) {
+                this.order = newValue;
+                deleteOrderBtn.setVisible(true);
+            }
+        });
+    }
+
+    @FXML
+    void newOrder(ActionEvent e) {
+        newOrderDialog.setVisible(true);
+    }
+
+    @FXML
+    void deleteOrder(ActionEvent event) {
+        dialogCode.setText(order.getDeliveryDate().format(DateTimeFormatter.ofPattern("dd MMMM yyyy")));
+        dialogDescription.setText(order.getProduct());
+        confirmDialog.setVisible(true);
+    }
+
+    private List<Product> productList;
 
     @FXML
     private AnchorPane newOrderDialog;
@@ -41,10 +89,27 @@ public class OrderDetailsController extends Controller implements Initializable 
     @FXML
     private DatePicker deliveryDate;
 
-    @FXML
-    private Button deleteOrderBtn;
+    private void initOrder() {
+        try {
+            productList = ProductRepo.products();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        productName.setItems(FXCollections.observableArrayList(productList));
+        productName.setConverter(new StringConverter<Product>() {
+            @Override
+            public String toString(Product object) {
+                return object.getName();
+            }
 
-    private Order order;
+            @Override
+            public Product fromString(String string) {
+                return null;
+            }
+        });
+        deliveryDate.setValue(LocalDate.now());
+        newOrderDialog.setVisible(false);
+    }
 
     @FXML
     void addProduct(ActionEvent event) {
@@ -60,15 +125,15 @@ public class OrderDetailsController extends Controller implements Initializable 
         amountField.setPrefWidth(55);
 
         DatePicker date = new DatePicker(deliveryDate.getValue());
-        date.setPrefWidth(120);
-        date.setPrefWidth(120);
+        date.setPrefWidth(160);
 
         Button deleteBtn = new Button("DEL");
+        deleteBtn.getStyleClass().add("button1");
 
         HBox hBox = new HBox();
         hBox.setSpacing(5);
         hBox.getChildren().addAll(filler, product, amountField, date, deleteBtn);
-        orderProducts.getChildren().add(2, hBox);
+        orderProducts.getChildren().add(hBox);
 
         deleteBtn.setOnAction(new EventHandler<ActionEvent>() {
             @Override
@@ -80,26 +145,47 @@ public class OrderDetailsController extends Controller implements Initializable 
 
     @FXML
     void saveOrder(ActionEvent event) {
-        int first = 0;
         ObservableList<Node> orders = orderProducts.getChildren();
         for (Node node : orders) {
-            if (first > 1 && first < orders.size() - 1) {
-                ObservableList<Node> children = ((HBox) node).getChildren();
-                String product = ((TextField) children.get(1)).getText();
-                int amount1 = Integer.parseInt(((TextField) children.get(2)).getText());
-                LocalDate deliveryDate1 = ((DatePicker) children.get(3)).getValue();
-                Order order = new Order(-1, getContact(), product, deliveryDate1, amount1, LocalDate.now());
-                try {
-                    OrderRepo.save(order);
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
+            ObservableList<Node> children = ((HBox) node).getChildren();
+            String product = ((TextField) children.get(1)).getText();
+            int amount1 = Integer.parseInt(((TextField) children.get(2)).getText());
+            LocalDate deliveryDate1 = ((DatePicker) children.get(3)).getValue();
+            Order order = new Order(-1, getContact(), product, deliveryDate1, amount1, LocalDate.now());
+            try {
+                OrderRepo.save(order);
+            } catch (SQLException e) {
+                e.printStackTrace();
             }
-            first++;
         }
+        update();
+        mainController.todoDetailsController.update();
+        newOrderDialog.setVisible(false);
+    }
+
+    @FXML
+    void cancelOrder(ActionEvent event) {
+        orderProducts.getChildren().clear();
         update();
         newOrderDialog.setVisible(false);
     }
+
+    @FXML
+    void searchProducts(KeyEvent event) {
+        String text = productCode.getText();
+        if (!event.getCharacter().equals("\b")) {
+            text += event.getCharacter();
+        }
+        try {
+            productList = ProductRepo.find(text);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        productName.setItems(FXCollections.observableArrayList(productList));
+        productName.show();
+    }
+
+    private Order order;
 
     @FXML
     private VBox orderProducts;
@@ -114,34 +200,12 @@ public class OrderDetailsController extends Controller implements Initializable 
     private Label dialogDescription;
 
     @FXML
+    private Button deleteOrderBtn;
+
+    @FXML
     private TableView<Order> orderTable;
 
-    @FXML
-    private TableColumn dateCol;
-
-    @FXML
-    private TableColumn productCol;
-
-    @FXML
-    private TableColumn amountCol;
-
-    @FXML
-    private TableColumn deliveryDateCol;
-
-    private ObservableList<Product> productList;
     private ObservableList<Order> orderList;
-
-    @FXML
-    void newOrder(ActionEvent e) {
-        newOrderDialog.setVisible(true);
-    }
-
-    @FXML
-    void deleteOrder(ActionEvent event) {
-        dialogCode.setText(order.getDeliveryDate().format(DateTimeFormatter.ofPattern("dd MMMM yyyy")));
-        dialogDescription.setText(order.getProduct());
-        confirmDialog.setVisible(true);
-    }
 
     @FXML
     void confirmDelete(ActionEvent e) {
@@ -161,44 +225,9 @@ public class OrderDetailsController extends Controller implements Initializable 
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        deleteOrderBtn.setVisible(false);
-        try {
-            productList = FXCollections.observableArrayList(ProductRepo.products());
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        dateCol.setCellValueFactory(new PropertyValueFactory<Order, LocalDate>("createDate"));
-        productCol.setCellValueFactory(new PropertyValueFactory<Order, String>("product"));
-        amountCol.setCellValueFactory(new PropertyValueFactory<Order, Integer>("amount"));
-        deliveryDateCol.setCellValueFactory(new PropertyValueFactory<Order, LocalDate>("deliveryDate"));
-
-        dateCol.setStyle(Css.COL_FONT_SIZE);
-        productCol.setStyle(Css.COL_FONT_SIZE);
-        amountCol.setStyle(Css.COL_FONT_SIZE);
-        deliveryDateCol.setStyle(Css.COL_FONT_SIZE);
-
-        orderTable.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-            if (orderTable.getSelectionModel().getSelectedItem() != null) {
-                this.order = newValue;
-                deleteOrderBtn.setVisible(true);
-            }
-        });
-
-        productName.setItems(productList);
-        productName.setConverter(new StringConverter<Product>() {
-            @Override
-            public String toString(Product object) {
-                return object.getName();
-            }
-
-            @Override
-            public Product fromString(String string) {
-                return null;
-            }
-        });
-        deliveryDate.setValue(LocalDate.now());
+        initMain();
+        initOrder();
         confirmDialog.setVisible(false);
-        newOrderDialog.setVisible(false);
     }
 
     @Override

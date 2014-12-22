@@ -25,8 +25,14 @@ public class ProductDao extends Dao<Product> {
         return query(sql, Product.class);
     }
 
+    public List<Product> find(String text) throws SQLException {
+        text = text.toUpperCase();
+        String sql = "SELECT * FROM products where code like '%" + text + "%' or name like '%" + text + "%' " + " order by name";
+        return listQuery(sql, Product.class);
+    }
+
     public Product findByName(String name) throws SQLException {
-        String sql = "SELECT * FROM products where name='" + name + "'";
+        String sql = "SELECT * FROM products where name like '" + name + "' and code like '" + name + "'";
         return query(sql, Product.class);
     }
 

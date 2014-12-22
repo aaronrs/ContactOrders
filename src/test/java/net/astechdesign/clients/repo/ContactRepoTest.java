@@ -26,8 +26,8 @@ public class ContactRepoTest {
 
         new ContactRepo(dataSource);
 
-        TodoRepo.save(new Todo(-1, 1, LocalDate.now(), "stuff", ""));
-        TodoRepo.save(new Todo(-1, 2, LocalDate.now(), "more stuff", ""));
+        TodoRepo.save(new Todo(-1, 1, LocalDate.now(), "stuff", "", ""));
+        TodoRepo.save(new Todo(-1, 2, LocalDate.now(), "more stuff", "", ""));
         List<Todo> todoList = TodoRepo.todos();
         assertThat(todoList.size(), is(2));
         assertThat(todoList.get(0).getNotes(), is(NOTES));

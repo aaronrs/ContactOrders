@@ -37,9 +37,8 @@ public class TodoDetailsController extends Controller implements Initializable {
 
     @FXML
     void addTodo(ActionEvent event) {
-        Todo todo = new Todo(0, getContactId(), todoDate.getValue(), todoNotes.getText(), getContact().getName());
         try {
-            TodoRepo.save(todo);
+            TodoRepo.save(new Todo(0, getContactId(), todoDate.getValue(), todoNotes.getText(), "", ""));
             todoNotes.clear();
             todoDate.setValue(null);
         } catch (SQLException e) {

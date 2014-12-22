@@ -28,20 +28,23 @@ public class TodosController extends Controller implements Initializable {
     private DatePicker todoDate;
 
     @FXML
-    private TableView todosTable;
+    private TableView<Todo> todosTable;
 
     @FXML
-    private TableColumn dateCol;
+    private TableColumn<Todo, LocalDate> dateCol;
 
     @FXML
-    private TableColumn contactCol;
+    private TableColumn<Todo, String> contactCol;
 
     @FXML
-    private TableColumn notesCol;
+    private TableColumn<Todo, String> notesCol;
+
+    @FXML
+    private TableColumn<Todo, String> townCol;
 
     @FXML
     void addTodo(ActionEvent event) {
-        Todo todo = new Todo(0, -1, todoDate.getValue(), todoNotes.getText(), "");
+        Todo todo = new Todo(0, -1, todoDate.getValue(), todoNotes.getText());
         try {
             TodoRepo.save(todo);
             todoNotes.clear();
@@ -55,24 +58,24 @@ public class TodosController extends Controller implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         update();
-        dateCol.setCellValueFactory(new PropertyValueFactory<Todo, LocalDate>("date"));
-        contactCol.setCellValueFactory(new PropertyValueFactory<Todo, String>("name"));
-        notesCol.setCellValueFactory(new PropertyValueFactory<Todo, String>("notes"));
+        dateCol.setCellValueFactory(new PropertyValueFactory<>("date"));
+        contactCol.setCellValueFactory(new PropertyValueFactory<>("name"));
+        notesCol.setCellValueFactory(new PropertyValueFactory<>("notes"));
+        townCol.setCellValueFactory(new PropertyValueFactory<>("town"));
 
         dateCol.setStyle(Css.COL_FONT_SIZE);
         contactCol.setStyle(Css.COL_FONT_SIZE);
         notesCol.setStyle(Css.COL_FONT_SIZE);
 
-        todosTable.getSelectionModel().selectedItemProperty().addListener(new ChangeListener() {
+        todosTable.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Todo>() {
             @Override
-            public void changed(ObservableValue observable, Object oldValue, Object newValue) {
-                int id = ((Todo) newValue).getContactId();
-                if (id == -1) return;
-                setContact(id);
-                mainController.showDetails();
+            public void changed(ObservableValue<? extends Todo> observable, Todo oldValue, Todo newValue) {
+                if (newValue != null && newValue.getContactId() != -1) {
+                    setContact(newValue.getContactId());
+                    mainController.showDetails();
+                }
             }
         });
-
     }
 
     @Override

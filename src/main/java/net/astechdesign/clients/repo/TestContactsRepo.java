@@ -5,15 +5,11 @@ import net.astechdesign.clients.model.contact.Contact;
 import net.astechdesign.clients.model.contact.ContactRepo;
 import net.astechdesign.clients.model.product.Product;
 import net.astechdesign.clients.model.product.ProductRepo;
-import net.astechdesign.clients.model.todo.Todo;
-import net.astechdesign.clients.model.todo.TodoRepo;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.sql.SQLException;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 public class TestContactsRepo {
@@ -26,15 +22,20 @@ public class TestContactsRepo {
         for (String row: readData("products")) {
             createProduct(row.split("\\|"));
         }
+        int count = 0;
         for (String row: readData("marius.csv")) {
 //            System.out.println(row);
 //            FullName,Organisation,Property,Street,Locality,Town,County,Postcode
+            if (count > 20) break;
             String[] data = row.split("\\|");
             String fullname = data[0].trim();
             String property = data[2].trim();
             String street = data[3].trim();
             String locality = data[4].trim();
             String town = data[5].trim();
+            if (locality.length() == 0) {
+                locality = town;
+            }
             String county = data[6].trim();
             String postcode = data[7].trim();
 
@@ -43,14 +44,13 @@ public class TestContactsRepo {
                 address.append(property);
             }
             addressAppend(street, address);
-            addressAppend(locality, address);
-            addressAppend(town, address);
 
-            Contact contact = new Contact(0, fullname, address.toString(), county, postcode, null);
+            Contact contact = new Contact(0, fullname, address.toString(), locality, town, county, postcode, null);
             List<Contact> contacts = ContactRepo.find(fullname);
             if (!contacts.contains(contact)) {
                 ContactRepo.save(contact);
             }
+            count++;
         }
 //        for (String row: readData("todos")) {
 //            createTodo(row.split(delim));
@@ -84,18 +84,18 @@ public class TestContactsRepo {
             e.printStackTrace();
         }
     }
+//
+//    private static void createTodo(String[] data) throws Exception {
+//        Todo todo = new Todo(Integer.parseInt(data[0]),
+//                Integer.parseInt(data[1]),
+//                LocalDate.parse(data[4], DateTimeFormatter.ofPattern("yyyy/MM/dd")),
+//                data[6], "", "");
+//        TodoRepo.save(todo);
+//    }
 
-    private static void createTodo(String[] data) throws Exception {
-        Todo todo = new Todo(Integer.parseInt(data[0]),
-                Integer.parseInt(data[1]),
-                LocalDate.parse(data[4], DateTimeFormatter.ofPattern("yyyy/MM/dd")),
-                data[6], "");
-        TodoRepo.save(todo);
-    }
-
-    private static void createOrder(String[] data) throws SQLException {
-        // TODO
-    }
+//    private static void createOrder(String[] data) throws SQLException {
+//        // TODO
+//    }
 
     private static List<String> readData(String fileName) {
         InputStream contactsInputStream = TestContactsRepo.class.getResourceAsStream("/db/data/" + fileName);

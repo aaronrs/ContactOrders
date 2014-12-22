@@ -9,12 +9,10 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import net.astechdesign.clients.model.contact.Contact;
-import net.astechdesign.clients.model.contact.ContactRepo;
 import net.astechdesign.clients.model.order.Order;
 import net.astechdesign.clients.model.todo.Todo;
 
 import java.net.URL;
-import java.sql.SQLException;
 import java.util.ResourceBundle;
 
 public class DetailsController extends Controller implements Initializable {
@@ -59,21 +57,6 @@ public class DetailsController extends Controller implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        selectContact(-1);
-    }
-
-    public Contact selectContact(int id) {
-        if (id == -1) {
-            contact = new Contact(-1, "", "", "", "", null);
-        } else {
-            try {
-                contact = ContactRepo.get(id);
-                name.setText(contact.getName());
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        }
-        return contact;
     }
 
     public void setContactDetailsPane(AnchorPane pane) {

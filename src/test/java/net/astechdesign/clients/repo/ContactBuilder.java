@@ -23,7 +23,7 @@ public class ContactBuilder {
 
     public Contact build() {
         String address = number  + " " + house + " " + addressLine1 + " " + town + " " + county;
-        Contact contact = new Contact(0, name, address, county, postcode, new Telephone(telephone));
+        Contact contact = new Contact(0, name, address, "", "", county, postcode, new Telephone(telephone));
         return contact;
     }
 

@@ -4,6 +4,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import net.astechdesign.clients.gui.fxml.FmxlWrapper;
@@ -12,6 +13,9 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 public class MainController extends Controller implements Initializable {
+
+    @FXML
+    private Label title;
 
     @FXML
     private BorderPane contentPane;
@@ -40,6 +44,7 @@ public class MainController extends Controller implements Initializable {
 
     @FXML
     void selectTodos(ActionEvent event) {
+        title.setText("TO DOs");
         showAll();
         todosBtn.setDisable(true);
         todosController.update();
@@ -48,6 +53,7 @@ public class MainController extends Controller implements Initializable {
 
     @FXML
     void selectContacts(ActionEvent event) {
+        title.setText("CONTACTS");
         showAll();
         contactsBtn.setDisable(true);
         contactsController.update();
@@ -56,10 +62,20 @@ public class MainController extends Controller implements Initializable {
 
     @FXML
     void selectProducts(ActionEvent event) {
+        title.setText("PRODUCTS");
         showAll();
         productsBtn.setDisable(true);
         productsController.update();
         contentPane.setCenter(productsPane);
+    }
+
+    public void showDetails() {
+        title.setText(getContact().getName());
+        showAll();
+        contactDetailsController.update();
+        todoDetailsController.update();
+        orderDetailsController.update();
+        contentPane.setCenter(detailsPane);
     }
 
     @FXML
@@ -101,17 +117,8 @@ public class MainController extends Controller implements Initializable {
         detailsController.setContactDetailsPane(contactDetailsWrapper.getPane());
         detailsController.setTodosDetailsPane(todosDetailsWrapper.getPane());
         detailsController.setOrdersDetailsPane(ordersDetailsWrapper.getPane());
-        contactDetailsController.setTitleName(detailsController.getNameLabel());
 
         selectTodos(null);
-    }
-
-    public void showDetails() {
-        showAll();
-        contactDetailsController.update();
-        todoDetailsController.update();
-        orderDetailsController.update();
-        contentPane.setCenter(detailsPane);
     }
 
     @Override

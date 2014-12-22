@@ -56,8 +56,7 @@ public class ContactRepo {
     }
 
     private List<Contact> findContacts(String text) throws SQLException {
-        ContactDao contactDao = new ContactDao(dataSource);
-        return contactDao.find(text);
+        return new ContactDao(dataSource).find(text);
     }
 
     private void deleteContact(int id) throws SQLException {

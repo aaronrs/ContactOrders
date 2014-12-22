@@ -22,14 +22,14 @@ public class TodoDao extends Dao<Todo> {
 
     public List<Todo> get(LocalDate date) throws SQLException {
         String sql = "SELECT * FROM (" +
-                "SELECT t.id,t.contactId,t.date,t.notes,c.name FROM todos as t, contacts as c where t.contactId=c.id and t.date >= ? " +
-                " union SELECT id,-1 as contactId,date,notes,'' as name FROM todos where contactId=-1 and date >= ? )" +
+                "SELECT t.id,t.contactId,t.date,t.notes,c.name, c.town FROM todos as t, contacts as c where t.contactId=c.id and t.date >= ? " +
+                " union SELECT id,-1 as contactId,date,notes,'' as name,'' as town FROM todos where contactId=-1 and date >= ? )" +
                 " order by date";
         return listQuery(sql, Todo.class, date, date);
     }
 
     public List<Todo> get(int id) throws SQLException {
-        String sql = "SELECT id,contactId,date,notes FROM todos where contactId=? order by date";
+        String sql = "SELECT t.id,t.contactId,t.date,t.notes,c.name,c.town FROM todos as t, contacts as c where t.contactId=c.id and contactId=? order by date";
         return listQuery(sql, Todo.class, id);
     }
 
@@ -48,9 +48,11 @@ public class TodoDao extends Dao<Todo> {
         LocalDate date = rs.getDate("date").toLocalDate();
         String notes = rs.getString("notes");
         String name = "";
+        String town = "";
         try {
             name = rs.getString("name");
+            town = rs.getString("town");
         } catch (Exception e) {}
-        return (T)new Todo(id, contactId, date, notes, name);
+        return (T)new Todo(id, contactId, date, notes, name, town);
     }
 }

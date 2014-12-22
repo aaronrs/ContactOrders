@@ -24,6 +24,10 @@ public class ProductRepo {
         return instance.findProduct(id);
     }
 
+    public static List<Product> find(String text) throws SQLException {
+        return instance.findProduct(text);
+    }
+
     public static void delete(int id) throws SQLException {
         instance.deleteProduct(id);
     }
@@ -43,6 +47,10 @@ public class ProductRepo {
 
     private Product findProduct(int id) throws SQLException {
         return new ProductDao(dataSource).find(id);
+    }
+
+    private List<Product> findProduct(String text) throws SQLException {
+        return new ProductDao(dataSource).find(text);
     }
 
     private Product findProductByName(String name) throws SQLException {

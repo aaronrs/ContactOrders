@@ -11,13 +11,19 @@ public class Todo {
     private final ObjectProperty<LocalDate> date;
     private final StringProperty notes;
     private final StringProperty name;
+    private final StringProperty town;
 
-    public Todo(int id, int contactId, LocalDate date, String notes, String name) {
+    public Todo(int id, int contactId, LocalDate date, String notes) {
+        this(id, contactId, date, notes, "", "");
+    }
+
+    public Todo(int id, int contactId, LocalDate date, String notes, String name, String town) {
         this.id = new SimpleIntegerProperty(id);
         this.contactId = new SimpleIntegerProperty(contactId);
-        this.date = new SimpleObjectProperty<LocalDate>(date);
+        this.date = new SimpleObjectProperty<>(date);
         this.notes = new SimpleStringProperty(notes);
         this.name = new SimpleStringProperty(name);
+        this.town = new SimpleStringProperty(town);
     }
 
     public int getId() {
@@ -40,6 +46,10 @@ public class Todo {
         return name.get();
     }
 
+    public String getTown() {
+        return town.get();
+    }
+
     public void setId(int id) {
         this.id.setValue(id);
     }
@@ -60,6 +70,10 @@ public class Todo {
         this.name.setValue(value);
     }
 
+    public void setTown(String value) {
+        this.town.setValue(value);
+    }
+
     public IntegerProperty idProperty() {
         return id;
     }
@@ -78,5 +92,9 @@ public class Todo {
 
     public StringProperty nameProperty() {
         return name;
+    }
+
+    public StringProperty townProperty() {
+        return town;
     }
 }

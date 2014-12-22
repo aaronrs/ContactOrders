@@ -19,7 +19,7 @@ public class TodosTest {
     public void add_shouldNormaliseTodos() throws Exception {
         SimpleDateFormat sdf = new SimpleDateFormat("MMMM yyyy");
 
-        Todo todo1 = new Todo(1,1, LocalDate.now(), "note1", "name1");
+        Todo todo1 = new Todo(1,1, LocalDate.now(), "note1", "name1", "town1");
 
         Todos todos = new Todos();
         todos.add(todo1);

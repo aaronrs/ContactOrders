@@ -29,7 +29,7 @@ public class TodoRepo {
     }
 
     public static void add(Order order) throws SQLException {
-        Todo todo = new Todo(-1, order.getContact().getId(), order.getDeliveryDate(), "Delivery:" + order.getProduct(), "");
+        Todo todo = new Todo(-1, order.getContact().getId(), order.getDeliveryDate(), "Delivery:" + order.getProduct(), "", "");
         instance.saveTodo(todo);
     }
 

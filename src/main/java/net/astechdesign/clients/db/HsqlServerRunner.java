@@ -28,6 +28,7 @@ public class HsqlServerRunner implements Runnable {
     public void run() {
         Server server = new Server();
         Properties props = new Properties();
+//        props.setProperty("server.database.0", "file:c:/database/contacts");
         props.setProperty("server.database.0", "file:/home/aaron/db/contacts");
         props.setProperty("server.dbname.0", "contacts");
         try {
