@@ -16,7 +16,7 @@
                   <Label text="Confirm Delete:" />
                   <HBox alignment="CENTER" spacing="5.0">
                      <children>
-                        <Label fx:id="dialogName" text="NAME">
+                        <Label fx:id="dialogName" style="-fx-font-size: 24px;" text="NAME">
                            <font>
                               <Font size="16.0" />
                            </font>

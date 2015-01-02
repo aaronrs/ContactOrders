@@ -68,7 +68,7 @@ public class ProductsController extends Controller implements Initializable {
         Product product = (Product) event.getTableView().getItems().get(event.getTablePosition().getRow());
         product.setCode(event.getNewValue());
         try {
-            ProductRepo.save(product);
+            ProductRepo.updateCode(product);
         } catch (SQLException e) {
             e.printStackTrace();
         }

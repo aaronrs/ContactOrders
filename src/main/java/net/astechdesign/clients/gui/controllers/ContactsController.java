@@ -1,19 +1,14 @@
 package net.astechdesign.clients.gui.controllers;
 
-import javafx.beans.property.SimpleBooleanProperty;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
-import javafx.util.Callback;
 import javafx.util.StringConverter;
 import net.astechdesign.clients.model.contact.Contact;
 import net.astechdesign.clients.model.contact.ContactRepo;
@@ -28,9 +23,6 @@ public class ContactsController extends Controller implements Initializable {
 
     @FXML
     private TableView<Contact> contactsTable;
-
-    @FXML
-    private TableColumn editCol;
 
     @FXML
     private TableColumn nameCol;
@@ -163,60 +155,18 @@ public class ContactsController extends Controller implements Initializable {
         townCol.setStyle(Css.COL_FONT_SIZE);
         telCol.setStyle(Css.COL_FONT_SIZE);
 
-        deleteContactBtn.disableProperty().bind(contactsTable.getSelectionModel().selectedItemProperty().isNull());
-
-        editCol.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<Contact, Boolean>, ObservableValue<Boolean>>() {
-            @Override
-            public ObservableValue<Boolean> call(TableColumn.CellDataFeatures<Contact, Boolean> features) {
-                return new SimpleBooleanProperty(features.getValue() != null);
-            }
-        });
-
-        editCol.setCellFactory(param -> {
-            EditContactButtonCell editContactButtonCell = new EditContactButtonCell();
-            editContactButtonCell.setAlignment(Pos.CENTER);
-            return editContactButtonCell;
-        });
-
-
-/*
-        contactsTable.getSelectionModel().selectedItemProperty().addListener(new ChangeListener() {
-            @Override
-            public void changed(ObservableValue observable, Object oldValue, Object newValue) {
-                if (contactsTable.getSelectionModel().getSelectedItem() != null) {
-                    searchText.setText(null);
-                    setContact((Contact) newValue);
-                    mainController.showDetails();
-                }
-            }
-        });
-*/
-    }
-
-    private class EditContactButtonCell extends TableCell<Contact, Boolean> {
-        final Button cellButton = new Button("/");
-
-        EditContactButtonCell() {
-            cellButton.setOnAction(new EventHandler<ActionEvent>() {
-
-                @Override
-                public void handle(ActionEvent event) {
-                    setContact(contactsTable.getItems().get(getIndex()));
+        contactsTable.setRowFactory( tv -> {
+            TableRow<Contact> row = new TableRow<>();
+            row.setOnMouseClicked(event -> {
+                if (event.getClickCount() == 2 && (! row.isEmpty()) ) {
+                    setContact(row.getItem().getId());
                     mainController.showDetails();
                 }
             });
-        }
+            return row;
+        });
 
-        @Override
-        protected void updateItem(Boolean item, boolean empty) {
-            super.updateItem(item, empty);
-            if (empty) {
-                setGraphic(null);
-            } else {
-                cellButton.getStyleClass().add("button1");
-                setGraphic(cellButton);
-            }
-        }
+        deleteContactBtn.disableProperty().bind(contactsTable.getSelectionModel().selectedItemProperty().isNull());
     }
 
 }

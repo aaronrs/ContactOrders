@@ -66,4 +66,8 @@ public class ProductDao extends Dao<Product> {
         String price = rs.getString("price");
         return (T)new Product(id, productId, name, price);
     }
+
+    public void updateCode(Product product) throws SQLException {
+        update("update products set code = ? where id = ?", product.getCode(), product.getId());
+    }
 }

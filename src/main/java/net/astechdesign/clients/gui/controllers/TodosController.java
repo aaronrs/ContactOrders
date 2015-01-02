@@ -63,6 +63,8 @@ public class TodosController extends Controller implements Initializable {
         notesCol.setCellValueFactory(new PropertyValueFactory<>("notes"));
         townCol.setCellValueFactory(new PropertyValueFactory<>("town"));
 
+        dateCol.setCellFactory(new DateCellFactory<Todo>());
+
         dateCol.setStyle(Css.COL_FONT_SIZE);
         contactCol.setStyle(Css.COL_FONT_SIZE);
         notesCol.setStyle(Css.COL_FONT_SIZE);

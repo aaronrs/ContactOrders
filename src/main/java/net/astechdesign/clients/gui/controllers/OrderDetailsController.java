@@ -29,23 +29,23 @@ import java.util.ResourceBundle;
 public class OrderDetailsController extends Controller implements Initializable {
 
     @FXML
-    private TableColumn dateCol;
+    private TableColumn<Order, LocalDate> dateCol;
 
     @FXML
-    private TableColumn productCol;
+    private TableColumn<Order, String> productCol;
 
     @FXML
-    private TableColumn amountCol;
+    private TableColumn<Order, Integer> amountCol;
 
     @FXML
-    private TableColumn deliveryDateCol;
+    private TableColumn<Order, LocalDate> deliveryDateCol;
 
     private void initMain(){
         deleteOrderBtn.setVisible(false);
-        dateCol.setCellValueFactory(new PropertyValueFactory<Order, LocalDate>("createDate"));
-        productCol.setCellValueFactory(new PropertyValueFactory<Order, String>("product"));
-        amountCol.setCellValueFactory(new PropertyValueFactory<Order, Integer>("amount"));
-        deliveryDateCol.setCellValueFactory(new PropertyValueFactory<Order, LocalDate>("deliveryDate"));
+        dateCol.setCellValueFactory(new PropertyValueFactory("createDate"));
+        productCol.setCellValueFactory(new PropertyValueFactory("product"));
+        amountCol.setCellValueFactory(new PropertyValueFactory("amount"));
+        deliveryDateCol.setCellValueFactory(new PropertyValueFactory("deliveryDate"));
 
         dateCol.setStyle(Css.COL_FONT_SIZE);
         productCol.setStyle(Css.COL_FONT_SIZE);
@@ -62,7 +62,15 @@ public class OrderDetailsController extends Controller implements Initializable 
 
     @FXML
     void newOrder(ActionEvent e) {
+        resetNewOrderFields();
         newOrderDialog.setVisible(true);
+    }
+
+    private void resetNewOrderFields() {
+        productCode.clear();
+        productName.getSelectionModel().clearSelection();
+        amount.setText("1");
+        deliveryDate.setValue(LocalDate.now());
     }
 
     @FXML
@@ -141,6 +149,8 @@ public class OrderDetailsController extends Controller implements Initializable 
                 orderProducts.getChildren().removeAll(hBox);
             }
         });
+
+        resetNewOrderFields();
     }
 
     @FXML

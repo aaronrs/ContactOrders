@@ -17,7 +17,9 @@ public class OrderRepo {
 
     public static void save(Order order) throws SQLException {
         instance.saveOrder(order);
-        TodoRepo.add(order);
+        if (!order.getCreateDate().isEqual(order.getDeliveryDate())) {
+            TodoRepo.add(order);
+        }
     }
 
     public static void deleteOrder(Order order) throws SQLException {

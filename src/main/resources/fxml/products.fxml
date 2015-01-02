@@ -38,22 +38,22 @@
               </VBox>
             <AnchorPane fx:id="confirmDialog">
                <children>
-                  <VBox alignment="CENTER" layoutX="284.0" layoutY="190.0" prefHeight="200.0" prefWidth="413.0" spacing="10.0" style="-fx-border-color: #999; -fx-border-radius: 10px; -fx-border-width: 3px; -fx-background-color: #EEE;">
+                  <VBox alignment="CENTER" layoutX="141.0" layoutY="188.0" prefHeight="200.0" prefWidth="698.0" spacing="10.0" style="-fx-border-color: #999; -fx-border-radius: 10px; -fx-border-width: 3px; -fx-background-color: #EEE;">
                      <children>
                         <Label text="Confirm Delete:" />
                         <HBox alignment="CENTER" spacing="5.0">
                            <children>
-                              <Label fx:id="dialogCode" text="CODE">
+                              <Label fx:id="dialogCode" style="-fx-font-size: 24px;" text="CODE">
                                  <font>
                                     <Font size="16.0" />
                                  </font>
                               </Label>
-                              <Label text=":">
+                              <Label style="-fx-font-size: 24px;" text=":">
                                  <font>
                                     <Font size="16.0" />
                                  </font>
                               </Label>
-                              <Label fx:id="dialogDescription" text="DESCRIPTION">
+                              <Label fx:id="dialogDescription" style="-fx-font-size: 24px;" text="DESCRIPTION">
                                  <font>
                                     <Font size="16.0" />
                                  </font>

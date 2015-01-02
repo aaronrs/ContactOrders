@@ -53,6 +53,7 @@ public class ContactDetailsController extends Controller implements Initializabl
 
     @FXML
     void deleteContact(ActionEvent event) {
+        dialogName.setText(getContact().getName());
         confirmDialog.setVisible(true);
     }
 

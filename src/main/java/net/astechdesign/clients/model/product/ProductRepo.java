@@ -17,6 +17,10 @@ public class ProductRepo {
         instance.saveProduct(product);
     }
 
+    public static void updateCode(Product product) throws SQLException {
+        instance.updateProductCode(product);
+    }
+
     public static Product findByName(String name) throws SQLException {
         return instance.findProductByName(name);
     }
@@ -39,6 +43,10 @@ public class ProductRepo {
 
     private void saveProduct(Product product) throws SQLException {
         new ProductDao(dataSource).save(product);
+    }
+
+    private void updateProductCode(Product product) throws SQLException {
+        new ProductDao(dataSource).updateCode(product);
     }
 
     private List<Product> getProducts() throws SQLException {

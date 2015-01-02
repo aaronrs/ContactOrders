@@ -79,17 +79,17 @@
                   <Label text="Confirm Delete:" />
                   <HBox alignment="CENTER" spacing="5.0">
                      <children>
-                        <Label fx:id="dialogCode" text="DATE">
+                        <Label fx:id="dialogCode" style="-fx-font-size: 24px;" text="DATE">
                            <font>
                               <Font size="16.0" />
                            </font>
                         </Label>
-                        <Label text=":">
+                        <Label style="-fx-font-size: 24px;" text=":">
                            <font>
                               <Font size="16.0" />
                            </font>
                         </Label>
-                        <Label fx:id="dialogDescription" text="PRODUCT">
+                        <Label fx:id="dialogDescription" style="-fx-font-size: 24px;" text="PRODUCT">
                            <font>
                               <Font size="16.0" />
                            </font>
