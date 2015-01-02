@@ -22,10 +22,10 @@
                       </HBox>
                       <TableView fx:id="productsTable" editable="true" VBox.vgrow="ALWAYS">
                           <columns>
-                              <TableColumn fx:id="codeCol" onEditCommit="#editCodeCol" prefWidth="162.0" resizable="false" text="CODE" />
-                              <TableColumn fx:id="descriptionCol" prefWidth="668.0" resizable="false" text="DESCRIPTION" />
-                              <TableColumn fx:id="priceCol" minWidth="6.0" prefWidth="153.0" resizable="false" text="PRICE" />
-                              <TableColumn fx:id="delCol" minWidth="0.0" prefWidth="73.0" resizable="false" text="DEL" />
+                              <TableColumn fx:id="codeCol" onEditCommit="#editCodeCol" prefWidth="145.0" resizable="false" text="CODE" />
+                              <TableColumn fx:id="descriptionCol" prefWidth="623.0" resizable="false" text="DESCRIPTION" />
+                              <TableColumn fx:id="priceCol" minWidth="6.0" prefWidth="138.0" resizable="false" text="PRICE" />
+                              <TableColumn fx:id="delCol" minWidth="0.0" prefWidth="54.0" resizable="false" text="DEL" />
                           </columns>
                           <VBox.margin>
                               <Insets />

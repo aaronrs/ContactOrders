@@ -93,7 +93,7 @@ public class ContactDetailsController extends Controller implements Initializabl
         name.setPromptText("name");
         address.setPromptText("address");
         locality.setPromptText("locality");
-        town.setPromptText("locality");
+        town.setPromptText("town");
         county.setPromptText("county");
         postcode.setPromptText("postcode");
         telephone.setPromptText("telephone");
@@ -134,7 +134,7 @@ public class ContactDetailsController extends Controller implements Initializabl
         name.setText(contact.getName());
         address.setText(contact.getAddress());
         locality.setText(contact.getLocality());
-        town.setText(contact.getLocality());
+        town.setText(contact.getTown());
         county.setText(contact.getCounty());
         postcode.setText(contact.getPostcode());
         if (contact.getTelephone() != null) {

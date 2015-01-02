@@ -22,13 +22,13 @@
                               <Insets />
                           </VBox.margin>
                       </HBox>
-                      <TableView fx:id="contactsTable" VBox.vgrow="ALWAYS">
+                      <TableView fx:id="contactsTable" editable="true" VBox.vgrow="ALWAYS">
                           <columns>
                         <TableColumn fx:id="editCol" editable="false" prefWidth="65.0" text="EDIT" />
-                              <TableColumn fx:id="nameCol" editable="false" prefWidth="243.0" text="NAME" />
-                              <TableColumn fx:id="addressCol" editable="false" prefWidth="445.0" text="ADDRESS" />
-                        <TableColumn fx:id="townCol" editable="false" prefWidth="196.0" text="TOWN" />
-                              <TableColumn fx:id="telCol" editable="false" onEditCommit="#editTelCol" prefWidth="100.0" text="TEL" />
+                              <TableColumn fx:id="nameCol" editable="false" prefWidth="197.0" text="NAME" />
+                              <TableColumn fx:id="addressCol" editable="false" prefWidth="402.0" text="ADDRESS" />
+                        <TableColumn fx:id="townCol" prefWidth="180.0" text="TOWN" />
+                              <TableColumn fx:id="telCol" onEditCommit="#editTelCol" prefWidth="118.0" resizable="false" text="TEL" />
                           </columns>
                           <VBox.margin>
                               <Insets />

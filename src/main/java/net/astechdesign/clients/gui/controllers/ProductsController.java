@@ -139,7 +139,7 @@ public class ProductsController extends Controller implements Initializable {
         delCol.setCellFactory(new Callback<TableColumn<Product, Boolean>, TableCell<Product, Boolean>>() {
             @Override
             public TableCell<Product, Boolean> call(TableColumn<Product, Boolean> param) {
-                return new ButtonCell2();
+                return new DeleteButtonCell();
             }
         });
 
@@ -158,10 +158,10 @@ public class ProductsController extends Controller implements Initializable {
         }
     }
 
-    private class ButtonCell2 extends TableCell<Product, Boolean> {
+    private class DeleteButtonCell extends TableCell<Product, Boolean> {
         final Button cellButton = new Button("X");
 
-        ButtonCell2() {
+        DeleteButtonCell() {
             cellButton.setOnAction(new EventHandler<ActionEvent>() {
 
                 @Override

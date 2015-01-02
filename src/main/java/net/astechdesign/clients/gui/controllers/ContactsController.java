@@ -2,7 +2,7 @@ package net.astechdesign.clients.gui.controllers;
 
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.value.ObservableValue;
-import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -10,11 +10,14 @@ import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.util.Callback;
+import javafx.util.StringConverter;
 import net.astechdesign.clients.model.contact.Contact;
 import net.astechdesign.clients.model.contact.ContactRepo;
+import net.astechdesign.clients.model.contact.Telephone;
 
 import java.net.URL;
 import java.sql.SQLException;
@@ -101,14 +104,14 @@ public class ContactsController extends Controller implements Initializable {
     }
 
     @FXML
-    void editTelCol(TableColumn.CellEditEvent<Contact, String> event) {
-//        Contact contact = event.getTableView().getItems().get(event.getTablePosition().getRow());
-//        contact.setTelephone(new Telephone(event.getNewValue()));
-//        try {
-//            ContactRepo.save(contact);
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//        }
+    void editTelCol(TableColumn.CellEditEvent<Contact, Telephone> event) {
+        Contact contact = event.getTableView().getItems().get(event.getTablePosition().getRow());
+        contact.setTelephone(event.getNewValue());
+        try {
+            ContactRepo.update(contact);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
         update();
     }
 
@@ -128,7 +131,9 @@ public class ContactsController extends Controller implements Initializable {
     }
 
     private void updateContactsTable(List<Contact> contactsList) {
-        contactsTable.setItems(FXCollections.observableArrayList(contactsList));
+        ObservableList<Contact> items = contactsTable.getItems();
+        items.clear();
+        items.addAll(contactsList);
     }
 
     @Override
@@ -138,9 +143,20 @@ public class ContactsController extends Controller implements Initializable {
         nameCol.setCellValueFactory(new PropertyValueFactory<Contact, String>("name"));
         addressCol.setCellValueFactory(new PropertyValueFactory<Contact, String>("address"));
         townCol.setCellValueFactory(new PropertyValueFactory<Contact, String>("locality"));
-        telCol.setCellValueFactory(new PropertyValueFactory<Contact, String>("telephone"));
+        telCol.setCellValueFactory(new PropertyValueFactory<Contact, Telephone>("telephone"));
 
-//        telCol.setCellFactory(TextFieldTableCell.forTableColumn());
+        telCol.setCellFactory(TextFieldTableCell.forTableColumn(new StringConverter<Telephone>() {
+            @Override
+            public String toString(Telephone object) {
+                if (object == null) return "";
+                return object.number;
+            }
+
+            @Override
+            public Telephone fromString(String string) {
+                return new Telephone(string);
+            }
+        }));
 
         nameCol.setStyle(Css.COL_FONT_SIZE);
         addressCol.setStyle(Css.COL_FONT_SIZE);
@@ -156,13 +172,10 @@ public class ContactsController extends Controller implements Initializable {
             }
         });
 
-        editCol.setCellFactory(new Callback<TableColumn<Contact, Boolean>, TableCell<Contact, Boolean>>() {
-            @Override
-            public TableCell<Contact, Boolean> call(TableColumn<Contact, Boolean> param) {
-                EditContactButtonCell editContactButtonCell = new EditContactButtonCell();
-                editContactButtonCell.setAlignment(Pos.CENTER);
-                return editContactButtonCell;
-            }
+        editCol.setCellFactory(param -> {
+            EditContactButtonCell editContactButtonCell = new EditContactButtonCell();
+            editContactButtonCell.setAlignment(Pos.CENTER);
+            return editContactButtonCell;
         });
 
 
@@ -180,29 +193,30 @@ public class ContactsController extends Controller implements Initializable {
 */
     }
 
+    private class EditContactButtonCell extends TableCell<Contact, Boolean> {
+        final Button cellButton = new Button("/");
 
-        private class EditContactButtonCell extends TableCell<Contact, Boolean> {
-            final Button cellButton = new Button("/");
+        EditContactButtonCell() {
+            cellButton.setOnAction(new EventHandler<ActionEvent>() {
 
-            EditContactButtonCell() {
-                cellButton.setOnAction(new EventHandler<ActionEvent>() {
-
-                    @Override
-                    public void handle(ActionEvent event) {
-                        setContact(contactsTable.getItems().get(getIndex()));
-                        mainController.showDetails();
-                    }
-                });
-            }
-
-            @Override
-            protected void updateItem(Boolean item, boolean empty) {
-                super.updateItem(item, empty);
-                if (!empty && item != null) {
-                    cellButton.getStyleClass().add("button1");
-                    setGraphic(cellButton);
+                @Override
+                public void handle(ActionEvent event) {
+                    setContact(contactsTable.getItems().get(getIndex()));
+                    mainController.showDetails();
                 }
+            });
+        }
+
+        @Override
+        protected void updateItem(Boolean item, boolean empty) {
+            super.updateItem(item, empty);
+            if (empty) {
+                setGraphic(null);
+            } else {
+                cellButton.getStyleClass().add("button1");
+                setGraphic(cellButton);
             }
         }
+    }
 
 }

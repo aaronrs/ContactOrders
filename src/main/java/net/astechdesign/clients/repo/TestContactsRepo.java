@@ -15,18 +15,13 @@ import java.util.List;
 public class TestContactsRepo {
 
     private static boolean initialised = false;
-    private static String oldProId;
 
     public static void init() throws Exception {
         if (initialised) return;
         for (String row: readData("products")) {
             createProduct(row.split("\\|"));
         }
-        int count = 0;
         for (String row: readData("marius.csv")) {
-//            System.out.println(row);
-//            FullName,Organisation,Property,Street,Locality,Town,County,Postcode
-            if (count > 20) break;
             String[] data = row.split("\\|");
             String fullname = data[0].trim();
             String property = data[2].trim();
@@ -50,15 +45,10 @@ public class TestContactsRepo {
             if (!contacts.contains(contact)) {
                 ContactRepo.save(contact);
             }
-            count++;
         }
-//        for (String row: readData("todos")) {
-//            createTodo(row.split(delim));
-//        }
-//        for (String row: readData("orders")) {
-//            createOrder(row.split(delim));
-//        }
         initialised = true;
+        System.out.println();
+        System.out.println("Database initialised. Starting App.");
     }
 
     private static void addressAppend(String street, StringBuilder address) {
@@ -76,7 +66,7 @@ public class TestContactsRepo {
         for (String val :name.split(" ")) {
             code += val.substring(0,1);
         }
-        String price = data[1].substring(1);
+        String price = data[1].substring(1).replace("£", "");
         Product product = new Product(0, code, name, price);
         try {
             ProductRepo.save(product);
@@ -84,21 +74,9 @@ public class TestContactsRepo {
             e.printStackTrace();
         }
     }
-//
-//    private static void createTodo(String[] data) throws Exception {
-//        Todo todo = new Todo(Integer.parseInt(data[0]),
-//                Integer.parseInt(data[1]),
-//                LocalDate.parse(data[4], DateTimeFormatter.ofPattern("yyyy/MM/dd")),
-//                data[6], "", "");
-//        TodoRepo.save(todo);
-//    }
-
-//    private static void createOrder(String[] data) throws SQLException {
-//        // TODO
-//    }
 
     private static List<String> readData(String fileName) {
-        InputStream contactsInputStream = TestContactsRepo.class.getResourceAsStream("/db/data/" + fileName);
+        InputStream contactsInputStream = TestContactsRepo.class.getClassLoader().getResourceAsStream("db/data/" + fileName);
         List<String> rows;
         try {
             rows = CharStreams.readLines(new InputStreamReader(contactsInputStream));

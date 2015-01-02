@@ -11,6 +11,7 @@ import java.util.Properties;
 public class HsqlServerRunner implements Runnable {
 
     public static JDBCDataSource dataSource;
+    public static Properties config;
 
     public static void main(String[] args) throws Exception {
         start();
@@ -20,17 +21,16 @@ public class HsqlServerRunner implements Runnable {
         new Thread(new HsqlServerRunner()).start();
 
         dataSource = new JDBCDataSource();
-        dataSource.setUrl("jdbc:hsqldb:hsql://localhost/Contacts");
-        dataSource.setUser("SA");
+        dataSource.setUrl(config.getProperty("dataSource.url"));
+        dataSource.setUser(config.getProperty("dataSource.user"));
     }
 
     @Override
     public void run() {
         Server server = new Server();
         Properties props = new Properties();
-//        props.setProperty("server.database.0", "file:c:/database/contacts");
-        props.setProperty("server.database.0", "file:/home/aaron/db/contacts");
-        props.setProperty("server.dbname.0", "contacts");
+        props.setProperty("server.database.0", config.getProperty("server.database"));
+        props.setProperty("server.dbname.0", config.getProperty("server.dbname"));
         try {
             server.setProperties(new HsqlProperties(props));
         } catch (IOException | ServerAcl.AclFormatException e) {

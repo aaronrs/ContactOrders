@@ -64,6 +64,7 @@ public class ContactDao extends Dao<Contact> {
     }
 
     public void save(Contact contact) throws SQLException {
+        assert contact.getId() == -1;
         String sql = "INSERT INTO contacts (" +
                 StringUtils.join(CONTACT_COLUMNS,",") + ") " +
                 "VALUES (?" +

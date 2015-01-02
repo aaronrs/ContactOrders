@@ -22,7 +22,7 @@ public class DBBuilder {
             });
             if (isInitialised) return;
         } catch (Exception e) {
-            e.printStackTrace();
+            System.out.println("No database: initialising ...");
         }
         try {
             buildTables(queryRunner);

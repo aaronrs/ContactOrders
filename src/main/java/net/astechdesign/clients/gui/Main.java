@@ -2,6 +2,7 @@ package net.astechdesign.clients.gui;
 
 import javafx.application.Application;
 import javafx.event.EventHandler;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
@@ -16,6 +17,8 @@ import net.astechdesign.clients.model.todo.TodoRepo;
 import net.astechdesign.clients.repo.DBBuilder;
 
 import javax.sql.DataSource;
+import java.io.InputStream;
+import java.util.Properties;
 
 public class Main extends Application {
 
@@ -25,10 +28,21 @@ public class Main extends Application {
     
     @Override
     public void start(Stage primaryStage) throws Exception {
-        initialiseApp();
+        InputStream is = Main.class.getClassLoader().getResourceAsStream("config.properties");
+        Properties config = new Properties();
+        config.load(is);
+
         ClassLoader classLoader = Main.class.getClassLoader();
+        FXMLLoader initLoader = new FXMLLoader(classLoader.getResource("fxml/init.fxml"));
+        VBox initPane = initLoader.load();
+
+        primaryStage.setScene(new Scene(initPane, initPane.getPrefWidth(), initPane.getPrefHeight()));
+        primaryStage.setTitle("Order Management");
+        primaryStage.show();
+
+        initialiseApp(config);
+
         FmxlWrapper<MainController, VBox> mainWrapper = new FmxlWrapper(classLoader, "fxml/main.fxml", null);
-        MainController mainController = mainWrapper.getController();
 
         VBox main = mainWrapper.getPane();
 
@@ -43,7 +57,8 @@ public class Main extends Application {
         });
     }
 
-    private static void initialiseApp() throws Exception {
+    private static void initialiseApp(Properties config) throws Exception {
+        HsqlServerRunner.config = config;
         HsqlServerRunner.start();
         try {
             DataSource datasource = HsqlServerRunner.dataSource;
