@@ -41,9 +41,9 @@ public class ContactsController extends Controller implements Initializable {
 
     @FXML
     void searchContacts(KeyEvent event) {
-        String text = searchText.getText();
+        String text = searchText.getText().toUpperCase();
         if (!event.getCharacter().equals("\b")) {
-            text += event.getCharacter();
+            text += event.getCharacter().toUpperCase();
         }
         if (text == null) return;
         try {
@@ -114,6 +114,7 @@ public class ContactsController extends Controller implements Initializable {
 
     @Override
     public void update() {
+        searchText.clear();
         try {
             contactsTable.getSelectionModel().clearSelection();
             updateContactsTable(ContactRepo.get());

@@ -1,7 +1,5 @@
 package net.astechdesign.clients.model.order;
 
-import net.astechdesign.clients.model.todo.TodoRepo;
-
 import javax.sql.DataSource;
 import java.sql.SQLException;
 import java.util.List;
@@ -17,9 +15,6 @@ public class OrderRepo {
 
     public static void save(Order order) throws SQLException {
         instance.saveOrder(order);
-        if (!order.getCreateDate().isEqual(order.getDeliveryDate())) {
-            TodoRepo.add(order);
-        }
     }
 
     public static void deleteOrder(Order order) throws SQLException {

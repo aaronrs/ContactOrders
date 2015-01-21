@@ -1,10 +1,9 @@
 package net.astechdesign.clients.repo;
 
 import org.apache.commons.dbutils.QueryRunner;
-import org.apache.commons.dbutils.ResultSetHandler;
 
 import javax.sql.DataSource;
-import java.sql.*;
+import java.sql.SQLException;
 
 public class DBBuilder {
 
@@ -13,12 +12,9 @@ public class DBBuilder {
     public static void initialiseDb(DataSource dataSource) {
         QueryRunner queryRunner = new QueryRunner(dataSource);
         try {
-            Boolean isInitialised = queryRunner.query("select * from dbInit", new ResultSetHandler<Boolean>() {
-                @Override
-                public Boolean handle(ResultSet rs) throws SQLException {
-                    rs.next();
-                    return rs.getBoolean(1);
-                }
+            Boolean isInitialised = queryRunner.query("select 1 from dbInit", rs -> {
+                rs.next();
+                return rs.getBoolean(1);
             });
             if (isInitialised) return;
         } catch (Exception e) {
