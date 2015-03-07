@@ -1,8 +1,8 @@
 package net.astechdesign.clients.model.product;
 
 import net.astechdesign.clients.repo.Dao;
+import net.astechdesign.clients.repo.QueryRunnerFactory;
 
-import javax.sql.DataSource;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.LinkedHashMap;
@@ -11,8 +11,8 @@ import java.util.Map;
 
 public class ProductDao extends Dao<Product> {
 
-    public ProductDao(DataSource dataSource) {
-        super(dataSource);
+    public ProductDao(QueryRunnerFactory factory) {
+        super(factory);
     }
 
     public List<Product> get() throws SQLException {
@@ -41,7 +41,7 @@ public class ProductDao extends Dao<Product> {
             Map<String, Object> dataMap = new LinkedHashMap<>();
             dataMap.put("code", product.getCode());
             dataMap.put("name", product.getName());
-            dataMap.put("price", product.getPrice());
+            dataMap.put("price", product.getPrice().replace("£", ""));
             save("products", dataMap);
         } else {
             Map<String, Object> keyMap = new LinkedHashMap<>();
@@ -49,7 +49,7 @@ public class ProductDao extends Dao<Product> {
             Map<String, Object> dataMap = new LinkedHashMap<>();
             dataMap.put("code", product.getCode());
             dataMap.put("name", product.getName());
-            dataMap.put("price", product.getPrice());
+            dataMap.put("price", product.getPrice().replace("£", ""));
             replace("products", dataMap, keyMap);
         }
     }
@@ -67,7 +67,7 @@ public class ProductDao extends Dao<Product> {
         return (T)new Product(id, productId, name, price);
     }
 
-    public void updateCode(Product product) throws SQLException {
-        update("update products set code = ? where id = ?", product.getCode(), product.getId());
+    public void update(Product product) throws SQLException {
+        update("update products set code = ?, name = ?, price = ? where id = ?", product.getCode(), product.getName(), product.getPrice(), product.getId());
     }
 }

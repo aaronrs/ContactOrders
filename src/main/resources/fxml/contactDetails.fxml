@@ -6,12 +6,12 @@
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="540.0" prefWidth="978.0" stylesheets="@Login.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="net.astechdesign.clients.gui.controllers.ContactDetailsController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="640.0" prefWidth="1160.0" stylesheets="@Login.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="net.astechdesign.clients.gui.controllers.ContactDetailsController">
    <children>
-      <VBox fx:id="contactDetails" layoutX="10.0" layoutY="10.0" prefHeight="264.0" prefWidth="389.0" spacing="20.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-      <AnchorPane fx:id="confirmDialog" prefHeight="540.0" prefWidth="978.0">
+      <VBox fx:id="contactDetails" fillWidth="false" layoutX="10.0" layoutY="10.0" spacing="20.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+      <AnchorPane fx:id="confirmDialog" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-            <VBox alignment="CENTER" layoutX="283.0" layoutY="170.0" prefHeight="200.0" prefWidth="413.0" spacing="10.0" style="-fx-border-color: #999; -fx-border-radius: 10px; -fx-border-width: 3px; -fx-background-color: #EEE;">
+            <VBox alignment="CENTER" layoutX="369.0" layoutY="215.0" prefHeight="200.0" prefWidth="413.0" spacing="10.0" style="-fx-border-color: #999; -fx-border-radius: 10px; -fx-border-width: 3px; -fx-background-color: #EEE;">
                <children>
                   <Label text="Confirm Delete:" />
                   <HBox alignment="CENTER" spacing="5.0">

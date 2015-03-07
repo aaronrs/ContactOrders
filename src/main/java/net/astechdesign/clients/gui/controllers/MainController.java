@@ -21,6 +21,9 @@ public class MainController extends Controller implements Initializable {
     private BorderPane contentPane;
 
     @FXML
+    private Button deliveriesBtn;
+
+    @FXML
     private Button todosBtn;
 
     @FXML
@@ -33,14 +36,25 @@ public class MainController extends Controller implements Initializable {
     public AnchorPane contactsPane;
     public AnchorPane todosPane;
     public AnchorPane detailsPane;
+    public AnchorPane deliveriesPane;
 
     public ProductsController productsController;
     public ContactsController contactsController;
     public ContactDetailsController contactDetailsController;
     public TodosController todosController;
+    public DeliveriesController deliveriesController;
     public DetailsController detailsController;
     public OrderDetailsController orderDetailsController;
     public TodoDetailsController todoDetailsController;
+
+    @FXML
+    void selectDeliveries(ActionEvent event) {
+        title.setText("DELIVERIES");
+        showAll();
+        deliveriesBtn.setDisable(true);
+        deliveriesController.update();
+        contentPane.setCenter(deliveriesPane);
+    }
 
     @FXML
     void selectTodos(ActionEvent event) {
@@ -84,6 +98,7 @@ public class MainController extends Controller implements Initializable {
     }
 
     private void showAll() {
+        deliveriesBtn.setDisable(false);
         todosBtn.setDisable(false);
         contactsBtn.setDisable(false);
         productsBtn.setDisable(false);
@@ -93,6 +108,7 @@ public class MainController extends Controller implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         ClassLoader classLoader = MainController.class.getClassLoader();
 
+        FmxlWrapper<DeliveriesController, AnchorPane> deliveriesWrapper = new FmxlWrapper<>(classLoader, "fxml/deliveries.fxml", this);
         FmxlWrapper<ProductsController, AnchorPane> productsWrapper = new FmxlWrapper<>(classLoader, "fxml/products.fxml", this);
         FmxlWrapper<ContactsController, AnchorPane> contactsWrapper = new FmxlWrapper<>(classLoader, "fxml/contacts.fxml", this);
         FmxlWrapper<TodosController, AnchorPane> todosWrapper = new FmxlWrapper<>(classLoader, "fxml/todos.fxml", this);
@@ -101,11 +117,13 @@ public class MainController extends Controller implements Initializable {
         FmxlWrapper<TodoDetailsController, AnchorPane> todosDetailsWrapper = new FmxlWrapper<>(classLoader, "fxml/todoDetails.fxml", this);
         FmxlWrapper<OrderDetailsController, AnchorPane> ordersDetailsWrapper = new FmxlWrapper<>(classLoader, "fxml/orderDetails.fxml", this);
 
+        deliveriesPane = deliveriesWrapper.getPane();
         productsPane = productsWrapper.getPane();
         contactsPane = contactsWrapper.getPane();
         todosPane = todosWrapper.getPane();
         detailsPane = detailsWrapper.getPane();
 
+        deliveriesController = deliveriesWrapper.getController();
         productsController = productsWrapper.getController();
         contactsController = contactsWrapper.getController();
         todosController = todosWrapper.getController();
@@ -118,7 +136,7 @@ public class MainController extends Controller implements Initializable {
         detailsController.setTodosDetailsPane(todosDetailsWrapper.getPane());
         detailsController.setOrdersDetailsPane(ordersDetailsWrapper.getPane());
 
-        selectTodos(null);
+        selectDeliveries(null);
     }
 
     @Override

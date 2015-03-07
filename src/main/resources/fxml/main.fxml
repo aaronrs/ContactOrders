@@ -6,35 +6,26 @@
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="1000.0" stylesheets="@Login.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="net.astechdesign.clients.gui.controllers.MainController">
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="730.0" prefWidth="1300.0" stylesheets="@Login.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="net.astechdesign.clients.gui.controllers.MainController">
    <children>
       <HBox alignment="CENTER">
          <children>
             <Label fx:id="title" style="-fx-font-size: 24px; -fx-font-weight: bold;" text="Title">
                <font>
                   <Font name="System Bold" size="24.0" />
-               </font></Label>
+               </font>
+            </Label>
          </children>
          <padding>
             <Insets top="10.0" />
          </padding>
-      </HBox>
-      <HBox spacing="20.0">
-         <children>
-            <Button fx:id="todosBtn" disable="true" mnemonicParsing="false" onAction="#selectTodos" styleClass="button1" text="TODOS" />
-            <Button fx:id="contactsBtn" mnemonicParsing="false" onAction="#selectContacts" styleClass="button1" text="CONTACTS" />
-            <Button fx:id="productsBtn" mnemonicParsing="false" onAction="#selectProducts" styleClass="button1" text="PRODUCTS" />
-         </children>
-         <VBox.margin>
-            <Insets left="10.0" />
-         </VBox.margin>
       </HBox>
       <BorderPane fx:id="contentPane" VBox.vgrow="ALWAYS">
          <bottom>
             <HBox>
                <children>
                   <Button mnemonicParsing="false" onAction="#exitAction" prefHeight="28.0" prefWidth="82.0" styleClass="button1" text="EXIT" BorderPane.alignment="CENTER" />
-                  <Label alignment="CENTER_RIGHT" prefHeight="28.0" prefWidth="948.0" text="ASTECH DESIGN LTD" HBox.hgrow="ALWAYS">
+                  <Label alignment="CENTER_RIGHT" prefHeight="28.0" prefWidth="1232.0" text="ASTECH DESIGN LTD" HBox.hgrow="ALWAYS">
                      <font>
                         <Font name="System Bold Italic" size="13.0" />
                      </font>
@@ -48,6 +39,19 @@
                </padding>
             </HBox>
          </bottom>
+         <left>
+            <VBox prefHeight="722.0" prefWidth="119.0" spacing="20.0" BorderPane.alignment="CENTER">
+               <children>
+                  <Button fx:id="deliveriesBtn" disable="true" mnemonicParsing="false" onAction="#selectDeliveries" styleClass="button1" text="DELIVERIES" />
+                  <Button fx:id="todosBtn" disable="true" mnemonicParsing="false" onAction="#selectTodos" styleClass="button1" text="TODOS" />
+                  <Button fx:id="contactsBtn" mnemonicParsing="false" onAction="#selectContacts" styleClass="button1" text="CONTACTS" />
+                  <Button fx:id="productsBtn" mnemonicParsing="false" onAction="#selectProducts" styleClass="button1" text="PRODUCTS" />
+               </children>
+               <padding>
+                  <Insets left="10.0" top="20.0" />
+               </padding>
+            </VBox>
+         </left>
       </BorderPane>
    </children>
 </VBox>

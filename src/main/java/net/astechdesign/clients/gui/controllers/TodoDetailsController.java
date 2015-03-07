@@ -53,6 +53,8 @@ public class TodoDetailsController extends Controller implements Initializable {
         dateCol.setCellValueFactory(new PropertyValueFactory<Todo, LocalDate>("date"));
         notesCol.setCellValueFactory(new PropertyValueFactory<Todo, String>("notes"));
 
+        dateCol.setCellFactory(new DateCellFactory<>());
+
         dateCol.setStyle(Css.COL_FONT_SIZE);
         notesCol.setStyle(Css.COL_FONT_SIZE);
     }
@@ -61,7 +63,7 @@ public class TodoDetailsController extends Controller implements Initializable {
     public void update() {
         List<Todo> list = null;
         try {
-            list = TodoRepo.todos();
+            list = TodoRepo.todos(getContactId());
             todosTable.getSelectionModel().clearSelection();
             todosTable.setItems(FXCollections.observableArrayList(list));
         } catch (SQLException e) {

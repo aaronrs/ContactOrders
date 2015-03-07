@@ -92,12 +92,19 @@ public class ContactDetailsController extends Controller implements Initializabl
         confirmDialog.setVisible(false);
 
         name.setPromptText("name");
+        name.setPrefWidth(300);
         address.setPromptText("address");
+        address.setPrefWidth(500);
         locality.setPromptText("locality");
+        locality.setPrefWidth(300);
         town.setPromptText("town");
+        town.setPrefWidth(300);
         county.setPromptText("county");
+        county.setPrefWidth(200);
         postcode.setPromptText("postcode");
+        postcode.setPrefWidth(200);
         telephone.setPromptText("telephone");
+        telephone.setPrefWidth(200);
         updateDetailsBtn.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {

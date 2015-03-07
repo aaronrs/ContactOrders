@@ -7,7 +7,6 @@ import org.apache.commons.dbutils.handlers.BeanHandler;
 import org.apache.commons.dbutils.handlers.BeanListHandler;
 import org.apache.commons.lang.StringUtils;
 
-import javax.sql.DataSource;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.Instant;
@@ -19,10 +18,11 @@ import java.util.List;
 import java.util.Map;
 
 public abstract class Dao<T> extends BasicRowProcessor {
-    private final DataSource dataSource;
 
-    public Dao(DataSource dataSource) {
-        this.dataSource = dataSource;
+    private QueryRunnerFactory qrf;
+
+    public Dao(QueryRunnerFactory qrf) {
+        this.qrf = qrf;
     }
 
     @Override
@@ -91,7 +91,7 @@ public abstract class Dao<T> extends BasicRowProcessor {
     }
 
     private QueryRunner queryRunner() {
-        return new QueryRunner(dataSource);
+        return qrf.getRunner();
     }
 
     private Date convert(LocalDate date) {

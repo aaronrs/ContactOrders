@@ -34,7 +34,7 @@ public class Product implements Item {
     }
 
     public String getPrice() {
-        return price.getValue();
+        return "£" + price.getValue();
     }
 
     public void setId(int id) {

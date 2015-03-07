@@ -12,12 +12,11 @@ public class DBBuilder {
     public static void initialiseDb(DataSource dataSource) {
         QueryRunner queryRunner = new QueryRunner(dataSource);
         try {
-            Boolean isInitialised = queryRunner.query("select 1 from dbInit", rs -> {
-                rs.next();
-                return rs.getBoolean(1);
-            });
-            if (isInitialised) return;
+            queryRunner.update("insert into dbinit values (true)");
+            runUpdates(queryRunner);
+            return;
         } catch (Exception e) {
+            e.printStackTrace();
             System.out.println("No database: initialising ...");
         }
         try {
@@ -26,6 +25,16 @@ public class DBBuilder {
             queryRunner.update("insert into dbInit values('true')");
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+
+    private static void runUpdates(QueryRunner runner) {
+
+        try {
+            String addPriceColumn = "ALTER TABLE ORDERS ADD COLUMN price VARCHAR(8) BEFORE AMOUNT";
+            runner.update(addPriceColumn);
+        } catch (SQLException e) {
+            // Already exists;
         }
     }
 
@@ -61,6 +70,7 @@ public class DBBuilder {
                 "contactId INT NOT NULL," +
                 "product VARCHAR(200)," +
                 "deliveryDate DATE DEFAULT CURRENT_DATE," +
+                "price VARCHAR(8)," +
                 "amount INT," +
                 "createDate DATE DEFAULT CURRENT_DATE" +
                 ")");
@@ -74,10 +84,6 @@ public class DBBuilder {
                 ")");
 
         runner.update(createTable + " dbInit(init BOOLEAN)");
-
-        for (String name : TABLE_NAMES) {
-//            runner.update("SET TABLE " + name + " SOURCE \"" + name + "\"");
-        }
-//        runner.update("SET TABLE dbInit SOURCE \"dbInit\"");
+        runner.update("insert into dbinit (true)");
     }
 }

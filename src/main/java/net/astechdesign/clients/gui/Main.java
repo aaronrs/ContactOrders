@@ -15,12 +15,28 @@ import net.astechdesign.clients.model.order.OrderRepo;
 import net.astechdesign.clients.model.product.ProductRepo;
 import net.astechdesign.clients.model.todo.TodoRepo;
 import net.astechdesign.clients.repo.DBBuilder;
+import net.astechdesign.clients.repo.QueryRunnerFactory;
 
 import javax.sql.DataSource;
 import java.io.InputStream;
 import java.util.Properties;
 
 public class Main extends Application {
+
+    // Screen size - 1366 x 768
+    public static int height = 730;
+    public static int width = 1300;
+
+    // Close windows on exit
+    //// Todos need sorting by date
+    // add single delivery note
+    // Split dates across columns
+    // Fix date format on Orders etc
+    // new contact - should go to details tab
+    // Indicate updated/saved fields when clicked
+    // Do not save multiple times
+    // edit products - desc and price
+    // backup database
 
     public static void main(String[] args) {
         launch(args);
@@ -36,7 +52,7 @@ public class Main extends Application {
         FXMLLoader initLoader = new FXMLLoader(classLoader.getResource("fxml/init.fxml"));
         VBox initPane = initLoader.load();
 
-        primaryStage.setScene(new Scene(initPane, initPane.getPrefWidth(), initPane.getPrefHeight()));
+        primaryStage.setScene(new Scene(initPane, width, height));
         primaryStage.setTitle("Order Management");
         primaryStage.show();
 
@@ -62,7 +78,7 @@ public class Main extends Application {
         HsqlServerRunner.start();
         try {
             DataSource datasource = HsqlServerRunner.dataSource;
-            new ProductRepo(datasource);
+            new ProductRepo(new QueryRunnerFactory(datasource));
             new ContactRepo(datasource);
             new TodoRepo(datasource);
             new OrderRepo(datasource);

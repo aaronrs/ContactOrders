@@ -1,6 +1,7 @@
 package net.astechdesign.clients.model.todo;
 
 import net.astechdesign.clients.repo.Dao;
+import net.astechdesign.clients.repo.QueryRunnerFactory;
 
 import javax.sql.DataSource;
 import java.sql.ResultSet;
@@ -13,7 +14,7 @@ import java.util.Map;
 public class TodoDao extends Dao<Todo> {
 
     public TodoDao(DataSource dataSource) {
-        super(dataSource);
+        super(new QueryRunnerFactory(dataSource));
     }
 
     public List<Todo> get() throws SQLException {
@@ -54,5 +55,9 @@ public class TodoDao extends Dao<Todo> {
             town = rs.getString("town");
         } catch (Exception e) {}
         return (T)new Todo(id, contactId, date, notes, name, town);
+    }
+
+    public void delete(int id) throws SQLException {
+        update("delete from todos where id = ?", id);
     }
 }

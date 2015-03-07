@@ -1,6 +1,7 @@
 package net.astechdesign.clients.model.contact;
 
 import net.astechdesign.clients.repo.Dao;
+import net.astechdesign.clients.repo.QueryRunnerFactory;
 import org.apache.commons.lang.StringUtils;
 
 import javax.sql.DataSource;
@@ -14,7 +15,7 @@ public class ContactDao extends Dao<Contact> {
     public static final String[] CONTACT_COLUMNS = {"name","address","locality","town","county","postcode","telephone"};
 
     public ContactDao(DataSource dataSource) {
-        super(dataSource);
+        super(new QueryRunnerFactory(dataSource));
     }
 
     public List<Contact> getContacts() throws SQLException {

@@ -1,9 +1,11 @@
 package net.astechdesign.clients.model.todo;
 
 import net.astechdesign.clients.model.order.Order;
+import net.astechdesign.clients.model.order.OrderRepo;
 
 import javax.sql.DataSource;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class TodoRepo {
@@ -17,7 +19,25 @@ public class TodoRepo {
     }
 
     public static List<Todo> todos() throws SQLException {
-        return instance.getTodos();
+        List<Todo> todos = instance.getTodos();
+        for (Todo todo : todos) {
+            if (todo.getNotes().startsWith("Delivery")) {
+                instance.delete(todo);
+            }
+        }
+        return todos;
+    }
+
+    public static List<Todo> deliveries() throws SQLException {
+        List<Todo> todos = new ArrayList<>();
+        List<Order> orders = OrderRepo.uniqueOrders();
+        for (Order order : orders) {
+            if (!order.getCreateDate().isEqual(order.getDeliveryDate())) {
+                Todo todo = new Todo(order.getId(), order.getContact().getId(), order.getDeliveryDate(), order.getContact().getAddress() + ", " + order.getContact().getTown() + ", " + order.getContact().getPostcode(), order.getContact().getName(), order.getContact().getTelephone().number);
+                todos.add(todo);
+            }
+        }
+        return todos;
     }
 
     public static List<Todo> todos(int id) throws SQLException {
@@ -43,5 +63,9 @@ public class TodoRepo {
 
     private List<Todo> getTodos(int id) throws SQLException {
         return new TodoDao(dataSource).get(id);
+    }
+
+    private void delete(Todo todo) throws SQLException {
+        new TodoDao(dataSource).delete(todo.getId());
     }
 }

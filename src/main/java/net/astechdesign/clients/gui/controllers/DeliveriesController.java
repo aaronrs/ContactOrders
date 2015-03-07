@@ -3,13 +3,10 @@ package net.astechdesign.clients.gui.controllers;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.DatePicker;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import javafx.scene.control.TextArea;
 import javafx.scene.control.cell.PropertyValueFactory;
 import net.astechdesign.clients.model.todo.Todo;
 import net.astechdesign.clients.model.todo.TodoRepo;
@@ -19,16 +16,10 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ResourceBundle;
 
-public class TodosController extends Controller implements Initializable {
+public class DeliveriesController extends Controller implements Initializable {
 
     @FXML
-    private TextArea todoNotes;
-
-    @FXML
-    private DatePicker todoDate;
-
-    @FXML
-    private TableView<Todo> todosTable;
+    private TableView<Todo> deliveryTable;
 
     @FXML
     private TableColumn<Todo, LocalDate> dateCol;
@@ -40,20 +31,7 @@ public class TodosController extends Controller implements Initializable {
     private TableColumn<Todo, String> notesCol;
 
     @FXML
-    private TableColumn<Todo, String> townCol;
-
-    @FXML
-    void addTodo(ActionEvent event) {
-        Todo todo = new Todo(0, -1, todoDate.getValue(), todoNotes.getText());
-        try {
-            TodoRepo.save(todo);
-            todoNotes.clear();
-            todoDate.setValue(null);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        update();
-    }
+    private TableColumn<Todo, String> telephoneCol;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -61,7 +39,7 @@ public class TodosController extends Controller implements Initializable {
         dateCol.setCellValueFactory(new PropertyValueFactory<>("date"));
         contactCol.setCellValueFactory(new PropertyValueFactory<>("name"));
         notesCol.setCellValueFactory(new PropertyValueFactory<>("notes"));
-        townCol.setCellValueFactory(new PropertyValueFactory<>("town"));
+        telephoneCol.setCellValueFactory(new PropertyValueFactory<>("town"));
 
         dateCol.setCellFactory(new DateCellFactory<>());
 
@@ -69,7 +47,7 @@ public class TodosController extends Controller implements Initializable {
         contactCol.setStyle(Css.COL_FONT_SIZE);
         notesCol.setStyle(Css.COL_FONT_SIZE);
 
-        todosTable.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Todo>() {
+        deliveryTable.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Todo>() {
             @Override
             public void changed(ObservableValue<? extends Todo> observable, Todo oldValue, Todo newValue) {
                 if (newValue != null && newValue.getContactId() != -1) {
@@ -83,8 +61,8 @@ public class TodosController extends Controller implements Initializable {
     @Override
     public void update() {
         try {
-            todosTable.getSelectionModel().clearSelection();
-            todosTable.setItems(FXCollections.observableArrayList(TodoRepo.todos()));
+            deliveryTable.getSelectionModel().clearSelection();
+            deliveryTable.setItems(FXCollections.observableArrayList(TodoRepo.deliveries()));
         } catch (SQLException e) {
             e.printStackTrace();
         }

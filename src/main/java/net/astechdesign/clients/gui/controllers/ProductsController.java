@@ -64,9 +64,16 @@ public class ProductsController extends Controller implements Initializable {
     public Product deleteProduct;
 
     @FXML
-    void editCodeCol(TableColumn.CellEditEvent<Product, String> event) {
+    void editCol(TableColumn.CellEditEvent<Product, String> event) {
         Product product = (Product) event.getTableView().getItems().get(event.getTablePosition().getRow());
-        product.setCode(event.getNewValue());
+        String id = ((TableColumn) event.getSource()).getId();
+        if (id.equals("codeCol")) {
+            product.setCode(event.getNewValue());
+        } else if (id.equals("descriptionCol")) {
+            product.setName(event.getNewValue());
+        } else if (id.equals("priceCol")) {
+            product.setPrice(event.getNewValue());
+        }
         try {
             ProductRepo.updateCode(product);
         } catch (SQLException e) {
@@ -117,18 +124,21 @@ public class ProductsController extends Controller implements Initializable {
         codeCol.setCellFactory(TextFieldTableCell.forTableColumn());
 
         descriptionCol.setCellValueFactory(new PropertyValueFactory<Product, String>("name"));
+        descriptionCol.setCellFactory(TextFieldTableCell.forTableColumn());
+
         priceCol.setCellValueFactory(new PropertyValueFactory<>("price"));
-        priceCol.setCellFactory(column -> {
-            return new TableCell<Product, String>() {
-                @Override
-                protected void updateItem(String item, boolean empty) {
-                    super.updateItem(item, empty);
-                    if (item != null) {
-                        setText("£" + item);
-                    }
-                }
-            };
-        });
+        priceCol.setCellFactory(TextFieldTableCell.forTableColumn());
+//        priceCol.setCellFactory(column -> {
+//            return new TableCell<Product, String>() {
+//                @Override
+//                protected void updateItem(String item, boolean empty) {
+//                    super.updateItem(item, empty);
+//                    if (item != null) {
+//                        setText("£" + item);
+//                    }
+//                }
+//            };
+//        });
 
         delCol.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<Product, Boolean>, ObservableValue<Boolean>>() {
             @Override

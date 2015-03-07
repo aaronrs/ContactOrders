@@ -11,14 +11,16 @@ public class Order {
     public final ObjectProperty<Contact> contact;
     public final StringProperty product;
     public final ObjectProperty<LocalDate> deliveryDate;
+    public final StringProperty price;
     public final IntegerProperty amount;
     public final ObjectProperty<LocalDate> createDate;
 
-    public Order(int id, Contact contact, String product, LocalDate deliveryDate, int amount, LocalDate createDate) {
+    public Order(int id, Contact contact, String product, LocalDate deliveryDate, String price, int amount, LocalDate createDate) {
         this.id = new SimpleIntegerProperty(id);
         this.contact = new SimpleObjectProperty<>(contact);
         this.product = new SimpleStringProperty(product);
         this.deliveryDate = new SimpleObjectProperty<>(deliveryDate);
+        this.price = new SimpleStringProperty(price);
         this.amount = new SimpleIntegerProperty(amount);
         this.createDate = new SimpleObjectProperty<>(createDate);
     }
@@ -37,6 +39,10 @@ public class Order {
 
     public LocalDate getDeliveryDate() {
         return deliveryDate.getValue();
+    }
+
+    public String getPrice() {
+        return price.getValue();
     }
 
     public Integer getAmount() {
@@ -63,6 +69,10 @@ public class Order {
         return product;
     }
 
+    public StringProperty priceProperty() {
+        return price;
+    }
+
     public IntegerProperty amountProperty() {
         return amount;
     }
@@ -85,6 +95,10 @@ public class Order {
 
     public void setDeliveryDate(LocalDate date) {
         deliveryDate.setValue(date);
+    }
+
+    public void setPrice(String value) {
+        price.setValue(value);
     }
 
     public void setAmount(Integer value) {

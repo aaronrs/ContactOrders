@@ -32,25 +32,33 @@ public class OrderDetailsController extends Controller implements Initializable 
     private TableColumn<Order, LocalDate> dateCol;
 
     @FXML
+    private TableColumn<Order, LocalDate> deliveryDateCol;
+
+    @FXML
     private TableColumn<Order, String> productCol;
+
+    @FXML
+    private TableColumn<Order, Integer> priceCol;
 
     @FXML
     private TableColumn<Order, Integer> amountCol;
 
-    @FXML
-    private TableColumn<Order, LocalDate> deliveryDateCol;
-
     private void initMain(){
         deleteOrderBtn.setVisible(false);
         dateCol.setCellValueFactory(new PropertyValueFactory("createDate"));
-        productCol.setCellValueFactory(new PropertyValueFactory("product"));
-        amountCol.setCellValueFactory(new PropertyValueFactory("amount"));
         deliveryDateCol.setCellValueFactory(new PropertyValueFactory("deliveryDate"));
+        productCol.setCellValueFactory(new PropertyValueFactory("product"));
+        priceCol.setCellValueFactory(new PropertyValueFactory("price"));
+        amountCol.setCellValueFactory(new PropertyValueFactory("amount"));
 
         dateCol.setStyle(Css.COL_FONT_SIZE);
-        productCol.setStyle(Css.COL_FONT_SIZE);
-        amountCol.setStyle(Css.COL_FONT_SIZE);
         deliveryDateCol.setStyle(Css.COL_FONT_SIZE);
+        productCol.setStyle(Css.COL_FONT_SIZE);
+        priceCol.setStyle(Css.COL_FONT_SIZE);
+        amountCol.setStyle(Css.COL_FONT_SIZE);
+
+        dateCol.setCellFactory(new DateCellFactory<>());
+        deliveryDateCol.setCellFactory(new DateCellFactory<>());
 
         orderTable.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             if (orderTable.getSelectionModel().getSelectedItem() != null) {
@@ -68,9 +76,10 @@ public class OrderDetailsController extends Controller implements Initializable 
 
     private void resetNewOrderFields() {
         productCode.clear();
+        deliveryDate.setValue(LocalDate.now());
         productName.getSelectionModel().clearSelection();
         amount.setText("1");
-        deliveryDate.setValue(LocalDate.now());
+        updateProductList("");
     }
 
     @FXML
@@ -126,21 +135,24 @@ public class OrderDetailsController extends Controller implements Initializable 
         Label filler = new Label();
         filler.setPrefWidth(80);
 
+        DatePicker deliveryDate = new DatePicker(this.deliveryDate.getValue());
+        deliveryDate.setPrefWidth(160);
+
         TextField product = new TextField(productName.getValue().getName());
         product.setPrefWidth(330);
 
+        TextField priceField = new TextField(productName.getValue().getPrice());
+        priceField.setPrefWidth(75);
+
         TextField amountField = new TextField(amount.getText());
         amountField.setPrefWidth(55);
-
-        DatePicker date = new DatePicker(deliveryDate.getValue());
-        date.setPrefWidth(160);
 
         Button deleteBtn = new Button("DEL");
         deleteBtn.getStyleClass().add("button1");
 
         HBox hBox = new HBox();
         hBox.setSpacing(5);
-        hBox.getChildren().addAll(filler, product, amountField, date, deleteBtn);
+        hBox.getChildren().addAll(deliveryDate, product, priceField, amountField, deleteBtn);
         orderProducts.getChildren().add(hBox);
 
         deleteBtn.setOnAction(new EventHandler<ActionEvent>() {
@@ -158,10 +170,11 @@ public class OrderDetailsController extends Controller implements Initializable 
         ObservableList<Node> orders = orderProducts.getChildren();
         for (Node node : orders) {
             ObservableList<Node> children = ((HBox) node).getChildren();
+            LocalDate deliveryDate1 = ((DatePicker) children.get(0)).getValue();
             String product = ((TextField) children.get(1)).getText();
-            int amount1 = Integer.parseInt(((TextField) children.get(2)).getText());
-            LocalDate deliveryDate1 = ((DatePicker) children.get(3)).getValue();
-            Order order = new Order(-1, getContact(), product, deliveryDate1, amount1, LocalDate.now());
+            String price = ((TextField) children.get(2)).getText();
+            int amount1 = Integer.parseInt(((TextField) children.get(3)).getText());
+            Order order = new Order(-1, getContact(), product, deliveryDate1, price, amount1, LocalDate.now());
             try {
                 OrderRepo.save(order);
             } catch (SQLException e) {
@@ -183,16 +196,20 @@ public class OrderDetailsController extends Controller implements Initializable 
     @FXML
     void searchProducts(KeyEvent event) {
         String text = productCode.getText();
-        if (!event.getCharacter().equals("\b")) {
+        if (event != null && !event.getCharacter().equals("\b")) {
             text += event.getCharacter();
         }
+        updateProductList(text);
+        productName.show();
+    }
+
+    private void updateProductList(String text) {
         try {
             productList = ProductRepo.find(text);
         } catch (SQLException e) {
             e.printStackTrace();
         }
         productName.setItems(FXCollections.observableArrayList(productList));
-        productName.show();
     }
 
     private Order order;

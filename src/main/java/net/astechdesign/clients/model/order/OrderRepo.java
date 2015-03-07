@@ -9,8 +9,16 @@ public class OrderRepo {
     private static OrderRepo instance;
     private final DataSource dataSource;
 
+    public static List<Order> currentOrders() throws SQLException {
+        return instance.getCurrentOrders();
+    }
+
     public static List<Order> orders(int contactId) throws SQLException {
         return instance.getOrders(contactId);
+    }
+
+    public static List<Order> uniqueOrders() throws SQLException {
+        return instance.getUniqueOrders();
     }
 
     public static void save(Order order) throws SQLException {
@@ -32,6 +40,14 @@ public class OrderRepo {
 
     private List<Order> getOrders(int contactId) throws SQLException {
         return new OrdersDao(dataSource).get(contactId);
+    }
+
+    private List<Order> getUniqueOrders() throws SQLException {
+        return new OrdersDao(dataSource).getUniqueOrders();
+    }
+
+    private List<Order> getCurrentOrders() throws SQLException {
+        return new OrdersDao(dataSource).getOrders();
     }
 
     private void delete(Order order) throws SQLException {
